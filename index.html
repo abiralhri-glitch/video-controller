@@ -29,10 +29,24 @@
   .tag.success { color:var(--ok); } .tag.failure { color:var(--bad); } .tag.in_progress,.tag.queued { color:var(--warn); }
   small { color:var(--mut); }
   details summary { cursor:pointer; color:var(--mut); }
+  .modes { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:14px; }
+  .modes button { margin:0; padding:12px 8px; background:var(--card); border:1px solid var(--line); color:var(--txt); font-size:14px; line-height:1.3; }
+  .modes button.on { background:var(--acc); border-color:var(--acc); color:#fff; }
+  .modes button:disabled { opacity:.45; }
+  .hint { font-size:13px; color:var(--mut); margin:8px 0 0; }
+  .hide { display:none; }
 </style>
 </head>
 <body>
 <h1>🎬 Video Studio</h1>
+
+<div class="modes" id="modes">
+  <button type="button" data-mode="script" class="on">✍️ স্ক্রিপ্ট দিয়ে ভিডিও</button>
+  <button type="button" data-mode="youtube">▶️ ইউটিউব ভিডিও থেকে ভিডিও</button>
+  <button type="button" data-mode="cartoon" disabled>🧸 কার্টুন / অ্যানিমেশন (শীঘ্রই)</button>
+  <button type="button" data-mode="other">🎞 অন্যান্য ফরম্যাট</button>
+</div>
+<p class="hint" id="modeHint"></p>
 
 <div class="card">
   <label for="prompt">কমান্ড (কী ভিডিও চান)</label>
@@ -45,15 +59,19 @@
     <div><label for="voice">ভয়েস</label><select id="voice"><option value="female">মেয়ে</option><option value="male">ছেলে</option></select></div>
     <div><label for="format">আকার</label><select id="format"><option value="landscape">ইউটিউব (আড়াআড়ি)</option><option value="portrait">শর্টস/রিলস (লম্বালম্বি)</option></select></div>
   </div>
+  <div id="styleBox">
   <label for="style">ফরম্যাট / স্টাইল</label>
   <select id="style">
     <option value="custom">সাধারণ (আমার কমান্ড অনুযায়ী)</option>
     <option value="natok_recap">নাটকের সারসংক্ষেপ (৫–১০ মিনিট, আড়াআড়ি)</option>
     <option value="book_explainer">বই/জ্ঞান ব্যাখ্যা (লম্বালম্বি রিলস)</option>
   </select>
+  </div>
+  <div id="sourceBox">
   <label for="source">সোর্স ভিডিও লিংক (নাটকের ইউটিউব লিংক, ঐচ্ছিক)</label>
   <input id="source" type="url" placeholder="https://www.youtube.com/watch?v=..." autocapitalize="off" autocorrect="off">
-  <label for="notes">স্টাইল নোট (ঐচ্ছিক) / নাটকের সারসংক্ষেপ পেস্ট করুন</label>
+  </div>
+  <label for="notes" id="notesLabel">স্টাইল নোট (ঐচ্ছিক)</label>
   <input id="notes" placeholder="যেমন: দ্রুত গতির, হুক দিয়ে শুরু">
   <button id="go">ভিডিও বানাও</button>
   <div id="msg" class="msg"></div>
@@ -138,6 +156,27 @@ async function loadRuns() {
     }).join("");
   } catch (e) { box.innerHTML = `<small>${e.message}</small>`; }
 }
+const MODES = {
+  script:  { style:"custom",         styleBox:false, sourceBox:false, hint:"নিজের কমান্ড বা বিষয় লিখে ভিডিও বানান।", notes:"স্টাইল নোট (ঐচ্ছিক)" },
+  youtube: { style:"natok_recap",    styleBox:false, sourceBox:true,  hint:"নাটক/ফিল্মের ইউটিউব লিংক দিন, সেটাকে ৫–২৫ মিনিটের নতুন ভিডিওতে রূপান্তর করবে। লিংক না পড়া গেলে সারসংক্ষেপ নিচের নোটে পেস্ট করুন।", notes:"নাটকের সারসংক্ষেপ (লিংক না পড়া গেলে এখানে পেস্ট করুন)", minutes:8 },
+  cartoon: { style:"custom",         styleBox:false, sourceBox:false, hint:"বাচ্চাদের কার্টুন ভিডিও সিস্টেম তৈরি হচ্ছে।", notes:"স্টাইল নোট (ঐচ্ছিক)" },
+  other:   { style:"book_explainer", styleBox:true,  sourceBox:false, hint:"অন্যান্য তৈরি ফরম্যাট থেকে বেছে নিন।", notes:"স্টাইল নোট (ঐচ্ছিক)" }
+};
+function setMode(m) {
+  const c = MODES[m] || MODES.script;
+  document.querySelectorAll("#modes button").forEach(b => b.classList.toggle("on", b.dataset.mode === m));
+  $("styleBox").classList.toggle("hide", !c.styleBox);
+  $("sourceBox").classList.toggle("hide", !c.sourceBox);
+  $("modeHint").textContent = c.hint;
+  $("notesLabel").textContent = c.notes;
+  if (m !== "script" || $("style").value !== "custom") $("style").value = c.style;
+  if (m === "script") $("style").value = "custom";
+  if (c.minutes && !(parseFloat($("minutes").value) >= 5)) $("minutes").value = c.minutes;
+  if (m !== "youtube") $("source").value = "";
+  store.set("mode", m);
+}
+document.querySelectorAll("#modes button").forEach(b => b.onclick = () => { if (!b.disabled) setMode(b.dataset.mode); });
+setMode(store.get("mode") && MODES[store.get("mode")] && store.get("mode") !== "cartoon" ? store.get("mode") : "script");
 $("refresh").onclick = loadRuns;
 loadRuns();
 setInterval(() => { if (!document.hidden && store.get("token")) loadRuns(); }, 20000);
