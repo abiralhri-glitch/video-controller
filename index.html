@@ -43,9 +43,17 @@
   </div>
   <div class="row">
     <div><label for="voice">ভয়েস</label><select id="voice"><option value="female">মেয়ে</option><option value="male">ছেলে</option></select></div>
-    <div><label for="format">ফরম্যাট</label><select id="format"><option value="landscape">ইউটিউব (আড়াআড়ি)</option><option value="portrait">শর্টস/রিলস (লম্বালম্বি)</option></select></div>
+    <div><label for="format">আকার</label><select id="format"><option value="landscape">ইউটিউব (আড়াআড়ি)</option><option value="portrait">শর্টস/রিলস (লম্বালম্বি)</option></select></div>
   </div>
-  <label for="notes">স্টাইল নোট (ঐচ্ছিক)</label>
+  <label for="style">ফরম্যাট / স্টাইল</label>
+  <select id="style">
+    <option value="custom">সাধারণ (আমার কমান্ড অনুযায়ী)</option>
+    <option value="natok_recap">নাটকের সারসংক্ষেপ (৫–১০ মিনিট, আড়াআড়ি)</option>
+    <option value="book_explainer">বই/জ্ঞান ব্যাখ্যা (লম্বালম্বি রিলস)</option>
+  </select>
+  <label for="source">সোর্স ভিডিও লিংক (নাটকের ইউটিউব লিংক, ঐচ্ছিক)</label>
+  <input id="source" type="url" placeholder="https://www.youtube.com/watch?v=..." autocapitalize="off" autocorrect="off">
+  <label for="notes">স্টাইল নোট (ঐচ্ছিক) / নাটকের সারসংক্ষেপ পেস্ট করুন</label>
   <input id="notes" placeholder="যেমন: দ্রুত গতির, হুক দিয়ে শুরু">
   <button id="go">ভিডিও বানাও</button>
   <div id="msg" class="msg"></div>
@@ -103,7 +111,8 @@ $("go").onclick = async () => {
       method: "POST",
       body: JSON.stringify({ ref: "main", inputs: {
         prompt, minutes: String(minutes), language: $("language").value,
-        voice: $("voice").value, format: $("format").value, notes: $("notes").value.trim()
+        voice: $("voice").value, format: $("format").value, notes: $("notes").value.trim(),
+        style: $("style").value, source_url: $("source").value.trim()
       }})
     });
     if (r.status === 204) { say("কাজ শুরু হয়েছে। নিচে অগ্রগতি দেখুন।", "ok"); setTimeout(loadRuns, 4000); }
