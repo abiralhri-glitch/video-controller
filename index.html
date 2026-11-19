@@ -44,7 +44,7 @@
     position: sticky;
     top: 0;
     z-index: 100;
-    background: rgba(10, 15, 29, 0.9);
+    background: rgba(10, 15, 29, 0.92);
     backdrop-filter: blur(16px);
     border-bottom: 1px solid var(--border);
     padding: 12px 16px;
@@ -102,29 +102,39 @@
   .global-stat-box b { display: block; font-size: 10px; color: var(--muted); text-transform: uppercase; margin-bottom: 2px; }
   .global-stat-box span { font-size: 17px; font-weight: 800; color: #38bdf8; }
 
-  /* Navigation Tabs (5 Tabs) */
+  /* Navigation Tabs (Scrollable on mobile) */
+  .tabs-scroll-wrap {
+    overflow-x: auto;
+    margin-bottom: 16px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .tabs-scroll-wrap::-webkit-scrollbar { display: none; }
   .tabs {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 4px;
+    display: flex;
+    gap: 6px;
     background: #0f1629;
     border: 1px solid var(--border);
     border-radius: 12px;
-    padding: 4px;
-    margin-bottom: 16px;
+    padding: 5px;
+    width: max-content;
+    min-width: 100%;
   }
   .tab-btn {
     background: transparent;
     border: 0;
     color: var(--muted);
     font-weight: 600;
-    font-size: 11px;
-    padding: 8px 2px;
+    font-size: 12px;
+    padding: 8px 14px;
     border-radius: 9px;
     cursor: pointer;
     transition: all 0.2s;
     text-align: center;
     white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 5px;
   }
   .tab-btn.active {
     background: var(--primary);
@@ -143,6 +153,32 @@
     justify-content: space-between;
   }
   .section-title span { display: flex; align-items: center; gap: 6px; }
+
+  /* Quick Post Action Banner on Dashboard */
+  .quick-action-banner {
+    background: linear-gradient(135deg, #0284c7, #0ea5e9);
+    border-radius: 14px;
+    padding: 12px 16px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 4px 15px var(--primary-glow);
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+  .quick-action-banner:active { transform: scale(0.98); }
+  .qab-text b { display: block; font-size: 13.5px; font-weight: 800; color: #fff; margin-bottom: 2px; }
+  .qab-text span { font-size: 11px; color: rgba(255,255,255,0.85); }
+  .qab-btn {
+    background: #fff;
+    color: #0369a1;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 11px;
+    font-weight: 800;
+    white-space: nowrap;
+  }
 
   /* Compact Overview List (Dashboard Clean View) */
   .compact-summary-card {
@@ -173,6 +209,33 @@
   .compact-stats { text-align: right; }
   .compact-views { font-size: 13px; font-weight: 800; color: #38bdf8; }
   .compact-btn { font-size: 10px; color: #94a3b8; font-weight: 600; }
+
+  /* Universal History Feed Table on Dashboard */
+  .history-item {
+    background: #0a0f1d;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.2s;
+  }
+  .history-item:hover { border-color: var(--border-light); }
+  .history-thumb {
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
+    object-fit: cover;
+    background: #131b2e;
+    flex-shrink: 0;
+    border: 1px solid var(--border);
+  }
+  .history-info { flex: 1; min-width: 0; }
+  .history-page-name { font-size: 11px; color: #38bdf8; font-weight: 700; display: flex; align-items: center; gap: 4px; margin-bottom: 2px; }
+  .history-title { font-size: 12px; font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 4px; }
+  .history-meta { font-size: 10px; color: var(--muted); display: flex; align-items: center; gap: 10px; }
 
   /* Approval Queue / Ready Post Card */
   .approval-card {
@@ -661,19 +724,56 @@
     </div>
   </div>
 
-  <!-- 5 Navigation Tabs (Dashboard, Monitoring, Trending, Analysis, Safety) -->
-  <div class="tabs">
-    <button class="tab-btn active" onclick="switchTab('dashboard', event)">🏠 ড্যাশবোর্ড</button>
-    <button class="tab-btn" onclick="switchTab('monitoring', event)">🖥️ মনিটরিং</button>
-    <button class="tab-btn" onclick="switchTab('trending', event)">🔥 ট্রেন্ডিং</button>
-    <button class="tab-btn" onclick="switchTab('analysis', event)">📊 ভিউ অ্যানালাইসিস</button>
-    <button class="tab-btn" onclick="switchTab('safety', event)">🛡️ সুরক্ষা</button>
+  <!-- Navigation Tabs: Dashboard, Post & Studio, Monitoring, Trending, Analysis, Safety -->
+  <div class="tabs-scroll-wrap">
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('dashboard', event)">🏠 ড্যাশবোর্ড</button>
+      <button class="tab-btn" onclick="switchTab('poststudio', event)">✍️ পোস্ট তৈরি ও অনুমোদন</button>
+      <button class="tab-btn" onclick="switchTab('monitoring', event)">🖥️ মনিটরিং</button>
+      <button class="tab-btn" onclick="switchTab('trending', event)">🔥 ট্রেন্ডিং</button>
+      <button class="tab-btn" onclick="switchTab('analysis', event)">📊 ভিউ অ্যানালাইসিস</button>
+      <button class="tab-btn" onclick="switchTab('safety', event)">🛡️ সুরক্ষা</button>
+    </div>
   </div>
 
-  <!-- ==================== TAB 1: ড্যাশবোর্ড (Clean Overview + Post Approval + Custom Studio) ==================== -->
+  <!-- ==================== TAB 1: ড্যাশবোর্ড (Clean Executive Overview & All-time History) ==================== -->
   <div id="tabDashboard">
     
-    <!-- 1. Post Approval & Preview Queue (User Request: Ready post shows here to inspect design & approve) -->
+    <!-- Quick Banner to Jump directly to Post Studio -->
+    <div class="quick-action-banner" onclick="switchTab('poststudio')">
+      <div class="qab-text">
+        <b>🎬 পোস্ট তৈরি বা ড্রাফট অনুমোদন করবেন?</b>
+        <span>ভিডিও ডিজাইন দেখুন, কাস্টম মিডিয়া লিঙ্ক দিন ও অ্যাপ্রুভ করুন</span>
+      </div>
+      <div class="qab-btn">পোস্ট স্টুডিও ➔</div>
+    </div>
+
+    <!-- 1. Clean Summary of All Pages -->
+    <div class="section-title">
+      <span>📌 সকল পেজের সারসংক্ষেপ ও স্থিতি</span>
+      <span style="font-size:11px; color:var(--muted);">ক্লিক করে মনিটর করুন</span>
+    </div>
+
+    <div class="compact-summary-card" id="dashboardCompactList">
+      <!-- Injected via JS -->
+    </div>
+
+    <!-- 2. Universal History & Recent Facebook Posts Feed -->
+    <div class="section-title">
+      <span>📜 সার্বিক পেজের সাম্প্রতিক পোস্ট ও সরাসরি URLs</span>
+      <span style="font-size:11px; color:#38bdf8;">লাইভ ফেসবুক ফিড</span>
+    </div>
+
+    <div id="dashboardHistoryList">
+      <!-- Injected via JS -->
+    </div>
+
+  </div>
+
+  <!-- ==================== TAB 2: পোস্ট তৈরি ও অনুমোদন (User Requested: Post Studio & Approval) ==================== -->
+  <div id="tabPostStudio" style="display: none;">
+    
+    <!-- 1. Post Approval & Preview Queue -->
     <div class="section-title">
       <span>🎬 প্রস্তুতকৃত পোস্ট প্রিভিউ ও অনুমোদন (Ready for Approval)</span>
       <span style="font-size:11px; color:#38bdf8; font-weight:600;" id="queueCountBadge">১টি পোস্ট অপেক্ষমাণ</span>
@@ -742,7 +842,7 @@
 
       <!-- Full Video Option (No Time Limit) as explicitly requested -->
       <div class="form-group">
-        <label>⏱️ ভিডিও ফরম্যাট ও সময়সীমা (Duration Mode)</label>
+        <label>⏱️ ভিডিও ফরম্যাট ও সময়সীমা (DURATION MODE)</label>
         <select class="form-select" id="customFormatSelect">
           <option value="full" selected>🎬 সম্পূর্ণ ফুল ভিডিও আপলোড (কোনো টাইম লিমিট থাকবে না — মূল ভিডিওর পুরো সময়)</option>
           <option value="reel">⚡ আল্ট্রা-এইচডি সোশ্যাল রিলস ফরম্যাট (Reel / Shorts)</option>
@@ -753,7 +853,7 @@
       </div>
 
       <div class="form-group">
-        <label>🌐 অন্য কোনো পোস্ট বা ভিডিওর লিঙ্ক (Facebook Post / Reel / YouTube / Direct Video URL)</label>
+        <label>🌐 অন্য কোনো পোস্ট বা ভিডিওর লিঙ্ক (FACEBOOK POST / REEL / YOUTUBE / DIRECT VIDEO URL)</label>
         <input class="form-input" type="text" id="customSourceUrl" placeholder="https://www.facebook.com/reel/... অথবা YouTube Shorts URL">
       </div>
 
@@ -777,19 +877,9 @@
       </button>
     </div>
 
-    <!-- 3. Clean Overview of All Pages & History (No cluttered details, summary only) -->
-    <div class="section-title">
-      <span>📌 সকল পেজের সারসংক্ষেপ ও হিস্ট্রি (Overview)</span>
-      <span style="font-size:11px; color:var(--muted);">ক্লিক করে মনিটর করুন</span>
-    </div>
-
-    <div class="compact-summary-card" id="dashboardCompactList">
-      <!-- Injected via JS -->
-    </div>
-
   </div>
 
-  <!-- ==================== TAB 2: মনিটরিং (User's Red Box: Selector + Page Deep Monitor + Recent URLs) ==================== -->
+  <!-- ==================== TAB 3: মনিটরিং (User's Red Box: Selector + Page Deep Monitor + Recent URLs) ==================== -->
   <div id="tabMonitoring" style="display: none;">
     
     <!-- Page Selector Box (From User's Red Box) -->
@@ -816,7 +906,7 @@
 
   </div>
 
-  <!-- ==================== TAB 3: ট্রেন্ডিং (Real Facebook Drama & Viral Topics) ==================== -->
+  <!-- ==================== TAB 4: ট্রেন্ডিং (Real Facebook Drama & Viral Topics) ==================== -->
   <div id="tabTrending" style="display: none;">
     <div style="margin-bottom: 14px;">
       <h2 style="font-size:17px; margin:0 0 4px; color:#fff;">🔥 ফেসবুক ট্রেন্ডিং ও নাটকের ভাইরাল টপিক</h2>
@@ -830,7 +920,7 @@
     </div>
   </div>
 
-  <!-- ==================== TAB 4: ভিউ অ্যানালাইসিস (Why Views are Low Diagnosis) ==================== -->
+  <!-- ==================== TAB 5: ভিউ অ্যানালাইসিস (Why Views are Low Diagnosis) ==================== -->
   <div id="tabAnalysis" style="display: none;">
     <div class="studio-card">
       <h3 style="font-size:15px; font-weight:800; color:#fff; margin:0 0 10px;">🔍 পোস্ট ভিউ কেন হচ্ছে না? (অ্যালগরিদম ডায়াগনোসিস)</h3>
@@ -869,7 +959,7 @@
     </div>
   </div>
 
-  <!-- ==================== TAB 5: সুরক্ষা ও কপিরাইট ==================== -->
+  <!-- ==================== TAB 6: সুরক্ষা ও কপিরাইট ==================== -->
   <div id="tabSafety" style="display: none;">
     <div class="studio-card">
       <h3 style="font-size:15px; font-weight:800; color:#fff; margin:0 0 10px;">🛡️ কপিরাইট শিল্ড ও নিরাপত্তা</h3>
@@ -1090,9 +1180,18 @@ function formatNumber(num) {
 
 function switchTab(tab, event) {
   document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
-  if (event && event.target) event.target.classList.add("active");
+  
+  if (event && event.target) {
+    event.target.classList.add("active");
+  } else {
+    // find matching button by text or data
+    const btns = Array.from(document.querySelectorAll(".tab-btn"));
+    const match = btns.find(b => b.getAttribute("onclick") && b.getAttribute("onclick").includes(tab));
+    if (match) match.classList.add("active");
+  }
 
   document.getElementById("tabDashboard").style.display = tab === "dashboard" ? "block" : "none";
+  document.getElementById("tabPostStudio").style.display = tab === "poststudio" ? "block" : "none";
   document.getElementById("tabMonitoring").style.display = tab === "monitoring" ? "block" : "none";
   document.getElementById("tabTrending").style.display = tab === "trending" ? "block" : "none";
   document.getElementById("tabAnalysis").style.display = tab === "analysis" ? "block" : "none";
@@ -1167,6 +1266,9 @@ async function fetchPageStatus(page) {
 
           recentVideos.push({
             id: v.id,
+            pageId: page.id,
+            pageName: page.name,
+            pageIcon: page.icon,
             title: v.message ? (v.message.substring(0, 80) + (v.message.length > 80 ? "..." : "")) : "ফেসবুক ভিডিও পোস্ট",
             created_time: v.created_time,
             directUrl: directUrl,
@@ -1221,6 +1323,7 @@ async function refreshAllData() {
 
   // Render Views
   renderDashboardCompactList();
+  renderDashboardHistoryFeed();
   renderMonitoringPage(activeSelectedPageId);
   renderDraftPreview();
   renderTrendingTopics();
@@ -1247,6 +1350,43 @@ function renderDashboardCompactList() {
         <div class="compact-stats">
           <div class="compact-views">${formatNumber(data.lifetimeViews)} ভিউ</div>
           <div class="compact-btn">মনিটরিংয়ে যান ➔</div>
+        </div>
+      </div>
+    `;
+  }).join("");
+}
+
+// Render Universal History Feed on Dashboard
+function renderDashboardHistoryFeed() {
+  const c = document.getElementById("dashboardHistoryList");
+  let allRecent = [];
+  for (const p of MANAGED_PAGES) {
+    const data = cachedPagesData[p.id];
+    if (data && data.recentVideos) {
+      allRecent = allRecent.concat(data.recentVideos);
+    }
+  }
+
+  // sort by created_time desc
+  allRecent.sort((a, b) => new Date(b.created_time) - new Date(a.created_time));
+
+  if (allRecent.length === 0) {
+    c.innerHTML = `<div style="text-align:center; padding:20px; color:var(--muted); font-size:12px;">কোনো পোস্ট হিস্ট্রি পাওয়া যায়নি।</div>`;
+    return;
+  }
+
+  c.innerHTML = allRecent.slice(0, 10).map(item => {
+    return `
+      <div class="history-item">
+        <img class="history-thumb" src="${item.thumb}" alt="Thumb">
+        <div class="history-info">
+          <div class="history-page-name">${item.pageIcon} ${item.pageName}</div>
+          <div class="history-title">${item.title}</div>
+          <div class="history-meta">
+            <span>🕒 ${formatRelativeTime(item.created_time)}</span>
+            <a href="${item.directUrl}" target="_blank" style="color:#38bdf8; text-decoration:none; font-weight:700;">🌐 ওপেন ↗</a>
+            <span style="cursor:pointer; color:#10b981; font-weight:700;" onclick="copyToClipboard('${item.directUrl}')">📋 কপি লিঙ্ক</span>
+          </div>
         </div>
       </div>
     `;
@@ -1537,7 +1677,7 @@ function sendTrendingToDraft(idx) {
     isFull: t.isFull || true
   };
 
-  switchTab("dashboard");
+  switchTab("poststudio");
   document.getElementById("approvalCardBox").style.display = "block";
   document.getElementById("queueCountBadge").innerText = "১টি পোস্ট অপেক্ষমাণ";
   renderDraftPreview();
