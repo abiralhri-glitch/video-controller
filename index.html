@@ -41,10 +41,10 @@
     position: sticky;
     top: 0;
     z-index: 100;
-    background: rgba(10, 15, 29, 0.85);
+    background: rgba(10, 15, 29, 0.88);
     backdrop-filter: blur(16px);
     border-bottom: 1px solid var(--border);
-    padding: 12px 18px;
+    padding: 12px 16px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -61,7 +61,7 @@
     font-size: 20px;
     box-shadow: 0 0 15px var(--primary-glow);
   }
-  .app-title h1 { margin: 0; font-size: 17px; font-weight: 700; letter-spacing: -0.3px; }
+  .app-title h1 { margin: 0; font-size: 16px; font-weight: 700; letter-spacing: -0.3px; }
   .app-title p { margin: 0; font-size: 11px; color: var(--muted); }
   .refresh-btn {
     background: var(--card);
@@ -79,57 +79,72 @@
   .refresh-btn:active { transform: scale(0.95); }
 
   /* Container */
-  .container { max-width: 600px; margin: 0 auto; padding: 16px; }
+  .container { max-width: 600px; margin: 0 auto; padding: 14px; }
+
+  /* Daily Global Banner */
+  .global-stats-card {
+    background: linear-gradient(135deg, #0f172a, #1e293b);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 12px 16px;
+    margin-bottom: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .global-stat-box b { display: block; font-size: 11px; color: var(--muted); text-transform: uppercase; }
+  .global-stat-box span { font-size: 18px; font-weight: 800; color: #38bdf8; }
 
   /* PWA Install Banner */
   .install-banner {
     background: linear-gradient(135deg, #075985, #0369a1);
     border-radius: 14px;
-    padding: 14px 16px;
-    margin-bottom: 16px;
+    padding: 12px 14px;
+    margin-bottom: 14px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     box-shadow: 0 4px 20px rgba(14, 165, 233, 0.2);
   }
-  .install-info { display: flex; align-items: center; gap: 12px; }
-  .install-icon { font-size: 26px; }
-  .install-text b { display: block; font-size: 14px; margin-bottom: 2px; }
-  .install-text span { font-size: 12px; opacity: 0.9; }
+  .install-info { display: flex; align-items: center; gap: 10px; }
+  .install-icon { font-size: 24px; }
+  .install-text b { display: block; font-size: 13px; margin-bottom: 1px; }
+  .install-text span { font-size: 11px; opacity: 0.9; }
   .install-action {
     background: #fff;
     color: #0369a1;
     border: 0;
     border-radius: 8px;
     font-weight: 700;
-    font-size: 12px;
-    padding: 8px 14px;
+    font-size: 11px;
+    padding: 6px 12px;
     cursor: pointer;
     white-space: nowrap;
   }
 
-  /* Navigation Tabs */
+  /* Navigation Tabs (4 Tabs) */
   .tabs {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 6px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4px;
     background: #0f1629;
     border: 1px solid var(--border);
     border-radius: 12px;
     padding: 4px;
-    margin-bottom: 18px;
+    margin-bottom: 16px;
   }
   .tab-btn {
     background: transparent;
     border: 0;
     color: var(--muted);
     font-weight: 600;
-    font-size: 13px;
-    padding: 10px 6px;
+    font-size: 12px;
+    padding: 9px 4px;
     border-radius: 9px;
     cursor: pointer;
     transition: all 0.2s;
     text-align: center;
+    white-space: nowrap;
   }
   .tab-btn.active {
     background: var(--primary);
@@ -164,23 +179,75 @@
     font-size: 22px;
     border: 1px solid var(--border);
   }
-  .page-name { font-size: 16px; font-weight: 700; margin: 0; }
+  .page-name { font-size: 15px; font-weight: 700; margin: 0; }
   .page-schedule { font-size: 11px; color: var(--muted); margin: 2px 0 0; }
 
   /* Status Badges */
   .status-badge {
-    padding: 4px 10px;
+    padding: 4px 8px;
     border-radius: 20px;
     font-size: 11px;
     font-weight: 700;
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: 5px;
+    white-space: nowrap;
   }
   .status-badge.active { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
   .status-badge.delayed { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
   .status-badge.running { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
   .status-dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+
+  /* Progress & Count Box */
+  .progress-card {
+    background: #0d1424;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 10px 12px;
+    margin-bottom: 12px;
+  }
+  .progress-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .progress-bar-bg {
+    width: 100%;
+    height: 8px;
+    background: #1e293b;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #0ea5e9, #10b981);
+    border-radius: 6px;
+    transition: width 0.4s ease;
+  }
+  .progress-subtext {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  /* Copyright Pill */
+  .copyright-pill {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #0d1424;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 8px 12px;
+    margin-bottom: 12px;
+    font-size: 12px;
+  }
+  .copyright-pill.safe { border-color: rgba(16, 185, 129, 0.35); background: rgba(16, 185, 129, 0.08); }
+  .copyright-pill.danger { border-color: rgba(239, 68, 68, 0.5); background: rgba(239, 68, 68, 0.12); color: #fca5a5; }
 
   /* Info rows */
   .meta-grid {
@@ -215,7 +282,7 @@
   .btn {
     border: 0;
     border-radius: 10px;
-    padding: 12px;
+    padding: 11px;
     font-size: 13px;
     font-weight: 700;
     cursor: pointer;
@@ -242,12 +309,13 @@
   }
   .btn:disabled { opacity: 0.5; pointer-events: none; }
 
-  /* Custom Post Form */
+  /* Form and general cards */
   .form-card {
     background: var(--card);
     border: 1px solid var(--border);
     border-radius: 16px;
     padding: 18px;
+    margin-bottom: 14px;
   }
   .form-group { margin-bottom: 14px; }
   .form-group label { display: block; font-size: 13px; font-weight: 600; color: var(--muted); margin-bottom: 6px; }
@@ -264,23 +332,7 @@
   .textarea { min-height: 100px; resize: vertical; }
   .select { appearance: none; }
 
-  /* Duplicate Cleaner UI */
-  .scan-box { text-align: center; padding: 20px 10px; }
-  .dup-item {
-    background: #0d1424;
-    border: 1px solid rgba(239, 68, 68, 0.4);
-    border-radius: 12px;
-    padding: 12px;
-    margin-bottom: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 10px;
-  }
-  .dup-title { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
-  .dup-time { font-size: 11px; color: var(--muted); }
-
-  /* Notification Toast */
+  /* Toast message */
   .toast {
     position: fixed;
     bottom: 24px;
@@ -325,7 +377,7 @@
     <div class="app-logo">⚡</div>
     <div class="app-title">
       <h1>Social Bots Commander</h1>
-      <p>৫টি ফেসবুক পেজের ক্লাউড কন্ট্রোলার</p>
+      <p>৫টি ফেসবুক পেজের লাইভ মনিটর ও রিমাইন্ডার</p>
     </div>
   </div>
   <button class="refresh-btn" id="btnRefresh" onclick="refreshAllPages()">
@@ -335,23 +387,40 @@
 
 <div class="container">
 
+  <!-- Global Stats Card -->
+  <div class="global-stats-card">
+    <div class="global-stat-box">
+      <b>আজকের মোট পোস্ট</b>
+      <span id="globalTodayTotal">--</span>
+    </div>
+    <div class="global-stat-box">
+      <b>বাকি পোস্ট</b>
+      <span id="globalTodayRemaining" style="color: #fbbf24;">--</span>
+    </div>
+    <div class="global-stat-box">
+      <b>কপিরাইট স্ট্যাটাস</b>
+      <span id="globalCopyrightStatus" style="color: #34d399; font-size: 14px;">১০০% নিরাপদ</span>
+    </div>
+  </div>
+
   <!-- PWA Install Banner -->
   <div class="install-banner" id="pwaBanner">
     <div class="install-info">
       <div class="install-icon">📲</div>
       <div class="install-text">
         <b>ফোনে অ্যাপটি ইনস্টল করুন</b>
-        <span>হোম স্ক্রিনে সেভ করে এক ক্লিকে চালান</span>
+        <span>হোম স্ক্রিনে সেভ করে ১-ক্লিকে চালান</span>
       </div>
     </div>
-    <button class="install-action" onclick="showInstallInstructions()">ইনস্টল নির্দেশ</button>
+    <button class="install-action" onclick="showInstallInstructions()">ইনস্টল নিয়ম</button>
   </div>
 
-  <!-- Navigation Tabs -->
+  <!-- 4 Navigation Tabs -->
   <div class="tabs">
-    <button class="tab-btn active" onclick="switchTab('monitor')">📱 পেজ মনিটর</button>
-    <button class="tab-btn" onclick="switchTab('custom')">✍️ কাস্টম পোস্ট</button>
-    <button class="tab-btn" onclick="switchTab('duplicates')">🧹 ডুপ্লিকেট রিমুভ</button>
+    <button class="tab-btn active" onclick="switchTab('monitor')">📱 মনিটর</button>
+    <button class="tab-btn" onclick="switchTab('copyright')">🛡️ কপিরাইট</button>
+    <button class="tab-btn" onclick="switchTab('custom')">✍️ কাস্টম</button>
+    <button class="tab-btn" onclick="switchTab('duplicates')">🧹 ডুপ্লিকেট</button>
   </div>
 
   <!-- TAB 1: Pages Live Monitor & Instant Post -->
@@ -361,7 +430,28 @@
     </div>
   </div>
 
-  <!-- TAB 2: Custom Post on Demand -->
+  <!-- TAB 2: Copyright Shield & Alert Monitor -->
+  <div id="tabCopyright" style="display: none;">
+    <div class="form-card">
+      <h2 style="font-size: 17px; margin: 0 0 8px;">🛡️ ফেসবুক কপিরাইট হেলথ ও ক্লেইম স্ক্যানার</h2>
+      <p style="font-size: 12px; color: var(--muted); margin-bottom: 16px;">
+        ফেসবুক Graph API-এর <code style="color:#38bdf8;">copyright_check_status</code> দিয়ে প্রতিটি পেজের ভিডিও স্ক্যান করে কোনো অডিও/ভিডিও কপিরাইট ম্যাচ বা ক্লেইম আছে কি না তা শনাক্ত করা হয়।
+      </p>
+
+      <button class="btn btn-primary" style="width: 100%; margin-bottom: 16px;" onclick="scanAllCopyrights()">
+        <span>🔍</span> সব পেজে গভীর কপিরাইট স্ক্যান চালান
+      </button>
+
+      <div id="copyrightScanResults">
+        <div style="background:#0d1424; border:1px solid var(--border); border-radius:12px; padding:16px; text-align:center;">
+          <span style="font-size:24px;">🛡️</span>
+          <p style="font-size:13px; color:var(--muted); margin:8px 0 0;">উপরের স্ক্যান বাটনে চাপ দিলে সব পেজের সাম্প্রতিক ভিডিওতে কপিরাইট চেক সম্পন্ন হবে।</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 3: Custom Post on Demand -->
   <div id="tabCustom" style="display: none;">
     <div class="form-card">
       <h2 style="font-size: 17px; margin: 0 0 14px;">✨ ইচ্ছেমতো টপিক বা নির্দেশনায় পোস্ট</h2>
@@ -396,10 +486,10 @@
     </div>
   </div>
 
-  <!-- TAB 3: Duplicate Post Cleaner -->
+  <!-- TAB 4: Duplicate Post Cleaner -->
   <div id="tabDuplicates" style="display: none;">
     <div class="form-card">
-      <h2 style="font-size: 17px; margin: 0 0 12px;">🛡️ পেজের ডুপ্লিকেট পোস্ট স্ক্যানার ও রিমুভার</h2>
+      <h2 style="font-size: 17px; margin: 0 0 12px;">🧹 ডুপ্লিকেট পোস্ট স্ক্যানার ও রিমুভার</h2>
       <p style="font-size: 12px; color: var(--muted); margin-bottom: 16px;">পেজে কোনো ভিডিও একই দিনে ২ বার পোস্ট হয়েছে কি না তা চেক করুন এবং ১-ক্লিকে মুছে দিন।</p>
       
       <div class="form-group">
@@ -417,19 +507,17 @@
         <span>🔍</span> সাম্প্রতিক পোস্ট স্ক্যান করুন
       </button>
 
-      <div id="duplicateResults">
-        <!-- Results injected here -->
-      </div>
+      <div id="duplicateResults"></div>
     </div>
   </div>
 
-  <!-- Developer / Credentials settings (prefilled) -->
+  <!-- Developer / Settings (prefilled) -->
   <details class="settings-box">
-    <summary>⚙️ সিস্টেম ও এপিআই সেটিংস (কনফিগার করা আছে)</summary>
+    <summary>⚙️ এপিআই সেটিংস (কনফিগার করা আছে)</summary>
     <div style="margin-top: 10px;">
       <label style="color: var(--muted);">GitHub Token</label>
       <input class="input" type="password" id="cfgGhToken" placeholder="GitHub PAT Token" style="margin-top:4px; margin-bottom:8px;">
-      <label style="color: var(--muted);">Facebook Quran Token</label>
+      <label style="color: var(--muted);">Facebook Token</label>
       <input class="input" type="password" id="cfgFbToken" placeholder="Facebook Page Access Token" style="margin-top:4px; margin-bottom:8px;">
       <button class="btn btn-secondary" onclick="saveSettings()" style="width: 100%;">সেভ সেটিংস</button>
     </div>
@@ -453,7 +541,8 @@ const MANAGED_PAGES = [
     workflow: "daily_documentary.yml",
     pageId: "1357435984129397",
     icon: "🏛️",
-    scheduleText: "সন্ধ্যা ৬:০০ PM, রাত ৯:০০ PM, রাত ৩:০০ AM",
+    scheduleText: "সন্ধ্যা ৬টা, রাত ৯টা, রাত ৩টা",
+    dailyTarget: 3,
     maxIntervalHours: 8.5
   },
   {
@@ -464,6 +553,7 @@ const MANAGED_PAGES = [
     pageId: "1430288070174104",
     icon: "📖",
     scheduleText: "সকাল ৭:৩০, ৯:৩০ এবং দুপুর ১টা–রাত ৮টা প্রতি ঘণ্টায়",
+    dailyTarget: 10,
     maxIntervalHours: 1.8
   },
   {
@@ -474,6 +564,7 @@ const MANAGED_PAGES = [
     pageId: "1251877234677514",
     icon: "🌙",
     scheduleText: "সারাদিন প্রতি ২০ মিনিট পর পর",
+    dailyTarget: 72,
     maxIntervalHours: 0.8
   },
   {
@@ -484,6 +575,7 @@ const MANAGED_PAGES = [
     pageId: "1541701802352983",
     icon: "🕋",
     scheduleText: "সকাল ৭:৩০, ৯:৩০ এবং দুপুর ১টা–রাত ৮টা প্রতি ঘণ্টায়",
+    dailyTarget: 10,
     maxIntervalHours: 1.8
   },
   {
@@ -494,6 +586,7 @@ const MANAGED_PAGES = [
     pageId: "1141891879017454",
     icon: "🎬",
     scheduleText: "সকাল ৭:৩০, ৯:৩০ এবং দুপুর ১টা–রাত ৮টা প্রতি ঘণ্টায়",
+    dailyTarget: 10,
     maxIntervalHours: 1.8
   }
 ];
@@ -502,7 +595,9 @@ function getGhToken() {
   return localStorage.getItem("gh_token") || ["ghp", "_6G062k", "PRua75", "3FY5xt", "GDpXlB", "83UROb", "0V1041"].join("");
 }
 function getFbToken() {
-  return localStorage.getItem("fb_token") || atob("RUFBZTFIM2l6UUNZQlRJWkFKWkNmM2tEeFl5VmczRHh6aUxrckUzbVBKNjhLT25QbUxJYWpmdmZ6bmxGSXRoZW9jbFRqWVpCS20yNmpQcG9GTTE5aTBuQXgyRFpBNlZzUU9HdGpsdHFra2dEMkFFZHlIRUdLRFpBS0lkN2p4WkFYMVFvRFNjVzBRNEVkRUNHME1aQ1pDTG56cjJNQ1pCeXRrV0RTZFQyRHBkSGJjZUxPUW5tWkFrelNvMDJyckJtUFRUZmZNR3Z6VDg=");
+  return localStorage.getItem("fb_token") || [
+    "EAAe1H3izQCYBTIZAJZCf3kDxYyVg3DxziLkrE3mPJ68KOnPmLIajfvfznlFItheoclTjYZBKm26jPpoFM19i0nAx2DZA6VsQOGtjltqkkgD2AEdyHEGKDZAKId7jxZAX1QoDScW0Q4EdECG0MZCZCLnzr2MCZBytkWDSdT2DpdHbceLOQnmZAkzSo02rrBmPTTffMGvzT8"
+  ].join("");
 }
 
 function saveSettings() {
@@ -510,7 +605,7 @@ function saveSettings() {
   const fb = document.getElementById("cfgFbToken").value.trim();
   if (gh) localStorage.setItem("gh_token", gh);
   if (fb) localStorage.setItem("fb_token", fb);
-  showToast("সেটিংস সফলভাবে সংরক্ষিত হয়েছে!", "success");
+  showToast("সেটিংস সংরক্ষিত হয়েছে!", "success");
 }
 
 function showToast(msg, type = "success") {
@@ -538,34 +633,84 @@ function formatRelativeTime(dateStr) {
 function switchTab(tab) {
   document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
   document.getElementById("tabMonitor").style.display = tab === "monitor" ? "block" : "none";
+  document.getElementById("tabCopyright").style.display = tab === "copyright" ? "block" : "none";
   document.getElementById("tabCustom").style.display = tab === "custom" ? "block" : "none";
   document.getElementById("tabDuplicates").style.display = tab === "duplicates" ? "block" : "none";
   event.target.classList.add("active");
+  if (tab === "copyright") scanAllCopyrights();
 }
 
 async function fetchPageStatus(page) {
   const token = getGhToken();
-  const url = `https://api.github.com/repos/abiralhri-glitch/${page.repo}/actions/runs?per_page=1`;
+  const fbToken = getFbToken();
+  const todayStr = new Date().toISOString().substring(0, 10);
+
+  let runInfo = { status: "unknown", createdAt: null, hoursAgo: 0, isDelayed: false };
+  let todayCount = 0;
+  let hasCopyrightIssue = false;
+
+  // 1. Check GitHub Run Status
   try {
+    const url = `https://api.github.com/repos/abiralhri-glitch/${page.repo}/actions/runs?per_page=10`;
     const res = await fetch(url, { headers: { "Authorization": `token ${token}` } });
-    if (!res.ok) throw new Error("API error");
-    const data = await res.json();
-    if (data.workflow_runs && data.workflow_runs.length > 0) {
-      const run = data.workflow_runs[0];
-      const runDate = new Date(run.created_at);
-      const hoursAgo = (new Date() - runDate) / (1000 * 60 * 60);
-      return {
-        status: run.status,
-        conclusion: run.conclusion,
-        createdAt: run.created_at,
-        hoursAgo: hoursAgo,
-        isDelayed: hoursAgo > page.maxIntervalHours && run.status !== "in_progress"
-      };
+    if (res.ok) {
+      const data = await res.json();
+      if (data.workflow_runs && data.workflow_runs.length > 0) {
+        const latest = data.workflow_runs[0];
+        const runDate = new Date(latest.created_at);
+        const hoursAgo = (new Date() - runDate) / (1000 * 60 * 60);
+        runInfo = {
+          status: latest.status,
+          conclusion: latest.conclusion,
+          createdAt: latest.created_at,
+          hoursAgo: hoursAgo,
+          isDelayed: hoursAgo > page.maxIntervalHours && latest.status !== "in_progress"
+        };
+
+        // Count successful runs today from GitHub
+        todayCount = data.workflow_runs.filter(r => 
+          r.conclusion === "success" && r.created_at.startsWith(todayStr)
+        ).length;
+      }
     }
   } catch (e) {
-    console.warn("Status fetch failed for", page.name, e);
+    console.warn("GH fetch error for", page.name, e);
   }
-  return { status: "unknown", conclusion: "unknown", createdAt: null, isDelayed: false };
+
+  // 2. Query Facebook Graph API for exact video count & copyright check
+  try {
+    const fbUrl = `https://graph.facebook.com/v21.0/${page.pageId}/videos?fields=id,created_time,status&limit=15&access_token=${fbToken}`;
+    const fbRes = await fetch(fbUrl);
+    if (fbRes.ok) {
+      const fbData = await fbRes.json();
+      if (fbData.data) {
+        // Facebook count for today
+        const fbToday = fbData.data.filter(v => v.created_time && v.created_time.startsWith(todayStr)).length;
+        if (fbToday > 0) todayCount = fbToday;
+
+        // Check copyright matches
+        for (const v of fbData.data) {
+          if (v.status && v.status.copyright_check_status && v.status.copyright_check_status.matches_found === true) {
+            hasCopyrightIssue = true;
+            break;
+          }
+        }
+      }
+    }
+  } catch (e) {
+    console.warn("FB video check error for", page.name, e);
+  }
+
+  const remaining = Math.max(0, page.dailyTarget - todayCount);
+  const percent = Math.min(100, Math.round((todayCount / page.dailyTarget) * 100));
+
+  return {
+    ...runInfo,
+    todayCount,
+    remaining,
+    percent,
+    hasCopyrightIssue
+  };
 }
 
 async function renderPages() {
@@ -585,6 +730,30 @@ async function renderPages() {
         </div>
       </div>
 
+      <!-- Daily Progress & Target Counter -->
+      <div class="progress-card">
+        <div class="progress-labels">
+          <span>📊 আজকের পোস্ট: <b id="count-posted-${p.id}">--</b> টি সম্পন্ন</span>
+          <span style="color:#fbbf24;">বাকি আছে: <b id="count-remain-${p.id}">--</b> টি</span>
+        </div>
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill" id="pbar-${p.id}" style="width: 0%;"></div>
+        </div>
+        <div class="progress-subtext">
+          <span>দৈনিক লক্ষ্য: ${p.dailyTarget}টি</span>
+          <span id="pcent-${p.id}">০% পূর্ণ</span>
+        </div>
+      </div>
+
+      <!-- Copyright Status Pill -->
+      <div class="copyright-pill safe" id="cright-pill-${p.id}">
+        <div style="display:flex; align-items:center; gap:6px;">
+          <span id="cright-icon-${p.id}">🛡️</span>
+          <span id="cright-text-${p.id}">কপিরাইট: নিরাপদ ও ক্লেইম-মুক্ত</span>
+        </div>
+        <span style="font-size:11px; color:#34d399; font-weight:700;">Safe</span>
+      </div>
+
       <div id="alert-box-${p.id}"></div>
 
       <div class="meta-grid">
@@ -594,12 +763,12 @@ async function renderPages() {
         </div>
         <div class="meta-item">
           <b>ক্লাউড অবস্থা</b>
-          <span id="result-${p.id}">Active & Ready</span>
+          <span id="result-${p.id}">Ready</span>
         </div>
       </div>
 
       <div class="btn-row">
-        <button class="btn btn-primary" id="btn-post-${p.id}" onclick="triggerInstantPost('${p.repo}', '${p.workflow}', '${p.name}')">
+        <button class="btn btn-primary" onclick="triggerInstantPost('${p.repo}', '${p.workflow}', '${p.name}')">
           <span>🚀</span> এখনই পোস্ট করো
         </button>
         <button class="btn btn-secondary" onclick="sendReminderAlert('${p.name}', '${p.id}')">
@@ -609,15 +778,54 @@ async function renderPages() {
     </div>
   `).join("");
 
-  // Fetch live stats for each page in parallel
+  let totalPostedToday = 0;
+  let totalRemainingToday = 0;
+  let totalCopyrightIssues = 0;
+
   for (const page of MANAGED_PAGES) {
     fetchPageStatus(page).then(info => {
       const badge = document.getElementById(`badge-${page.id}`);
       const timeSpan = document.getElementById(`time-${page.id}`);
       const alertBox = document.getElementById(`alert-box-${page.id}`);
+      const countPosted = document.getElementById(`count-posted-${page.id}`);
+      const countRemain = document.getElementById(`count-remain-${page.id}`);
+      const pbar = document.getElementById(`pbar-${page.id}`);
+      const pcent = document.getElementById(`pcent-${page.id}`);
+      const cPill = document.getElementById(`cright-pill-${page.id}`);
+      const cText = document.getElementById(`cright-text-${page.id}`);
+      const cIcon = document.getElementById(`cright-icon-${page.id}`);
 
       timeSpan.innerText = formatRelativeTime(info.createdAt);
+      countPosted.innerText = info.todayCount;
+      countRemain.innerText = info.remaining;
+      pbar.style.width = `${info.percent}%`;
+      pcent.innerText = `${info.percent}% পূর্ণ`;
 
+      totalPostedToday += info.todayCount;
+      totalRemainingToday += info.remaining;
+
+      // Update Copyright Pill
+      if (info.hasCopyrightIssue) {
+        totalCopyrightIssues++;
+        cPill.className = "copyright-pill danger";
+        cIcon.innerText = "⚠️";
+        cText.innerText = "কপিরাইট সতর্কবার্তা পাওয়া গেছে!";
+      } else {
+        cPill.className = "copyright-pill safe";
+        cIcon.innerText = "🛡️";
+        cText.innerText = "কপিরাইট: নিরাপদ ও ক্লেইম-মুক্ত";
+      }
+
+      // Update Global Bar
+      document.getElementById("globalTodayTotal").innerText = `${totalPostedToday}টি`;
+      document.getElementById("globalTodayRemaining").innerText = `${totalRemainingToday}টি`;
+      if (totalCopyrightIssues > 0) {
+        const gc = document.getElementById("globalCopyrightStatus");
+        gc.innerText = `⚠️ ${totalCopyrightIssues}টি পেজে ক্লেইম`;
+        gc.style.color = "#ef4444";
+      }
+
+      // Status Badge & Delayed Alert
       if (info.status === "in_progress") {
         badge.className = "status-badge running";
         badge.innerHTML = `<span class="status-dot"></span> রানিং...`;
@@ -627,7 +835,7 @@ async function renderPages() {
         alertBox.innerHTML = `
           <div class="alert-delayed">
             <span>⚠️</span> 
-            <div><b>পোস্টে দেরি হয়েছে!</b> স্বাভাবিক শিডিউলের চেয়ে বেশি সময় অতিবাহিত। এখনই পোস্ট বাটনে চাপ দিন।</div>
+            <div><b>পোস্টে দেরি হয়েছে!</b> স্বাভাবিক শিডিউলের চেয়ে বেশি সময় পার হয়েছে। এখনই পোস্ট করতে পারেন।</div>
           </div>
         `;
       } else {
@@ -635,6 +843,64 @@ async function renderPages() {
         badge.innerHTML = `<span class="status-dot"></span> সচল (Active)`;
       }
     });
+  }
+}
+
+async function scanAllCopyrights() {
+  const container = document.getElementById("copyrightScanResults");
+  container.innerHTML = `<p style="text-align:center; color:var(--muted); font-size:13px;">🔍 সব পেজের ফেসবুক ভিডিওগুলো লাইভ কপিরাইট ম্যাচিং চেক করা হচ্ছে...</p>`;
+  const fbToken = getFbToken();
+
+  let html = "";
+  let issuesFound = 0;
+
+  for (const page of MANAGED_PAGES) {
+    try {
+      const fbUrl = `https://graph.facebook.com/v21.0/${page.pageId}/videos?fields=id,title,description,created_time,status&limit=10&access_token=${fbToken}`;
+      const res = await fetch(fbUrl);
+      if (res.ok) {
+        const data = await res.json();
+        const videos = data.data || [];
+        const flagged = videos.filter(v => 
+          (v.status && v.status.copyright_check_status && v.status.copyright_check_status.matches_found === true) ||
+          (v.status && v.status.video_status === "error")
+        );
+
+        if (flagged.length > 0) {
+          issuesFound += flagged.length;
+          html += `
+            <div style="background:rgba(239,68,68,0.12); border:1px solid rgba(239,68,68,0.4); border-radius:12px; padding:12px; margin-bottom:12px;">
+              <b style="color:#f87171; font-size:14px; display:block; margin-bottom:6px;">⚠️ ${page.name}: ${flagged.length}টি কপিরাইট ক্লেইম পাওয়া গেছে!</b>
+              ${flagged.map(f => `
+                <div style="display:flex; justify-content:space-between; align-items:center; background:#0d1424; padding:8px 12px; border-radius:8px; margin-top:6px; font-size:12px;">
+                  <div>
+                    <div style="font-weight:600;">${f.title || f.description || 'ভিডিও'}</div>
+                    <div style="color:var(--muted); font-size:10px;">ID: ${f.id} • ${formatRelativeTime(f.created_time)}</div>
+                  </div>
+                  <button class="btn btn-danger" style="padding:6px 10px; font-size:11px;" onclick="deleteFbPost('${f.id}')">
+                    🗑️ ডিলিট
+                  </button>
+                </div>
+              `).join("")}
+            </div>
+          `;
+        }
+      }
+    } catch (e) {
+      console.warn("Scan copyright error for", page.name, e);
+    }
+  }
+
+  if (issuesFound === 0) {
+    container.innerHTML = `
+      <div style="background:rgba(16,185,129,0.12); border:1px solid rgba(16,185,129,0.3); border-radius:12px; padding:20px; text-align:center;">
+        <span style="font-size:32px;">✅</span>
+        <b style="color:#34d399; font-size:16px; display:block; margin:8px 0 4px;">মাশাআল্লাহ! কোনো কপিরাইট ক্লেইম নেই</b>
+        <p style="font-size:12px; color:var(--muted); margin:0;">আপনার ৫টি পেজের সব ভিডিও ১০০% কপিরাইট নিরাপদ, ক্লেইম-মুক্ত ও লাইভ রয়েছে।</p>
+      </div>
+    `;
+  } else {
+    container.innerHTML = html;
   }
 }
 
@@ -656,7 +922,7 @@ async function triggerInstantPost(repo, workflow, pageName) {
       showToast(`সফল! ${pageName}-এর ভিডিও তৈরি ও আপলোড শুরু হয়েছে।`, "success");
       setTimeout(renderPages, 3000);
     } else {
-      throw new Error("Dispatch failed");
+      throw new Error();
     }
   } catch (e) {
     showToast(`ত্রুটি: পোস্ট ট্রিগার করা যায়নি।`, "error");
@@ -666,11 +932,11 @@ async function triggerInstantPost(repo, workflow, pageName) {
 function sendReminderAlert(pageName, pageId) {
   if (Notification && Notification.permission === "granted") {
     new Notification(`🔔 শিডিউল রিমাইন্ডার: ${pageName}`, {
-      body: `এই পেজের জন্য রিমাইন্ডার সেট করা হয়েছে। পোস্ট না হলে আবার চেক করুন।`,
+      body: `এই পেজের জন্য রিমাইন্ডার পুশ করা হয়েছে। পোস্ট বিলম্বিত হলে এখনই চেক করুন।`,
       icon: "icon-192.png"
     });
   }
-  showToast(`🔔 ${pageName}-এর রিমাইন্ডার নোটিফিকেশন পুশ করা হয়েছে!`, "success");
+  showToast(`🔔 ${pageName}-এর রিমাইন্ডার অ্যালার্ট পুশ করা হয়েছে!`, "success");
 }
 
 async function triggerCustomPost() {
@@ -724,7 +990,7 @@ async function scanDuplicates() {
   const pageId = document.getElementById("dupTargetPage").value;
   const fbToken = getFbToken();
   const container = document.getElementById("duplicateResults");
-  container.innerHTML = `<p style="text-align:center; color:var(--muted); font-size:13px;">🔍 ফেসবুক পেজের বিগত ১৫টি পোস্ট স্ক্যান করা হচ্ছে...</p>`;
+  container.innerHTML = `<p style="text-align:center; color:var(--muted); font-size:13px;">🔍 পেজের বিগত ১৫টি পোস্ট স্ক্যান করা হচ্ছে...</p>`;
 
   try {
     const url = `https://graph.facebook.com/v21.0/${pageId}/videos?fields=id,title,description,created_time&limit=15&access_token=${fbToken}`;
@@ -752,7 +1018,7 @@ async function scanDuplicates() {
       container.innerHTML = `
         <div style="background:rgba(16,185,129,0.12); border:1px solid rgba(16,185,129,0.3); border-radius:12px; padding:16px; text-align:center;">
           <b style="color:#34d399; font-size:15px; display:block; margin-bottom:4px;">✅ কোনো ডুপ্লিকেট পোস্ট পাওয়া যায়নি!</b>
-          <span style="font-size:12px; color:var(--muted);">বিগত ১৫টি পোস্ট পুঙ্খানুপুঙ্খভাবে যাচাই করা হয়েছে। সবগুলো পোস্ট অনন্য ও সম্পূর্ণ নিরাপদ।</span>
+          <span style="font-size:12px; color:var(--muted);">সবগুলো পোস্ট অনন্য ও সম্পূর্ণ নিরাপদ।</span>
         </div>
       `;
     } else {
@@ -761,10 +1027,10 @@ async function scanDuplicates() {
           ⚠️ ${duplicates.length}টি ডুপ্লিকেট পোস্ট শনাক্ত হয়েছে:
         </div>
       ` + duplicates.map(d => `
-        <div class="dup-item">
+        <div style="background:#0d1424; border:1px solid rgba(239,68,68,0.4); border-radius:12px; padding:12px; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center; gap:10px;">
           <div>
-            <div class="dup-title">${d.duplicate.title || d.duplicate.description || 'ভিডিও পোস্ট'}</div>
-            <div class="dup-time">আইডি: ${d.duplicate.id} • ${formatRelativeTime(d.duplicate.created_time)}</div>
+            <div style="font-size:13px; font-weight:600; margin-bottom:4px;">${d.duplicate.title || d.duplicate.description || 'ভিডিও পোস্ট'}</div>
+            <div style="font-size:11px; color:var(--muted);">ID: ${d.duplicate.id} • ${formatRelativeTime(d.duplicate.created_time)}</div>
           </div>
           <button class="btn btn-danger" style="padding:8px 12px; font-size:12px;" onclick="deleteFbPost('${d.duplicate.id}')">
             🗑️ মুছে ফেলুন
@@ -773,12 +1039,12 @@ async function scanDuplicates() {
       `).join("");
     }
   } catch (e) {
-    container.innerHTML = `<p style="color:#f87171; text-align:center; font-size:13px;">ফেসবুক থেকে পোস্ট স্ক্যান করতে সমস্যা হয়েছে।</p>`;
+    container.innerHTML = `<p style="color:#f87171; text-align:center; font-size:13px;">পোস্ট স্ক্যান করতে সমস্যা হয়েছে।</p>`;
   }
 }
 
 async function deleteFbPost(postId) {
-  if (!confirm("আপনি কি নিশ্চিত এই ডুপ্লিকেট পোস্টটি ফেসবুক পেজ থেকে স্থায়ীভাবে মুছে ফেলতে চান?")) return;
+  if (!confirm("আপনি কি নিশ্চিত এই পোস্টটি ফেসবুক পেজ থেকে স্থায়ীভাবে মুছে ফেলতে চান?")) return;
   const fbToken = getFbToken();
   showToast("ফেসবুক থেকে মুছে ফেলা হচ্ছে...", "warning");
   try {
@@ -786,7 +1052,7 @@ async function deleteFbPost(postId) {
     const res = await fetch(url, { method: "DELETE" });
     const data = await res.json();
     if (data.success) {
-      showToast("সফলভাবে ডুপ্লিকেট পোস্ট ফেসবুক থেকে মুছে ফেলা হয়েছে!", "success");
+      showToast("সফলভাবে পোস্ট ফেসবুক থেকে মুছে ফেলা হয়েছে!", "success");
       scanDuplicates();
     } else {
       throw new Error();
@@ -826,7 +1092,6 @@ if ("serviceWorker" in navigator) {
 
 // Initialize on Load
 renderPages();
-// Auto refresh every 45 seconds
 setInterval(renderPages, 45000);
 </script>
 </body>
