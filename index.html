@@ -45,7 +45,8 @@
 <div class="modes" id="modes">
   <button type="button" data-mode="script" class="on">✍️ স্ক্রিপ্ট দিয়ে ভিডিও</button>
   <button type="button" data-mode="youtube">▶️ ইউটিউব ভিডিও থেকে ভিডিও</button>
-  <button type="button" data-mode="cartoon" disabled>🧸 কার্টুন / অ্যানিমেশন (শীঘ্রই)</button>
+  <button type="button" data-mode="cartoon">🧸 কার্টুন (বাচ্চাদের)</button>
+  <button type="button" data-mode="documentary">🎥 ডকুমেন্টারি (১০–১৫ মিনিট)</button>
   <button type="button" data-mode="clips">✂️ আসল ভিডিও কেটে ছোট (অনুমতি থাকলে)</button>
   <button type="button" data-mode="other">🎞 অন্যান্য ফরম্যাট</button>
 </div>
@@ -82,6 +83,10 @@
       <div><label for="overlays">পর্দায় লেখা</label><select id="overlays"><option value="captions">শুধু ক্যাপশন</option><option value="captions_titles">ক্যাপশন + ঘটনার শিরোনাম</option><option value="none">কিছু না (একদম আসল)</option></select></div>
     </div>
     <label class="chk"><input type="checkbox" id="rights"> আমি এই ভিডিওর মালিক, অথবা এটা কেটে প্রকাশ করার অনুমতি আমার আছে</label>
+  </div>
+  <div id="scriptBox">
+    <label for="fullScript">পুরো স্ক্রিপ্ট (ঐচ্ছিক): দিলে AI নিজে লিখবে না, এটাই পড়া হবে</label>
+    <textarea id="fullScript" placeholder="এখানে নিজের স্ক্রিপ্ট পেস্ট করুন। খালি রাখলে উপরের বিষয় থেকে AI নিজে স্ক্রিপ্ট লিখবে।" style="min-height:120px"></textarea>
   </div>
   <label for="notes" id="notesLabel">স্টাইল নোট (ঐচ্ছিক)</label>
   <input id="notes" placeholder="যেমন: দ্রুত গতির, হুক দিয়ে শুরু">
@@ -154,17 +159,17 @@ async function clipsRun() {
 $("go").onclick = async () => {
   if (store.get("mode") === "clips") return clipsRun();
   const prompt = $("prompt").value.trim();
-  if (!prompt) return say("কমান্ড লিখুন", "bad");
+  if (!prompt && !$("fullScript").value.trim()) return say("কমান্ড বা পুরো স্ক্রিপ্ট লিখুন", "bad");
   const minutes = parseFloat($("minutes").value);
-  if (!(minutes >= 0.25 && minutes <= 15)) return say("মিনিট ০.২৫ থেকে ১৫ এর মধ্যে দিন", "bad");
+  if (!(minutes >= 0.25 && minutes <= 30)) return say("মিনিট ০.২৫ থেকে ৩০ এর মধ্যে দিন", "bad");
   $("go").disabled = true; say("পাঠানো হচ্ছে…");
   try {
     const r = await api("/actions/workflows/make-video.yml/dispatches", {
       method: "POST",
       body: JSON.stringify({ ref: "main", inputs: {
-        prompt, minutes: String(minutes), language: $("language").value,
+        prompt: prompt || "Full script video", minutes: String(minutes), language: $("language").value,
         voice: $("voice").value, format: $("format").value, notes: $("notes").value.trim(),
-        style: $("style").value, source_url: $("source").value.trim()
+        style: $("style").value, source_url: $("source").value.trim(), full_script: $("fullScript").value.trim()
       }})
     });
     if (r.status === 204) { say("কাজ শুরু হয়েছে। নিচে অগ্রগতি দেখুন।", "ok"); setTimeout(loadRuns, 4000); }
@@ -197,9 +202,15 @@ const MODES = {
   other:   { style:"book_explainer", styleBox:true,  sourceBox:false, hint:"অন্যান্য তৈরি ফরম্যাট থেকে বেছে নিন।", notes:"স্টাইল নোট (ঐচ্ছিক)" }
 };
 MODES.clips = { style:"custom", styleBox:false, sourceBox:false, clipsBox:true, hint:"আসল ভিডিও থেকে মূল ঘটনার দৃশ্যগুলো কেটে ছোট ভিডিও বানাবে। আসল ছবি ও আসল ভয়েসই থাকবে। শুধু যে ভিডিওর অধিকার বা অনুমতি আপনার আছে, সেটাতেই ব্যবহার করুন।", notes:"নোট (ঐচ্ছিক)" };
+MODES.cartoon = { style:"cartoon_kids", styleBox:false, sourceBox:false, hint:"বাচ্চাদের কার্টুন গল্পের ভিডিও: কার্টুন ছবি, মজার ভয়েস, শেষে শিক্ষা। বিষয় লিখুন (যেমন: খরগোশ আর কচ্ছপের গল্প)।", notes:"স্টাইল নোট (ঐচ্ছিক)" };
+MODES.documentary = { style:"documentary", styleBox:false, sourceBox:false, hint:"নতুন ডকুমেন্টারি: বিষয় বললে ১০–১৫ মিনিটের ভিডিও, ইংরেজি বা বাংলা। AI-র বলা তথ্য আপলোডের আগে নিজে যাচাই করে নিন।", notes:"স্টাইল নোট (ঐচ্ছিক)" };
 function setMode(m) {
   const c = MODES[m] || MODES.script;
   const clips = m === "clips";
+  $("scriptBox").classList.toggle("hide", !["script","cartoon","documentary"].includes(m));
+  const mins = parseFloat($("minutes").value);
+  if (m === "documentary" && !(mins >= 10 && mins <= 15)) $("minutes").value = 12;
+  if (m === "cartoon" && !(mins >= 2 && mins <= 10)) $("minutes").value = 5;
   $("clipsBox").classList.toggle("hide", !clips);
   ["language","voice","format"].forEach(id => $(id).parentElement.classList.toggle("hide", clips));
   document.querySelector('label[for="prompt"]').classList.toggle("hide", clips);
@@ -217,7 +228,7 @@ function setMode(m) {
   store.set("mode", m);
 }
 document.querySelectorAll("#modes button").forEach(b => b.onclick = () => { if (!b.disabled) setMode(b.dataset.mode); });
-setMode(store.get("mode") && MODES[store.get("mode")] && store.get("mode") !== "cartoon" ? store.get("mode") : "script");
+setMode(store.get("mode") && MODES[store.get("mode")] ? store.get("mode") : "script");
 $("refresh").onclick = loadRuns;
 loadRuns();
 setInterval(() => { if (!document.hidden && store.get("token")) loadRuns(); }, 20000);
