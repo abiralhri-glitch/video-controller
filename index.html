@@ -35,6 +35,8 @@
   .modes button:disabled { opacity:.45; }
   .hint { font-size:13px; color:var(--mut); margin:8px 0 0; }
   .hide { display:none; }
+  .chk { display:flex; gap:10px; align-items:flex-start; color:var(--txt); font-size:14px; margin-top:12px; }
+  input[type=checkbox] { width:22px; height:22px; margin:0; flex:none; }
 </style>
 </head>
 <body>
@@ -44,6 +46,7 @@
   <button type="button" data-mode="script" class="on">✍️ স্ক্রিপ্ট দিয়ে ভিডিও</button>
   <button type="button" data-mode="youtube">▶️ ইউটিউব ভিডিও থেকে ভিডিও</button>
   <button type="button" data-mode="cartoon" disabled>🧸 কার্টুন / অ্যানিমেশন (শীঘ্রই)</button>
+  <button type="button" data-mode="clips">✂️ আসল ভিডিও কেটে ছোট (অনুমতি থাকলে)</button>
   <button type="button" data-mode="other">🎞 অন্যান্য ফরম্যাট</button>
 </div>
 <p class="hint" id="modeHint"></p>
@@ -70,6 +73,15 @@
   <div id="sourceBox">
   <label for="source">সোর্স ভিডিও লিংক (নাটকের ইউটিউব লিংক, ঐচ্ছিক)</label>
   <input id="source" type="url" placeholder="https://www.youtube.com/watch?v=..." autocapitalize="off" autocorrect="off">
+  </div>
+  <div id="clipsBox">
+    <label for="videoUrl">ভিডিও লিংক (Google Drive / Dropbox / সরাসরি লিংক, অথবা release:ট্যাগ/ফাইলের-নাম)</label>
+    <input id="videoUrl" type="url" placeholder="https://drive.google.com/file/d/..." autocapitalize="off" autocorrect="off">
+    <div class="row">
+      <div><label for="speechLang">ভিডিওর কথার ভাষা</label><select id="speechLang"><option value="bn">বাংলা</option><option value="en">English</option><option value="hi">হিন্দি</option><option value="auto">অটো</option></select></div>
+      <div><label for="overlays">পর্দায় লেখা</label><select id="overlays"><option value="captions">শুধু ক্যাপশন</option><option value="captions_titles">ক্যাপশন + ঘটনার শিরোনাম</option><option value="none">কিছু না (একদম আসল)</option></select></div>
+    </div>
+    <label class="chk"><input type="checkbox" id="rights"> আমি এই ভিডিওর মালিক, অথবা এটা কেটে প্রকাশ করার অনুমতি আমার আছে</label>
   </div>
   <label for="notes" id="notesLabel">স্টাইল নোট (ঐচ্ছিক)</label>
   <input id="notes" placeholder="যেমন: দ্রুত গতির, হুক দিয়ে শুরু">
@@ -118,7 +130,29 @@ $("save").onclick = () => {
   say("সংরক্ষিত হয়েছে", "ok"); loadRuns();
 };
 
+async function clipsRun() {
+  const url = $("videoUrl").value.trim();
+  if (!url) return say("ভিডিও লিংক দিন", "bad");
+  if (!$("rights").checked) return say("অধিকার/অনুমতির ঘরে টিক দিন", "bad");
+  const minutes = parseFloat($("minutes").value);
+  if (!(minutes >= 1 && minutes <= 30)) return say("মিনিট ১ থেকে ৩০ এর মধ্যে দিন", "bad");
+  $("go").disabled = true; say("পাঠানো হচ্ছে…");
+  try {
+    const r = await api("/actions/workflows/highlights.yml/dispatches", {
+      method: "POST",
+      body: JSON.stringify({ ref: "main", inputs: {
+        video_url: url, minutes: String(minutes), speech_language: $("speechLang").value,
+        overlays: $("overlays").value, rights_confirmed: "true", notes: $("notes").value.trim()
+      }})
+    });
+    if (r.status === 204) { say("কাজ শুরু হয়েছে। নিচে অগ্রগতি দেখুন।", "ok"); setTimeout(loadRuns, 4000); }
+    else { const j = await r.json().catch(()=>({})); say(`ব্যর্থ (${r.status}): ${j.message || ""}`, "bad"); }
+  } catch (e) { say(e.message, "bad"); }
+  $("go").disabled = false;
+}
+
 $("go").onclick = async () => {
+  if (store.get("mode") === "clips") return clipsRun();
   const prompt = $("prompt").value.trim();
   if (!prompt) return say("কমান্ড লিখুন", "bad");
   const minutes = parseFloat($("minutes").value);
@@ -162,8 +196,15 @@ const MODES = {
   cartoon: { style:"custom",         styleBox:false, sourceBox:false, hint:"বাচ্চাদের কার্টুন ভিডিও সিস্টেম তৈরি হচ্ছে।", notes:"স্টাইল নোট (ঐচ্ছিক)" },
   other:   { style:"book_explainer", styleBox:true,  sourceBox:false, hint:"অন্যান্য তৈরি ফরম্যাট থেকে বেছে নিন।", notes:"স্টাইল নোট (ঐচ্ছিক)" }
 };
+MODES.clips = { style:"custom", styleBox:false, sourceBox:false, clipsBox:true, hint:"আসল ভিডিও থেকে মূল ঘটনার দৃশ্যগুলো কেটে ছোট ভিডিও বানাবে। আসল ছবি ও আসল ভয়েসই থাকবে। শুধু যে ভিডিওর অধিকার বা অনুমতি আপনার আছে, সেটাতেই ব্যবহার করুন।", notes:"নোট (ঐচ্ছিক)" };
 function setMode(m) {
   const c = MODES[m] || MODES.script;
+  const clips = m === "clips";
+  $("clipsBox").classList.toggle("hide", !clips);
+  ["language","voice","format"].forEach(id => $(id).parentElement.classList.toggle("hide", clips));
+  document.querySelector('label[for="prompt"]').classList.toggle("hide", clips);
+  $("prompt").classList.toggle("hide", clips);
+  if (clips && !(parseFloat($("minutes").value) >= 3)) $("minutes").value = 7;
   document.querySelectorAll("#modes button").forEach(b => b.classList.toggle("on", b.dataset.mode === m));
   $("styleBox").classList.toggle("hide", !c.styleBox);
   $("sourceBox").classList.toggle("hide", !c.sourceBox);
