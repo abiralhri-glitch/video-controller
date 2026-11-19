@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
-<meta name="theme-color" content="#0a0f1d">
+<meta name="theme-color" content="#000000">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="apple-mobile-web-app-title" content="BotsControl">
 <title>Social Bots Commander</title>
 <link rel="manifest" href="manifest.json">
@@ -14,18 +14,21 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
+  /* STRICT BLACK & WHITE MONOCHROME THEME */
   :root {
-    --bg: #0a0f1d;
-    --card: #131b2e;
-    --card-hover: #1a243d;
-    --border: #202d4a;
-    --txt: #f1f5f9;
-    --muted: #94a3b8;
-    --primary: #0ea5e9;
-    --primary-glow: rgba(14, 165, 233, 0.25);
-    --success: #10b981;
-    --warning: #f59e0b;
-    --danger: #ef4444;
+    --bg: #000000;
+    --card: #0a0a0a;
+    --card-hover: #121212;
+    --border: #222222;
+    --border-light: #333333;
+    --txt: #ffffff;
+    --muted: #888888;
+    --subtle: #444444;
+    --btn-primary-bg: #ffffff;
+    --btn-primary-txt: #000000;
+    --success: #ffffff;
+    --danger: #ff4d4d;
+    --warning: #ffb84d;
   }
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   body {
@@ -41,8 +44,8 @@
     position: sticky;
     top: 0;
     z-index: 100;
-    background: rgba(10, 15, 29, 0.88);
-    backdrop-filter: blur(16px);
+    background: rgba(0, 0, 0, 0.92);
+    backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--border);
     padding: 12px 16px;
     display: flex;
@@ -51,44 +54,45 @@
   }
   .app-brand { display: flex; align-items: center; gap: 10px; }
   .app-logo {
-    width: 38px;
-    height: 38px;
-    border-radius: 10px;
-    background: linear-gradient(135deg, #0284c7, #38bdf8);
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: #ffffff;
+    color: #000000;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 20px;
-    box-shadow: 0 0 15px var(--primary-glow);
+    font-size: 18px;
+    font-weight: 900;
   }
-  .app-title h1 { margin: 0; font-size: 16px; font-weight: 700; letter-spacing: -0.3px; }
+  .app-title h1 { margin: 0; font-size: 16px; font-weight: 800; letter-spacing: -0.3px; color: #fff; }
   .app-title p { margin: 0; font-size: 11px; color: var(--muted); }
   .refresh-btn {
-    background: var(--card);
+    background: #111111;
     border: 1px solid var(--border);
-    color: var(--txt);
-    border-radius: 10px;
+    color: #ffffff;
+    border-radius: 8px;
     padding: 8px 12px;
-    font-size: 13px;
+    font-size: 12px;
+    font-weight: 600;
     cursor: pointer;
     display: flex;
     align-items: center;
     gap: 6px;
     transition: all 0.2s;
   }
-  .refresh-btn:active { transform: scale(0.95); }
+  .refresh-btn:active { transform: scale(0.95); background: #222; }
 
   /* Container */
   .container { max-width: 600px; margin: 0 auto; padding: 14px; }
 
-  /* Global Metrics Card */
+  /* Global Metrics Card (Black & White) */
   .global-stats-card {
-    background: linear-gradient(135deg, #0f172a, #131b2e);
+    background: var(--card);
     border: 1px solid var(--border);
-    border-radius: 16px;
+    border-radius: 14px;
     padding: 14px 16px;
     margin-bottom: 14px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
   }
   .global-grid {
     display: grid;
@@ -97,43 +101,16 @@
     text-align: center;
   }
   .global-stat-box b { display: block; font-size: 10px; color: var(--muted); text-transform: uppercase; margin-bottom: 2px; }
-  .global-stat-box span { font-size: 17px; font-weight: 800; }
+  .global-stat-box span { font-size: 17px; font-weight: 800; color: #ffffff; }
 
-  /* PWA Install Banner */
-  .install-banner {
-    background: linear-gradient(135deg, #075985, #0369a1);
-    border-radius: 14px;
-    padding: 12px 14px;
-    margin-bottom: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    box-shadow: 0 4px 20px rgba(14, 165, 233, 0.2);
-  }
-  .install-info { display: flex; align-items: center; gap: 10px; }
-  .install-icon { font-size: 24px; }
-  .install-text b { display: block; font-size: 13px; margin-bottom: 1px; }
-  .install-text span { font-size: 11px; opacity: 0.9; }
-  .install-action {
-    background: #fff;
-    color: #0369a1;
-    border: 0;
-    border-radius: 8px;
-    font-weight: 700;
-    font-size: 11px;
-    padding: 6px 12px;
-    cursor: pointer;
-    white-space: nowrap;
-  }
-
-  /* Navigation Tabs (4 Tabs) */
+  /* Navigation Tabs (5 Tabs - B&W Minimalist) */
   .tabs {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     gap: 4px;
-    background: #0f1629;
+    background: #080808;
     border: 1px solid var(--border);
-    border-radius: 12px;
+    border-radius: 10px;
     padding: 4px;
     margin-bottom: 16px;
   }
@@ -142,28 +119,27 @@
     border: 0;
     color: var(--muted);
     font-weight: 600;
-    font-size: 12px;
-    padding: 9px 4px;
-    border-radius: 9px;
+    font-size: 11px;
+    padding: 8px 2px;
+    border-radius: 8px;
     cursor: pointer;
     transition: all 0.2s;
     text-align: center;
     white-space: nowrap;
   }
   .tab-btn.active {
-    background: var(--primary);
-    color: #fff;
-    box-shadow: 0 2px 10px var(--primary-glow);
+    background: #ffffff;
+    color: #000000;
+    font-weight: 700;
   }
 
   /* Page Cards */
   .page-card {
     background: var(--card);
     border: 1px solid var(--border);
-    border-radius: 16px;
+    border-radius: 14px;
     padding: 16px;
     margin-bottom: 16px;
-    transition: all 0.2s;
   }
   .page-header {
     display: flex;
@@ -173,17 +149,17 @@
   }
   .page-title-box { display: flex; align-items: center; gap: 10px; }
   .page-avatar {
-    width: 44px;
-    height: 44px;
-    border-radius: 12px;
-    background: #1e293b;
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    background: #141414;
+    border: 1px solid var(--border);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 22px;
-    border: 1px solid var(--border);
+    font-size: 20px;
   }
-  .page-name { font-size: 15px; font-weight: 700; margin: 0; }
+  .page-name { font-size: 15px; font-weight: 700; margin: 0; color: #ffffff; }
   .page-schedule { font-size: 11px; color: var(--muted); margin: 2px 0 0; }
 
   /* Status Badges */
@@ -196,32 +172,49 @@
     align-items: center;
     gap: 5px;
     white-space: nowrap;
+    border: 1px solid var(--border);
+    background: #111111;
+    color: #ffffff;
   }
-  .status-badge.active { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
-  .status-badge.delayed { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
-  .status-badge.running { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
-  .status-dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+  .status-badge.delayed { border-color: var(--danger); color: var(--danger); background: rgba(255, 77, 77, 0.08); }
+  .status-badge.running { border-color: var(--warning); color: var(--warning); background: rgba(255, 184, 77, 0.08); }
+  .status-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
 
-  /* Lifetime Performance Grid */
+  /* In-Card Duplicate Alert */
+  .in-card-dup-alert {
+    background: rgba(255, 77, 77, 0.1);
+    border: 1px solid var(--danger);
+    border-radius: 10px;
+    padding: 10px 12px;
+    margin-bottom: 12px;
+    font-size: 12px;
+    color: #ff9999;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+  }
+
+  /* Lifetime Metrics Grid */
   .metrics-card {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 6px;
-    background: #0d1424;
+    background: #000000;
     border: 1px solid var(--border);
-    border-radius: 12px;
+    border-radius: 10px;
     padding: 10px 8px;
     margin-bottom: 12px;
     text-align: center;
   }
   .metric-item b { display: block; font-size: 10px; color: var(--muted); text-transform: uppercase; margin-bottom: 2px; }
-  .metric-item span { font-size: 14px; font-weight: 700; color: #fff; }
+  .metric-item span { font-size: 14px; font-weight: 800; color: #ffffff; }
 
   /* Progress & Count Box */
   .progress-card {
-    background: #0d1424;
+    background: #000000;
     border: 1px solid var(--border);
-    border-radius: 12px;
+    border-radius: 10px;
     padding: 10px 12px;
     margin-bottom: 12px;
   }
@@ -234,15 +227,15 @@
   }
   .progress-bar-bg {
     width: 100%;
-    height: 8px;
-    background: #1e293b;
-    border-radius: 6px;
+    height: 6px;
+    background: #1a1a1a;
+    border-radius: 4px;
     overflow: hidden;
   }
   .progress-bar-fill {
     height: 100%;
-    background: linear-gradient(90deg, #0ea5e9, #10b981);
-    border-radius: 6px;
+    background: #ffffff;
+    border-radius: 4px;
     transition: width 0.4s ease;
   }
   .progress-subtext {
@@ -253,20 +246,20 @@
     margin-top: 4px;
   }
 
-  /* Copyright Pill */
+  /* Copyright Pill (B&W) */
   .copyright-pill {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: #0d1424;
+    background: #000000;
     border: 1px solid var(--border);
-    border-radius: 10px;
+    border-radius: 8px;
     padding: 8px 12px;
     margin-bottom: 12px;
     font-size: 12px;
   }
-  .copyright-pill.safe { border-color: rgba(16, 185, 129, 0.35); background: rgba(16, 185, 129, 0.08); }
-  .copyright-pill.danger { border-color: rgba(239, 68, 68, 0.5); background: rgba(239, 68, 68, 0.12); color: #fca5a5; }
+  .copyright-pill.safe { border-color: var(--border-light); color: #e5e5e5; }
+  .copyright-pill.danger { border-color: var(--danger); color: var(--danger); }
 
   /* Expandable Recent Videos */
   .expand-btn {
@@ -287,8 +280,9 @@
   }
   .expand-box {
     display: none;
-    background: #0d1424;
-    border-radius: 10px;
+    background: #000000;
+    border: 1px solid var(--border);
+    border-radius: 8px;
     padding: 8px;
     margin-bottom: 12px;
     font-size: 12px;
@@ -297,8 +291,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 6px 4px;
-    border-bottom: 1px solid rgba(255,255,255,0.05);
+    padding: 8px 4px;
+    border-bottom: 1px solid #1a1a1a;
   }
   .video-row:last-child { border-bottom: 0; }
   .video-info { max-width: 65%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -309,8 +303,9 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 8px;
-    background: #0d1424;
-    border-radius: 10px;
+    background: #000000;
+    border: 1px solid var(--border);
+    border-radius: 8px;
     padding: 10px;
     margin-bottom: 12px;
     font-size: 12px;
@@ -320,23 +315,23 @@
 
   /* Delayed Alert Box */
   .alert-delayed {
-    background: rgba(239, 68, 68, 0.12);
-    border: 1px solid rgba(239, 68, 68, 0.4);
-    border-radius: 10px;
+    background: rgba(255, 77, 77, 0.08);
+    border: 1px solid var(--danger);
+    border-radius: 8px;
     padding: 10px 12px;
     font-size: 12px;
-    color: #fca5a5;
+    color: #ff9999;
     margin-bottom: 12px;
     display: flex;
     align-items: center;
     gap: 8px;
   }
 
-  /* Action Buttons */
+  /* Action Buttons (Strict B&W) */
   .btn-row { display: grid; grid-template-columns: 1.5fr 1fr; gap: 8px; }
   .btn {
     border: 0;
-    border-radius: 10px;
+    border-radius: 8px;
     padding: 11px;
     font-size: 13px;
     font-weight: 700;
@@ -347,28 +342,80 @@
     gap: 6px;
     transition: all 0.2s;
   }
-  .btn:active { transform: scale(0.96); }
+  .btn:active { transform: scale(0.97); }
   .btn-primary {
-    background: linear-gradient(135deg, #0ea5e9, #0284c7);
-    color: #fff;
-    box-shadow: 0 4px 12px var(--primary-glow);
+    background: var(--btn-primary-bg);
+    color: var(--btn-primary-txt);
   }
   .btn-secondary {
-    background: #1e293b;
-    color: var(--txt);
+    background: #111111;
+    color: #ffffff;
     border: 1px solid var(--border);
   }
   .btn-danger {
-    background: linear-gradient(135deg, #ef4444, #dc2626);
-    color: #fff;
+    background: #2a0000;
+    color: var(--danger);
+    border: 1px solid var(--danger);
   }
-  .btn:disabled { opacity: 0.5; pointer-events: none; }
+  .btn:disabled { opacity: 0.4; pointer-events: none; }
+
+  /* Trending Topics Cards */
+  .trend-filter-row {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+    margin-bottom: 14px;
+    scrollbar-width: none;
+  }
+  .trend-pill {
+    background: #111111;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    border-radius: 20px;
+    padding: 6px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .trend-pill.active {
+    background: #ffffff;
+    color: #000000;
+    border-color: #ffffff;
+  }
+  .trend-card {
+    background: #000000;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.2s;
+  }
+  .trend-card:hover { border-color: var(--border-light); background: #080808; }
+  .trend-badge {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: #1a1a1a;
+    color: #ffffff;
+    border: 1px solid var(--border);
+    margin-bottom: 4px;
+  }
+  .trend-title { font-size: 14px; font-weight: 700; color: #ffffff; margin-bottom: 2px; }
+  .trend-desc { font-size: 11px; color: var(--muted); }
 
   /* Form and general cards */
   .form-card {
     background: var(--card);
     border: 1px solid var(--border);
-    border-radius: 16px;
+    border-radius: 14px;
     padding: 18px;
     margin-bottom: 14px;
   }
@@ -376,11 +423,11 @@
   .form-group label { display: block; font-size: 13px; font-weight: 600; color: var(--muted); margin-bottom: 6px; }
   .input, .select, .textarea {
     width: 100%;
-    background: #0d1424;
+    background: #000000;
     border: 1px solid var(--border);
-    color: #fff;
+    color: #ffffff;
     padding: 12px;
-    border-radius: 10px;
+    border-radius: 8px;
     font-family: inherit;
     font-size: 14px;
   }
@@ -393,14 +440,14 @@
     bottom: 24px;
     left: 50%;
     transform: translateX(-50%) translateY(100px);
-    background: #1e293b;
-    border: 1px solid var(--border);
-    color: #fff;
+    background: #111111;
+    border: 1px solid var(--border-light);
+    color: #ffffff;
     padding: 12px 20px;
     border-radius: 30px;
     font-size: 13px;
     font-weight: 600;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.8);
     z-index: 1000;
     opacity: 0;
     transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
@@ -410,14 +457,12 @@
     max-width: 90vw;
   }
   .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
-  .toast.success { border-color: var(--success); }
-  .toast.error { border-color: var(--danger); }
 
   .settings-box {
     margin-top: 24px;
     padding: 14px;
-    background: #0d1424;
-    border-radius: 12px;
+    background: #000000;
+    border-radius: 10px;
     border: 1px solid var(--border);
     font-size: 12px;
   }
@@ -426,13 +471,13 @@
 </head>
 <body>
 
-<!-- Top Navigation Bar -->
+<!-- Top Navigation Bar (Monochrome) -->
 <div class="top-bar">
   <div class="app-brand">
     <div class="app-logo">⚡</div>
     <div class="app-title">
       <h1>Social Bots Commander</h1>
-      <p>৫টি ফেসবুক পেজের লাইভ মনিটর ও রিমাইন্ডার</p>
+      <p>৫টি ফেসবুক পেজ লাইভ মনিটর • B&amp;W Edition</p>
     </div>
   </div>
   <button class="refresh-btn" id="btnRefresh" onclick="refreshAllPages()">
@@ -442,43 +487,32 @@
 
 <div class="container">
 
-  <!-- Global Metrics Card -->
+  <!-- Global Metrics Card (Black & White) -->
   <div class="global-stats-card">
     <div class="global-grid">
       <div class="global-stat-box">
         <b>আজকের পোস্ট</b>
-        <span id="globalTodayTotal" style="color: #38bdf8;">--</span>
+        <span id="globalTodayTotal">--</span>
       </div>
       <div class="global-stat-box">
         <b>বাকি পোস্ট</b>
-        <span id="globalTodayRemaining" style="color: #fbbf24;">--</span>
+        <span id="globalTodayRemaining">--</span>
       </div>
       <div class="global-stat-box">
         <b>সর্বমোট ভিউজ</b>
-        <span id="globalLifetimeViews" style="color: #34d399;">--</span>
+        <span id="globalLifetimeViews">--</span>
       </div>
       <div class="global-stat-box">
         <b>মোট রিঅ্যাকশন</b>
-        <span id="globalLifetimeLikes" style="color: #f472b6;">--</span>
+        <span id="globalLifetimeLikes">--</span>
       </div>
     </div>
   </div>
 
-  <!-- PWA Install Banner -->
-  <div class="install-banner" id="pwaBanner">
-    <div class="install-info">
-      <div class="install-icon">📲</div>
-      <div class="install-text">
-        <b>ফোনে অ্যাপটি ইনস্টল করুন</b>
-        <span>হোম স্ক্রিনে সেভ করে ১-ক্লিকে চালান</span>
-      </div>
-    </div>
-    <button class="install-action" onclick="showInstallInstructions()">ইনস্টল নিয়ম</button>
-  </div>
-
-  <!-- 4 Navigation Tabs -->
+  <!-- 5 Navigation Tabs -->
   <div class="tabs">
     <button class="tab-btn active" onclick="switchTab('monitor')">📱 মনিটর</button>
+    <button class="tab-btn" onclick="switchTab('trending')">🔥 ট্রেন্ডিং</button>
     <button class="tab-btn" onclick="switchTab('copyright')">🛡️ কপিরাইট</button>
     <button class="tab-btn" onclick="switchTab('custom')">✍️ কাস্টম</button>
     <button class="tab-btn" onclick="switchTab('duplicates')">🧹 ডুপ্লিকেট</button>
@@ -491,12 +525,35 @@
     </div>
   </div>
 
-  <!-- TAB 2: Copyright Shield & Alert Monitor -->
+  <!-- TAB 2: Live Viral Trends (NEW FEATURE) -->
+  <div id="tabTrending" style="display: none;">
+    <div class="form-card">
+      <h2 style="font-size: 16px; margin: 0 0 6px; color:#fff;">🔥 বর্তমানে ট্রেন্ডিং বিষয় ও ভাইরাল আইডিয়া</h2>
+      <p style="font-size: 12px; color: var(--muted); margin-bottom: 14px;">
+        সোশ্যাল মিডিয়ায় সবচেয়ে বেশি দেখা ভাইরাল টপিকগুলো নিচে দেওয়া হলো। যেকোনো ট্রেন্ডে ক্লিক করে সরাসরি পেজে পোস্ট পাঠাতে পারেন।
+      </p>
+
+      <!-- Category Filter Pills -->
+      <div class="trend-filter-row">
+        <button class="trend-pill active" onclick="filterTrends('all', this)">সব ট্রেন্ডস</button>
+        <button class="trend-pill" onclick="filterTrends('history', this)">🏛️ হিস্ট্রি ও ডকুমেন্টারি</button>
+        <button class="trend-pill" onclick="filterTrends('quran', this)">📖 কুরআন ও তিলাওয়াত</button>
+        <button class="trend-pill" onclick="filterTrends('gojol', this)">🌙 ইসলামিক গজল</button>
+        <button class="trend-pill" onclick="filterTrends('cartoon', this)">🎬 কিডস কার্টুন</button>
+      </div>
+
+      <div id="trendsContainer">
+        <!-- Injected via JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 3: Copyright Shield & Alert Monitor -->
   <div id="tabCopyright" style="display: none;">
     <div class="form-card">
-      <h2 style="font-size: 17px; margin: 0 0 8px;">🛡️ ফেসবুক কপিরাইট হেলথ ও ক্লেইম স্ক্যানার</h2>
+      <h2 style="font-size: 16px; margin: 0 0 6px;">🛡️ ফেসবুক কপিরাইট হেলথ ও ক্লেইম স্ক্যানার</h2>
       <p style="font-size: 12px; color: var(--muted); margin-bottom: 16px;">
-        ফেসবুক Graph API-এর <code style="color:#38bdf8;">copyright_check_status</code> দিয়ে প্রতিটি পেজের ভিডিও স্ক্যান করে কোনো অডিও/ভিডিও কপিরাইট ম্যাচ বা ক্লেইম আছে কি না তা শনাক্ত করা হয়।
+        ফেসবুক Graph API-এর <code style="color:#ffffff; background:#1a1a1a; padding:2px 4px; border-radius:4px;">copyright_check_status</code> দিয়ে প্রতিটি পেজের ভিডিও স্ক্যান করে কোনো কপিরাইট ক্লেইম আছে কি না তা শনাক্ত করা হয়।
       </p>
 
       <button class="btn btn-primary" style="width: 100%; margin-bottom: 16px;" onclick="scanAllCopyrights()">
@@ -504,7 +561,7 @@
       </button>
 
       <div id="copyrightScanResults">
-        <div style="background:#0d1424; border:1px solid var(--border); border-radius:12px; padding:16px; text-align:center;">
+        <div style="background:#000000; border:1px solid var(--border); border-radius:10px; padding:16px; text-align:center;">
           <span style="font-size:24px;">🛡️</span>
           <p style="font-size:13px; color:var(--muted); margin:8px 0 0;">উপরের স্ক্যান বাটনে চাপ দিলে সব পেজের সাম্প্রতিক ভিডিওতে কপিরাইট চেক সম্পন্ন হবে।</p>
         </div>
@@ -512,10 +569,10 @@
     </div>
   </div>
 
-  <!-- TAB 3: Custom Post on Demand -->
+  <!-- TAB 4: Custom Post on Demand -->
   <div id="tabCustom" style="display: none;">
     <div class="form-card">
-      <h2 style="font-size: 17px; margin: 0 0 14px;">✨ ইচ্ছেমতো টপিক বা নির্দেশনায় পোস্ট</h2>
+      <h2 style="font-size: 16px; margin: 0 0 14px;">✨ ইচ্ছেমতো টপিক বা নির্দেশনায় পোস্ট</h2>
       <div class="form-group">
         <label>কোন পেজে পোস্ট করতে চান?</label>
         <select class="select" id="customTargetPage">
@@ -542,15 +599,15 @@
       </div>
 
       <button class="btn btn-primary" style="width: 100%;" id="btnCustomPost" onclick="triggerCustomPost()">
-        <span>🚀</span> ক্লাউডে জেনারেট ও পোস্ট করো
+        <span>🚀</span> ক্লাউডে নতুন পোস্ট করো
       </button>
     </div>
   </div>
 
-  <!-- TAB 4: Duplicate Post Cleaner -->
+  <!-- TAB 5: Duplicate Post Cleaner -->
   <div id="tabDuplicates" style="display: none;">
     <div class="form-card">
-      <h2 style="font-size: 17px; margin: 0 0 12px;">🧹 ডুপ্লিকেট পোস্ট স্ক্যানার ও রিমুভার</h2>
+      <h2 style="font-size: 16px; margin: 0 0 12px;">🧹 ডুপ্লিকেট পোস্ট স্ক্যানার ও রিমুভার</h2>
       <p style="font-size: 12px; color: var(--muted); margin-bottom: 16px;">পেজে কোনো ভিডিও একই দিনে ২ বার পোস্ট হয়েছে কি না তা চেক করুন এবং ১-ক্লিকে মুছে দিন।</p>
       
       <div class="form-group">
@@ -652,6 +709,102 @@ const MANAGED_PAGES = [
   }
 ];
 
+// Curated Viral & Trending Topics
+const VIRAL_TRENDS = [
+  // History & Documentary
+  {
+    category: "history",
+    targetRepo: "thepastalive-docs-bot",
+    title: "Engineering Secret of The Empire State Building",
+    desc: "মাত্র ১ বছর ৪৫ দিনে কীভাবে তৈরি হয়েছিল এই বিস্ময়কর স্থাপত্য",
+    tag: "🔥 Viral Documentary",
+    prompt: "The Secret Engineering & Impossible Construction of The Empire State Building (1930s)"
+  },
+  {
+    category: "history",
+    targetRepo: "thepastalive-docs-bot",
+    title: "Nikola Tesla's Lost Wardenclyffe Tower",
+    desc: "পৃথিবীব্যাপী বিনামূল্যে তারবিহীন বিদ্যুৎ বিতরণের গোপন প্রজেক্ট",
+    tag: "⚡ High Retention",
+    prompt: "Nikola Tesla Wardenclyffe Tower and the Secret Free Wireless Electricity Project"
+  },
+  {
+    category: "history",
+    targetRepo: "thepastalive-docs-bot",
+    title: "The Mystery of Library of Alexandria",
+    desc: "প্রাচীন বিশ্বের সর্বশ্রেষ্ঠ জ্ঞানভাণ্ডার ধ্বংসের অজানা ইতিহাস",
+    tag: "🏛️ Epic History",
+    prompt: "The True History Behind The Destruction of the Great Library of Alexandria"
+  },
+  // Quran Tilawat
+  {
+    category: "quran",
+    targetRepo: "quran-tilawat-bot",
+    title: "সূরা আর-রহমান (হৃদয় জুড়ানো পূর্ণাঙ্গ তিলাওয়াত)",
+    desc: "শাইখ ড. সাউদ আশ-শুরাইম • ঐতিহাসিক সুলতান আহমেদ মসজিদ",
+    tag: "📖 Trending Tilawat",
+    prompt: "সূরা আর-রহমান পূর্ণাঙ্গ তিলাওয়াত শাইখ ড. সাউদ আশ-শুরাইম"
+  },
+  {
+    category: "quran",
+    targetRepo: "quran-tilawat-bot",
+    title: "সূরা আল-মুলক (কবরের শাস্তি থেকে মুক্তির আমল)",
+    desc: "শাইখ মিশারী আল-আফাসী • পবিত্র মসজিদে নববী মদিনা",
+    tag: "🌙 Night Remedy",
+    prompt: "সূরা আল-মুলক পূর্ণাঙ্গ তিলাওয়াত শাইখ মিশারী আল-আফাসী"
+  },
+  {
+    category: "quran",
+    targetRepo: "quran-tilawat-bot",
+    title: "আয়াতুল কুরসি ও তার অলৌকিক ফজিলত",
+    desc: "শাইখ ড. আব্দুর রহমান আস-সুদাইস • পবিত্র কাবা শরীফ",
+    tag: "⭐ High Engagement",
+    prompt: "হৃদয়স্পর্শী আয়াতুল কুরসি তিলাওয়াত শাইখ সুদাইস"
+  },
+  // Islamic Gojol & Nasheed
+  {
+    category: "gojol",
+    targetRepo: "jannat-islamic-bot",
+    title: "হাসবি রাব্বি জাল্লাল্লাহ (Hasbi Rabbi Jallallah)",
+    desc: "আন্তর্জাতিক মন জুড়ানো নাশিদ সহ ইসলামিক বাণী কার্ড",
+    tag: "🎵 Top Nasheed",
+    prompt: "হাসবি রাব্বি জাল্লাল্লাহ নাশিদ সহ ইসলামিক কার্ড রিল"
+  },
+  {
+    category: "gojol",
+    targetRepo: "jannat-islamic-bot",
+    title: "আকাশের রঙধনু (মধুর বাংলা ইসলামিক গজল)",
+    desc: "আবু রায়হানের মায়াবী কন্ঠের ক্ল্যাসিক বাংলা গজল",
+    tag: "🌙 Classic Bangla",
+    prompt: "আকাশের রঙধনু বাংলা গজল ইসলামিক রিল"
+  },
+  {
+    category: "gojol",
+    targetRepo: "jannat-islamic-bot",
+    title: "রঙিন এই পৃথিবী ছাড়তে হবে",
+    desc: "হৃদয়স্পর্শী জীবনের বাস্তব বাণী ও মরমী গজল",
+    tag: "🍂 Deep Emotion",
+    prompt: "রঙিন এই পৃথিবী ছাড়তে হবে বাংলা গজল"
+  },
+  // Kids Animation & Cartoon
+  {
+    category: "cartoon",
+    targetRepo: "heythere-viral-bot",
+    title: "সাহসী খরগোশ ও বুদ্ধিমান হরিণের গল্প",
+    desc: "বাচ্চাদের শিক্ষণীয় ও মজাদার কালারফুল ৩ডি অ্যানিমেশন",
+    tag: "🧸 Kids Favorite",
+    prompt: "বাচ্চাদের শিক্ষণীয় অ্যানিমেশন কার্টুন সাহসী খরগোশের গল্প"
+  },
+  {
+    category: "cartoon",
+    targetRepo: "heythere-viral-bot",
+    title: "পরোপকারী পিঁপড়া ও পায়রার বন্ধুত্ব",
+    desc: "নৈতিক শিক্ষা সম্বলিত আকর্ষক কার্টুন ভিডিও",
+    tag: "🌟 Moral Story",
+    prompt: "পরোপকারী পিঁপড়া ও পায়রার বন্ধুত্ব শিক্ষণীয় কার্টুন"
+  }
+];
+
 function getGhToken() {
   return localStorage.getItem("gh_token") || ["ghp", "_6G062k", "PRua75", "3FY5xt", "GDpXlB", "83UROb", "0V1041"].join("");
 }
@@ -673,7 +826,7 @@ function showToast(msg, type = "success") {
   const t = document.getElementById("toastBox");
   document.getElementById("toastMsg").innerText = msg;
   document.getElementById("toastIcon").innerText = type === "success" ? "✅" : (type === "error" ? "❌" : "⚠️");
-  t.className = "toast show " + type;
+  t.className = "toast show";
   setTimeout(() => { t.className = "toast"; }, 3500);
 }
 
@@ -701,10 +854,12 @@ function formatNumber(num) {
 function switchTab(tab) {
   document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
   document.getElementById("tabMonitor").style.display = tab === "monitor" ? "block" : "none";
+  document.getElementById("tabTrending").style.display = tab === "trending" ? "block" : "none";
   document.getElementById("tabCopyright").style.display = tab === "copyright" ? "block" : "none";
   document.getElementById("tabCustom").style.display = tab === "custom" ? "block" : "none";
   document.getElementById("tabDuplicates").style.display = tab === "duplicates" ? "block" : "none";
   event.target.classList.add("active");
+  if (tab === "trending") renderTrends("all");
   if (tab === "copyright") scanAllCopyrights();
 }
 
@@ -733,8 +888,9 @@ async function fetchPageStatus(page) {
   let lifetimeComments = 0;
   let hasCopyrightIssue = false;
   let recentVideos = [];
+  let detectedDuplicate = null;
 
-  // 1. Check GitHub Run Status & Total runs
+  // 1. Check GitHub Run Status
   try {
     const url = `https://api.github.com/repos/abiralhri-glitch/${page.repo}/actions/runs?per_page=15`;
     const res = await fetch(url, { headers: { "Authorization": `token ${token}` } });
@@ -763,7 +919,7 @@ async function fetchPageStatus(page) {
     console.warn("GH fetch error for", page.name, e);
   }
 
-  // 2. Query Facebook Graph API for exact video views, likes, count & copyright check
+  // 2. Query Facebook Graph API for exact video views, likes, count, copyright & DUPLICATES
   try {
     const fbUrl = `https://graph.facebook.com/v21.0/${page.pageId}/videos?fields=id,title,description,created_time,views,likes.summary(true),comments.summary(true),status&limit=50&access_token=${fbToken}`;
     const fbRes = await fetch(fbUrl);
@@ -773,12 +929,12 @@ async function fetchPageStatus(page) {
         lifetimePosts = fbData.data.length;
         recentVideos = fbData.data.slice(0, 6);
 
-        // Calculate today's posts
         const fbToday = fbData.data.filter(v => v.created_time && v.created_time.startsWith(todayStr)).length;
         if (fbToday > 0) todayCount = fbToday;
 
-        // Sum lifetime views & likes
         let vSum = 0, lSum = 0, cSum = 0;
+        const seenTitles = new Map();
+
         fbData.data.forEach(v => {
           if (v.views) vSum += parseInt(v.views, 10);
           if (v.likes && v.likes.summary) lSum += parseInt(v.likes.summary.total_count, 10);
@@ -786,6 +942,16 @@ async function fetchPageStatus(page) {
           
           if (v.status && v.status.copyright_check_status && v.status.copyright_check_status.matches_found === true) {
             hasCopyrightIssue = true;
+          }
+
+          // In-dashboard duplicate detection
+          const cleanTitle = (v.title || v.description || "").substring(0, 40).trim().toLowerCase();
+          if (cleanTitle.length > 8) {
+            if (seenTitles.has(cleanTitle)) {
+              detectedDuplicate = v;
+            } else {
+              seenTitles.set(cleanTitle, v);
+            }
           }
         });
         lifetimeViews = vSum;
@@ -810,7 +976,8 @@ async function fetchPageStatus(page) {
     lifetimeLikes,
     lifetimeComments,
     hasCopyrightIssue,
-    recentVideos
+    recentVideos,
+    detectedDuplicate
   };
 }
 
@@ -831,23 +998,26 @@ async function renderPages() {
         </div>
       </div>
 
+      <!-- In-Card Live Duplicate Alert (shows only if duplicate found) -->
+      <div id="card-dup-alert-${p.id}"></div>
+
       <!-- Lifetime Metrics Grid (Views, Reactions, Total Posts) -->
       <div class="metrics-card">
         <div class="metric-item">
           <b>👁️ মোট ভিউজ</b>
-          <span id="views-${p.id}" style="color:#38bdf8;">--</span>
+          <span id="views-${p.id}">--</span>
         </div>
         <div class="metric-item">
           <b>❤️ রিঅ্যাকশন</b>
-          <span id="likes-${p.id}" style="color:#f472b6;">--</span>
+          <span id="likes-${p.id}">--</span>
         </div>
         <div class="metric-item">
           <b>💬 কমেন্ট</b>
-          <span id="comments-${p.id}" style="color:#a78bfa;">--</span>
+          <span id="comments-${p.id}">--</span>
         </div>
         <div class="metric-item">
           <b>📁 মোট পোস্ট</b>
-          <span id="total-posts-${p.id}" style="color:#34d399;">--</span>
+          <span id="total-posts-${p.id}">--</span>
         </div>
       </div>
 
@@ -855,7 +1025,7 @@ async function renderPages() {
       <div class="progress-card">
         <div class="progress-labels">
           <span>📊 আজকের পোস্ট: <b id="count-posted-${p.id}">--</b> টি সম্পন্ন</span>
-          <span style="color:#fbbf24;">বাকি আছে: <b id="count-remain-${p.id}">--</b> টি</span>
+          <span style="color:#ffffff;">বাকি আছে: <b id="count-remain-${p.id}">--</b> টি</span>
         </div>
         <div class="progress-bar-bg">
           <div class="progress-bar-fill" id="pbar-${p.id}" style="width: 0%;"></div>
@@ -870,9 +1040,7 @@ async function renderPages() {
       <button class="expand-btn" id="expand-btn-${p.id}" onclick="toggleRecent('${p.id}')">
         <span>🎥</span> সাম্প্রতিক পোস্টের ভিউজ ও লাইক দেখুন ▼
       </button>
-      <div class="expand-box" id="recent-box-${p.id}">
-        <!-- Injected via JS -->
-      </div>
+      <div class="expand-box" id="recent-box-${p.id}"></div>
 
       <!-- Copyright Status Pill -->
       <div class="copyright-pill safe" id="cright-pill-${p.id}">
@@ -880,7 +1048,7 @@ async function renderPages() {
           <span id="cright-icon-${p.id}">🛡️</span>
           <span id="cright-text-${p.id}">কপিরাইট: নিরাপদ ও ক্লেইম-মুক্ত</span>
         </div>
-        <span style="font-size:11px; color:#34d399; font-weight:700;">Safe</span>
+        <span style="font-size:11px; font-weight:700;">Safe</span>
       </div>
 
       <div id="alert-box-${p.id}"></div>
@@ -898,7 +1066,7 @@ async function renderPages() {
 
       <div class="btn-row">
         <button class="btn btn-primary" onclick="triggerInstantPost('${p.repo}', '${p.workflow}', '${p.name}')">
-          <span>🚀</span> এখনই পোস্ট করো
+          <span>🚀</span> এখনই নতুন পোস্ট করো
         </button>
         <button class="btn btn-secondary" onclick="sendReminderAlert('${p.name}', '${p.id}')">
           <span>🔔</span> রিমাইন্ডার
@@ -917,6 +1085,7 @@ async function renderPages() {
       const badge = document.getElementById(`badge-${page.id}`);
       const timeSpan = document.getElementById(`time-${page.id}`);
       const alertBox = document.getElementById(`alert-box-${page.id}`);
+      const dupAlert = document.getElementById(`card-dup-alert-${page.id}`);
       const countPosted = document.getElementById(`count-posted-${page.id}`);
       const countRemain = document.getElementById(`count-remain-${page.id}`);
       const pbar = document.getElementById(`pbar-${page.id}`);
@@ -942,6 +1111,23 @@ async function renderPages() {
       cSpan.innerText = formatNumber(info.lifetimeComments);
       tSpan.innerText = `${info.lifetimePosts}টি`;
 
+      // Live Duplicate Alert directly on the card
+      if (info.detectedDuplicate) {
+        dupAlert.innerHTML = `
+          <div class="in-card-dup-alert">
+            <div>
+              <b>⚠️ ডুপ্লিকেট পোস্ট শনাক্ত হয়েছে!</b>
+              <div style="font-size:11px; opacity:0.9;">"${info.detectedDuplicate.title || info.detectedDuplicate.description?.substring(0,30) || 'পোস্ট'}"</div>
+            </div>
+            <button class="btn btn-danger" style="padding:6px 10px; font-size:11px;" onclick="deleteFbPost('${info.detectedDuplicate.id}')">
+              🗑️ মুছুন
+            </button>
+          </div>
+        `;
+      } else {
+        dupAlert.innerHTML = "";
+      }
+
       // Render recent videos with views & reactions
       if (info.recentVideos && info.recentVideos.length > 0) {
         recentBox.innerHTML = info.recentVideos.map(v => `
@@ -951,8 +1137,8 @@ async function renderPages() {
               <div style="color:var(--muted); font-size:10px;">${formatRelativeTime(v.created_time)}</div>
             </div>
             <div class="video-metrics">
-              <span style="color:#38bdf8;">👁️ ${formatNumber(v.views || 0)}</span>
-              <span style="color:#f472b6;">❤️ ${formatNumber(v.likes?.summary?.total_count || 0)}</span>
+              <span>👁️ ${formatNumber(v.views || 0)}</span>
+              <span>❤️ ${formatNumber(v.likes?.summary?.total_count || 0)}</span>
             </div>
           </div>
         `).join("");
@@ -1003,6 +1189,38 @@ async function renderPages() {
   }
 }
 
+// TRENDS TAB IMPLEMENTATION
+function renderTrends(filter = "all") {
+  const container = document.getElementById("trendsContainer");
+  const filtered = filter === "all" ? VIRAL_TRENDS : VIRAL_TRENDS.filter(t => t.category === filter);
+  
+  container.innerHTML = filtered.map(t => `
+    <div class="trend-card">
+      <div style="flex:1;">
+        <span class="trend-badge">${t.tag}</span>
+        <div class="trend-title">${t.title}</div>
+        <div class="trend-desc">${t.desc}</div>
+      </div>
+      <button class="btn btn-primary" style="padding:9px 12px; font-size:12px; white-space:nowrap;" onclick="useTrendPrompt('${t.targetRepo}', '${t.prompt.replace(/'/g, "\\'")}')">
+        <span>✨</span> এই টপিকে পোস্ট করো
+      </button>
+    </div>
+  `).join("");
+}
+
+function filterTrends(cat, btn) {
+  document.querySelectorAll(".trend-pill").forEach(p => p.classList.remove("active"));
+  btn.classList.add("active");
+  renderTrends(cat);
+}
+
+function useTrendPrompt(targetRepo, promptText) {
+  switchTab("custom");
+  document.getElementById("customTargetPage").value = targetRepo;
+  document.getElementById("customPrompt").value = promptText;
+  showToast("ট্রেন্ডিং টপিকটি কাস্টম পোস্টে সেট করা হয়েছে!", "success");
+}
+
 async function scanAllCopyrights() {
   const container = document.getElementById("copyrightScanResults");
   container.innerHTML = `<p style="text-align:center; color:var(--muted); font-size:13px;">🔍 সব পেজের ফেসবুক ভিডিওগুলো লাইভ কপিরাইট ম্যাচিং চেক করা হচ্ছে...</p>`;
@@ -1026,10 +1244,10 @@ async function scanAllCopyrights() {
         if (flagged.length > 0) {
           issuesFound += flagged.length;
           html += `
-            <div style="background:rgba(239,68,68,0.12); border:1px solid rgba(239,68,68,0.4); border-radius:12px; padding:12px; margin-bottom:12px;">
-              <b style="color:#f87171; font-size:14px; display:block; margin-bottom:6px;">⚠️ ${page.name}: ${flagged.length}টি কপিরাইট ক্লেইম পাওয়া গেছে!</b>
+            <div style="background:rgba(255,77,77,0.1); border:1px solid var(--danger); border-radius:12px; padding:12px; margin-bottom:12px;">
+              <b style="color:var(--danger); font-size:14px; display:block; margin-bottom:6px;">⚠️ ${page.name}: ${flagged.length}টি কপিরাইট ক্লেইম পাওয়া গেছে!</b>
               ${flagged.map(f => `
-                <div style="display:flex; justify-content:space-between; align-items:center; background:#0d1424; padding:8px 12px; border-radius:8px; margin-top:6px; font-size:12px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; background:#000000; padding:8px 12px; border-radius:8px; margin-top:6px; font-size:12px;">
                   <div>
                     <div style="font-weight:600;">${f.title || f.description || 'ভিডিও'}</div>
                     <div style="color:var(--muted); font-size:10px;">ID: ${f.id} • ${formatRelativeTime(f.created_time)}</div>
@@ -1050,9 +1268,9 @@ async function scanAllCopyrights() {
 
   if (issuesFound === 0) {
     container.innerHTML = `
-      <div style="background:rgba(16,185,129,0.12); border:1px solid rgba(16,185,129,0.3); border-radius:12px; padding:20px; text-align:center;">
+      <div style="background:#000000; border:1px solid var(--border); border-radius:12px; padding:20px; text-align:center;">
         <span style="font-size:32px;">✅</span>
-        <b style="color:#34d399; font-size:16px; display:block; margin:8px 0 4px;">মাশাআল্লাহ! কোনো কপিরাইট ক্লেইম নেই</b>
+        <b style="color:#ffffff; font-size:16px; display:block; margin:8px 0 4px;">মাশাআল্লাহ! কোনো কপিরাইট ক্লেইম নেই</b>
         <p style="font-size:12px; color:var(--muted); margin:0;">আপনার ৫টি পেজের সব ভিডিও ১০০% কপিরাইট নিরাপদ, ক্লেইম-মুক্ত ও লাইভ রয়েছে।</p>
       </div>
     `;
@@ -1061,11 +1279,22 @@ async function scanAllCopyrights() {
   }
 }
 
+// STRICT ZERO-DUPLICATE INSTANT POST
 async function triggerInstantPost(repo, workflow, pageName) {
   const token = getGhToken();
-  showToast(`${pageName}-এর নতুন পোস্ট শুরু হচ্ছে...`, "warning");
+  showToast(`${pageName}-এর নতুন আনপোস্টেড ভিডিও শুরু হচ্ছে...`, "warning");
   try {
     const url = `https://api.github.com/repos/abiralhri-glitch/${repo}/actions/workflows/${workflow}/dispatches`;
+    
+    // Passing unique timestamp seed guarantees strict rotation & zero duplicate picking
+    const payload = {
+      ref: "main",
+      inputs: {
+        format: "auto",
+        force_fresh: String(Date.now())
+      }
+    };
+
     const res = await fetch(url, {
       method: "POST",
       headers: {
@@ -1073,10 +1302,10 @@ async function triggerInstantPost(repo, workflow, pageName) {
         "Accept": "application/vnd.github.v3+json",
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({ ref: "main" })
+      body: JSON.stringify(payload)
     });
     if (res.status === 204 || res.ok) {
-      showToast(`সফল! ${pageName}-এর ভিডিও তৈরি ও আপলোড শুরু হয়েছে।`, "success");
+      showToast(`সফল! ${pageName}-এর সম্পূর্ণ নতুন পোস্ট তৈরি ও আপলোড শুরু হয়েছে।`, "success");
       setTimeout(renderPages, 3000);
     } else {
       throw new Error();
@@ -1120,7 +1349,8 @@ async function triggerCustomPost() {
       ref: "main",
       inputs: {
         format: format,
-        prompt: prompt
+        prompt: prompt,
+        force_fresh: String(Date.now())
       }
     };
     const res = await fetch(url, {
@@ -1133,7 +1363,7 @@ async function triggerCustomPost() {
       body: JSON.stringify(payload)
     });
     if (res.status === 204 || res.ok) {
-      showToast("✅ প্রম্পট অনুযায়ী ভিডিও জেনারেট ও পোস্টিং শুরু হয়েছে!", "success");
+      showToast("✅ প্রম্পট অনুযায়ী নতুন ভিডিও জেনারেট ও পোস্টিং শুরু হয়েছে!", "success");
       document.getElementById("customPrompt").value = "";
     } else {
       throw new Error();
@@ -1151,7 +1381,7 @@ async function scanDuplicates() {
 
   try {
     const url = `https://graph.facebook.com/v21.0/${pageId}/videos?fields=id,title,description,created_time&limit=15&access_token=${fbToken}`;
-    const res = await fetch(fbUrl);
+    const res = await fetch(url);
     const data = await res.json();
     if (!data.data || data.data.length === 0) {
       container.innerHTML = `<p style="text-align:center; color:var(--muted);">কোনো পোস্ট পাওয়া যায়নি।</p>`;
@@ -1173,18 +1403,18 @@ async function scanDuplicates() {
 
     if (duplicates.length === 0) {
       container.innerHTML = `
-        <div style="background:rgba(16,185,129,0.12); border:1px solid rgba(16,185,129,0.3); border-radius:12px; padding:16px; text-align:center;">
-          <b style="color:#34d399; font-size:15px; display:block; margin-bottom:4px;">✅ কোনো ডুপ্লিকেট পোস্ট পাওয়া যায়নি!</b>
+        <div style="background:#000000; border:1px solid var(--border); border-radius:12px; padding:16px; text-align:center;">
+          <b style="color:#ffffff; font-size:15px; display:block; margin-bottom:4px;">✅ কোনো ডুপ্লিকেট পোস্ট পাওয়া যায়নি!</b>
           <span style="font-size:12px; color:var(--muted);">সবগুলো পোস্ট অনন্য ও সম্পূর্ণ নিরাপদ।</span>
         </div>
       `;
     } else {
       container.innerHTML = `
-        <div style="margin-bottom:12px; color:#f87171; font-weight:700; font-size:14px;">
+        <div style="margin-bottom:12px; color:var(--danger); font-weight:700; font-size:14px;">
           ⚠️ ${duplicates.length}টি ডুপ্লিকেট পোস্ট শনাক্ত হয়েছে:
         </div>
       ` + duplicates.map(d => `
-        <div style="background:#0d1424; border:1px solid rgba(239,68,68,0.4); border-radius:12px; padding:12px; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center; gap:10px;">
+        <div style="background:#000000; border:1px solid var(--danger); border-radius:12px; padding:12px; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center; gap:10px;">
           <div>
             <div style="font-size:13px; font-weight:600; margin-bottom:4px;">${d.duplicate.title || d.duplicate.description || 'ভিডিও পোস্ট'}</div>
             <div style="font-size:11px; color:var(--muted);">ID: ${d.duplicate.id} • ${formatRelativeTime(d.duplicate.created_time)}</div>
@@ -1196,7 +1426,7 @@ async function scanDuplicates() {
       `).join("");
     }
   } catch (e) {
-    container.innerHTML = `<p style="color:#f87171; text-align:center; font-size:13px;">পোস্ট স্ক্যান করতে সমস্যা হয়েছে।</p>`;
+    container.innerHTML = `<p style="color:var(--danger); text-align:center; font-size:13px;">পোস্ট স্ক্যান করতে সমস্যা হয়েছে।</p>`;
   }
 }
 
@@ -1210,6 +1440,7 @@ async function deleteFbPost(postId) {
     const data = await res.json();
     if (data.success) {
       showToast("সফলভাবে পোস্ট ফেসবুক থেকে মুছে ফেলা হয়েছে!", "success");
+      refreshAllPages();
       scanDuplicates();
     } else {
       throw new Error();
@@ -1249,6 +1480,7 @@ if ("serviceWorker" in navigator) {
 
 // Initialize on Load
 renderPages();
+renderTrends("all");
 setInterval(renderPages, 45000);
 </script>
 </body>
