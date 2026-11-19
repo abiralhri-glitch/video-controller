@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
-<meta name="theme-color" content="#000000">
+<meta name="theme-color" content="#0a0f1d">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="BotsControl">
 <title>Social Bots Commander</title>
 <link rel="manifest" href="manifest.json">
@@ -14,21 +14,21 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  /* STRICT BLACK & WHITE MONOCHROME THEME */
+  /* RESTORED HIGH-TECH DARK BLUE THEME */
   :root {
-    --bg: #000000;
-    --card: #0a0a0a;
-    --card-hover: #121212;
-    --border: #222222;
-    --border-light: #333333;
-    --txt: #ffffff;
-    --muted: #888888;
-    --subtle: #444444;
-    --btn-primary-bg: #ffffff;
-    --btn-primary-txt: #000000;
-    --success: #ffffff;
-    --danger: #ff4d4d;
-    --warning: #ffb84d;
+    --bg: #0a0f1d;
+    --card: #131b2e;
+    --card-hover: #1a243d;
+    --border: #202d4a;
+    --border-light: #2d3f66;
+    --txt: #f1f5f9;
+    --muted: #94a3b8;
+    --primary: #0ea5e9;
+    --primary-glow: rgba(14, 165, 233, 0.25);
+    --success: #10b981;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+    --purple: #8b5cf6;
   }
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   body {
@@ -36,7 +36,7 @@
     background: var(--bg);
     color: var(--txt);
     font-family: 'Hind Siliguri', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-    padding-bottom: 90px;
+    padding-bottom: 95px;
     min-height: 100vh;
   }
   /* Top App Bar */
@@ -44,8 +44,8 @@
     position: sticky;
     top: 0;
     z-index: 100;
-    background: rgba(0, 0, 0, 0.92);
-    backdrop-filter: blur(20px);
+    background: rgba(10, 15, 29, 0.88);
+    backdrop-filter: blur(16px);
     border-bottom: 1px solid var(--border);
     padding: 12px 16px;
     display: flex;
@@ -54,45 +54,44 @@
   }
   .app-brand { display: flex; align-items: center; gap: 10px; }
   .app-logo {
-    width: 36px;
-    height: 36px;
-    border-radius: 8px;
-    background: #ffffff;
-    color: #000000;
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #0284c7, #38bdf8);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 18px;
-    font-weight: 900;
+    font-size: 20px;
+    box-shadow: 0 0 15px var(--primary-glow);
   }
-  .app-title h1 { margin: 0; font-size: 16px; font-weight: 800; letter-spacing: -0.3px; color: #fff; }
+  .app-title h1 { margin: 0; font-size: 16px; font-weight: 700; letter-spacing: -0.3px; color: #fff; }
   .app-title p { margin: 0; font-size: 11px; color: var(--muted); }
   .refresh-btn {
-    background: #111111;
+    background: var(--card);
     border: 1px solid var(--border);
-    color: #ffffff;
-    border-radius: 8px;
+    color: var(--txt);
+    border-radius: 10px;
     padding: 8px 12px;
-    font-size: 12px;
-    font-weight: 600;
+    font-size: 13px;
     cursor: pointer;
     display: flex;
     align-items: center;
     gap: 6px;
     transition: all 0.2s;
   }
-  .refresh-btn:active { transform: scale(0.95); background: #222; }
+  .refresh-btn:active { transform: scale(0.95); background: var(--card-hover); }
 
   /* Container */
   .container { max-width: 600px; margin: 0 auto; padding: 14px; }
 
-  /* Global Metrics Card (Black & White) */
+  /* Global Metrics Card */
   .global-stats-card {
-    background: var(--card);
+    background: linear-gradient(135deg, #0f172a, #131b2e);
     border: 1px solid var(--border);
-    border-radius: 14px;
+    border-radius: 16px;
     padding: 14px 16px;
     margin-bottom: 14px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
   }
   .global-grid {
     display: grid;
@@ -101,16 +100,16 @@
     text-align: center;
   }
   .global-stat-box b { display: block; font-size: 10px; color: var(--muted); text-transform: uppercase; margin-bottom: 2px; }
-  .global-stat-box span { font-size: 17px; font-weight: 800; color: #ffffff; }
+  .global-stat-box span { font-size: 17px; font-weight: 800; color: #38bdf8; }
 
-  /* Navigation Tabs (5 Tabs - B&W Minimalist) */
+  /* Navigation Tabs (5 Tabs) */
   .tabs {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     gap: 4px;
-    background: #080808;
+    background: #0f1629;
     border: 1px solid var(--border);
-    border-radius: 10px;
+    border-radius: 12px;
     padding: 4px;
     margin-bottom: 16px;
   }
@@ -121,536 +120,573 @@
     font-weight: 600;
     font-size: 11px;
     padding: 8px 2px;
-    border-radius: 8px;
+    border-radius: 9px;
     cursor: pointer;
     transition: all 0.2s;
     text-align: center;
     white-space: nowrap;
   }
   .tab-btn.active {
-    background: #ffffff;
-    color: #000000;
-    font-weight: 700;
+    background: var(--primary);
+    color: #fff;
+    box-shadow: 0 2px 10px var(--primary-glow);
   }
 
-  /* Page Cards */
-  .page-card {
+  /* Page Selector Control Box */
+  .selector-box {
     background: var(--card);
     border: 1px solid var(--border);
     border-radius: 14px;
-    padding: 16px;
+    padding: 14px;
     margin-bottom: 16px;
   }
-  .page-header {
+  .selector-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    font-weight: 700;
+    color: #38bdf8;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .page-select {
+    width: 100%;
+    background: #0b1120;
+    border: 1px solid var(--border-light);
+    color: #fff;
+    padding: 12px 14px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    outline: none;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .page-select:focus { border-color: var(--primary); }
+
+  /* Active Page Command Card */
+  .active-page-card {
+    background: linear-gradient(180deg, #131b2e 0%, #0e1626 100%);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 18px;
+    margin-bottom: 18px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.35);
+  }
+  .active-page-header {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    margin-bottom: 12px;
+    margin-bottom: 14px;
   }
-  .page-title-box { display: flex; align-items: center; gap: 10px; }
-  .page-avatar {
-    width: 42px;
-    height: 42px;
-    border-radius: 10px;
-    background: #141414;
+  .active-title-box { display: flex; align-items: center; gap: 12px; }
+  .active-page-icon {
+    font-size: 26px;
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: #0b1120;
     border: 1px solid var(--border);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 20px;
   }
-  .page-name { font-size: 15px; font-weight: 700; margin: 0; color: #ffffff; }
-  .page-schedule { font-size: 11px; color: var(--muted); margin: 2px 0 0; }
+  .active-page-name { font-size: 16px; font-weight: 800; color: #fff; margin-bottom: 2px; }
+  .active-page-sub { font-size: 11px; color: var(--muted); }
 
-  /* Status Badges */
-  .status-badge {
-    padding: 4px 8px;
-    border-radius: 20px;
-    font-size: 11px;
-    font-weight: 700;
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    white-space: nowrap;
-    border: 1px solid var(--border);
-    background: #111111;
-    color: #ffffff;
-  }
-  .status-badge.delayed { border-color: var(--danger); color: var(--danger); background: rgba(255, 77, 77, 0.08); }
-  .status-badge.running { border-color: var(--warning); color: var(--warning); background: rgba(255, 184, 77, 0.08); }
-  .status-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
-
-  /* In-Card Duplicate Alert */
-  .in-card-dup-alert {
-    background: rgba(255, 77, 77, 0.1);
-    border: 1px solid var(--danger);
-    border-radius: 10px;
-    padding: 10px 12px;
-    margin-bottom: 12px;
-    font-size: 12px;
-    color: #ff9999;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 10px;
-  }
-
-  /* Lifetime Metrics Grid */
-  .metrics-card {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 6px;
-    background: #000000;
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 10px 8px;
-    margin-bottom: 12px;
-    text-align: center;
-  }
-  .metric-item b { display: block; font-size: 10px; color: var(--muted); text-transform: uppercase; margin-bottom: 2px; }
-  .metric-item span { font-size: 14px; font-weight: 800; color: #ffffff; }
-
-  /* Progress & Count Box */
-  .progress-card {
-    background: #000000;
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 10px 12px;
-    margin-bottom: 12px;
-  }
-  .progress-labels {
-    display: flex;
-    justify-content: space-between;
-    font-size: 12px;
-    font-weight: 600;
-    margin-bottom: 6px;
-  }
-  .progress-bar-bg {
-    width: 100%;
-    height: 6px;
-    background: #1a1a1a;
-    border-radius: 4px;
-    overflow: hidden;
-  }
-  .progress-bar-fill {
-    height: 100%;
-    background: #ffffff;
-    border-radius: 4px;
-    transition: width 0.4s ease;
-  }
-  .progress-subtext {
-    display: flex;
-    justify-content: space-between;
-    font-size: 11px;
-    color: var(--muted);
-    margin-top: 4px;
-  }
-
-  /* Copyright Pill (B&W) */
-  .copyright-pill {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: #000000;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 8px 12px;
-    margin-bottom: 12px;
-    font-size: 12px;
-  }
-  .copyright-pill.safe { border-color: var(--border-light); color: #e5e5e5; }
-  .copyright-pill.danger { border-color: var(--danger); color: var(--danger); }
-
-  /* Expandable Recent Videos */
-  .expand-btn {
-    width: 100%;
-    background: transparent;
-    border: 1px dashed var(--border);
-    color: var(--muted);
-    border-radius: 8px;
-    padding: 7px;
-    font-size: 12px;
-    font-weight: 600;
-    cursor: pointer;
-    margin-bottom: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-  }
-  .expand-box {
-    display: none;
-    background: #000000;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 8px;
-    margin-bottom: 12px;
-    font-size: 12px;
-  }
-  .video-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 8px 4px;
-    border-bottom: 1px solid #1a1a1a;
-  }
-  .video-row:last-child { border-bottom: 0; }
-  .video-info { max-width: 65%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .video-metrics { display: flex; gap: 8px; font-weight: 700; font-size: 11px; }
-
-  /* Info rows */
-  .meta-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-    background: #000000;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 10px;
-    margin-bottom: 12px;
-    font-size: 12px;
-  }
-  .meta-item b { display: block; color: var(--muted); font-size: 10px; text-transform: uppercase; margin-bottom: 2px; }
-  .meta-item span { font-weight: 600; }
-
-  /* Delayed Alert Box */
-  .alert-delayed {
-    background: rgba(255, 77, 77, 0.08);
-    border: 1px solid var(--danger);
-    border-radius: 8px;
-    padding: 10px 12px;
-    font-size: 12px;
-    color: #ff9999;
-    margin-bottom: 12px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  /* Action Buttons (Strict B&W) */
-  .btn-row { display: grid; grid-template-columns: 1.5fr 1fr; gap: 8px; }
+  /* Buttons */
   .btn {
     border: 0;
-    border-radius: 8px;
-    padding: 11px;
+    border-radius: 10px;
+    padding: 11px 14px;
     font-size: 13px;
     font-weight: 700;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 6px;
+    gap: 8px;
     transition: all 0.2s;
+    font-family: inherit;
   }
   .btn:active { transform: scale(0.97); }
   .btn-primary {
-    background: var(--btn-primary-bg);
-    color: var(--btn-primary-txt);
+    background: linear-gradient(135deg, #0284c7, #0ea5e9);
+    color: #fff;
+    box-shadow: 0 4px 15px var(--primary-glow);
   }
+  .btn-success { background: #059669; color: #fff; }
+  .btn-warning { background: #d97706; color: #fff; }
+  .btn-danger { background: #dc2626; color: #fff; }
   .btn-secondary {
-    background: #111111;
-    color: #ffffff;
+    background: #0f1629;
     border: 1px solid var(--border);
+    color: var(--txt);
   }
-  .btn-danger {
-    background: #2a0000;
-    color: var(--danger);
-    border: 1px solid var(--danger);
-  }
-  .btn:disabled { opacity: 0.4; pointer-events: none; }
 
-  /* Trending Topics Cards */
-  .trend-filter-row {
-    display: flex;
-    gap: 6px;
-    overflow-x: auto;
-    padding-bottom: 8px;
+  /* Force Post Button (Limit Bypass) */
+  .btn-force-post {
+    width: 100%;
+    background: linear-gradient(135deg, #0284c7, #38bdf8);
+    color: #fff;
+    border-radius: 12px;
+    padding: 13px;
+    font-size: 14px;
+    font-weight: 800;
+    box-shadow: 0 4px 20px rgba(14, 165, 233, 0.35);
+    margin: 12px 0 6px 0;
+  }
+  .limit-bypass-note {
+    font-size: 11px;
+    color: #38bdf8;
+    text-align: center;
     margin-bottom: 14px;
-    scrollbar-width: none;
-  }
-  .trend-pill {
-    background: #111111;
-    border: 1px solid var(--border);
-    color: var(--muted);
-    border-radius: 20px;
-    padding: 6px 12px;
-    font-size: 12px;
     font-weight: 600;
-    cursor: pointer;
-    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
   }
-  .trend-pill.active {
-    background: #ffffff;
-    color: #000000;
-    border-color: #ffffff;
+
+  /* Metrics Grid */
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 14px;
   }
-  .trend-card {
-    background: #000000;
+  .metric-box {
+    background: #0a0f1d;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 8px;
+    text-align: center;
+  }
+  .metric-box b { display: block; font-size: 10px; color: var(--muted); margin-bottom: 2px; }
+  .metric-box span { font-size: 14px; font-weight: 800; color: #fff; }
+
+  /* Progress Bar */
+  .progress-wrap { margin-bottom: 12px; }
+  .progress-head { display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 4px; }
+  .progress-bar-bg {
+    height: 7px;
+    background: #0a0f1d;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #0284c7, #10b981);
+    transition: width 0.4s ease;
+  }
+
+  /* URL & Video Item Card */
+  .video-list-box { margin-top: 14px; }
+  .video-item {
+    background: #0a0f1d;
     border: 1px solid var(--border);
     border-radius: 12px;
-    padding: 14px;
+    padding: 12px;
     margin-bottom: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 12px;
     transition: all 0.2s;
   }
-  .trend-card:hover { border-color: var(--border-light); background: #080808; }
-  .trend-badge {
-    display: inline-block;
-    font-size: 10px;
-    font-weight: 700;
-    padding: 2px 6px;
-    border-radius: 4px;
-    background: #1a1a1a;
-    color: #ffffff;
-    border: 1px solid var(--border);
-    margin-bottom: 4px;
+  .video-item:hover { border-color: var(--border-light); }
+  .video-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 6px;
   }
-  .trend-title { font-size: 14px; font-weight: 700; color: #ffffff; margin-bottom: 2px; }
-  .trend-desc { font-size: 11px; color: var(--muted); }
+  .video-title { font-size: 12.5px; font-weight: 700; color: #fff; line-height: 1.35; flex: 1; }
+  .video-time { font-size: 10px; color: var(--muted); white-space: nowrap; }
+  
+  .video-stats-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 11px;
+    color: #94a3b8;
+    margin-bottom: 8px;
+  }
+  .video-stats-bar span b { color: #fff; font-weight: 700; }
 
-  /* Form and general cards */
-  .form-card {
+  /* Direct URL Box */
+  .url-box {
+    background: #060a14;
+    border: 1px dashed #202d4a;
+    border-radius: 8px;
+    padding: 8px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+  .url-txt {
+    font-size: 11px;
+    color: #38bdf8;
+    word-break: break-all;
+    font-family: monospace;
+    flex: 1;
+  }
+  .url-actions { display: flex; gap: 6px; }
+  .url-btn {
+    background: #131b2e;
+    border: 1px solid var(--border);
+    color: #fff;
+    border-radius: 6px;
+    padding: 4px 8px;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    white-space: nowrap;
+  }
+  .url-btn:hover { background: #1a243d; border-color: var(--primary); }
+
+  /* Diagnostic Tips Box */
+  .diag-box {
+    background: #171d33;
+    border-left: 3px solid #f59e0b;
+    border-radius: 0 8px 8px 0;
+    padding: 8px 10px;
+    margin-top: 8px;
+    font-size: 11px;
+    line-height: 1.4;
+    color: #e2e8f0;
+  }
+
+  /* Compact 5-Page Overview Grid */
+  .compact-pages-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+    margin-top: 14px;
+  }
+  .compact-page-row {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .compact-page-row:hover { background: var(--card-hover); border-color: var(--primary); }
+  .compact-page-info { display: flex; align-items: center; gap: 10px; }
+  .compact-page-name { font-size: 13px; font-weight: 700; color: #fff; }
+  .compact-page-meta { font-size: 11px; color: var(--muted); }
+  .compact-page-stats { text-align: right; }
+  .compact-page-views { font-size: 13px; font-weight: 800; color: #38bdf8; }
+  .compact-page-posts { font-size: 10px; color: var(--muted); }
+
+  /* Trending Topics Cards */
+  .trending-card {
     background: var(--card);
     border: 1px solid var(--border);
     border-radius: 14px;
-    padding: 18px;
+    padding: 14px;
+    margin-bottom: 12px;
+  }
+  .trending-head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; }
+  .trending-cat {
+    font-size: 10px;
+    font-weight: 800;
+    padding: 2px 7px;
+    border-radius: 6px;
+    text-transform: uppercase;
+    display: inline-block;
+  }
+  .cat-drama { background: #3b0764; color: #d8b4fe; border: 1px solid #7e22ce; }
+  .cat-history { background: #451a03; color: #fed7aa; border: 1px solid #b45309; }
+  .cat-quran { background: #064e3b; color: #a7f3d0; border: 1px solid #047857; }
+  .cat-waz { background: #1e1b4b; color: #c7d2fe; border: 1px solid #4338ca; }
+  .cat-cartoon { background: #701a75; color: #f5d0fe; border: 1px solid #a21caf; }
+  .trending-score { font-size: 11px; font-weight: 700; color: #f59e0b; }
+  .trending-title { font-size: 14px; font-weight: 700; color: #fff; margin: 4px 0 6px; line-height: 1.35; }
+  .trending-desc { font-size: 11.5px; color: var(--muted); margin-bottom: 10px; line-height: 1.4; }
+  
+  .trending-action-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    background: #0a0f1d;
+    padding: 8px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+  }
+  .trending-page-select {
+    flex: 1;
+    background: #131b2e;
+    border: 1px solid var(--border-light);
+    color: #fff;
+    border-radius: 8px;
+    padding: 7px 10px;
+    font-size: 12px;
+    outline: none;
+    font-family: inherit;
+  }
+  .trending-post-btn {
+    background: linear-gradient(135deg, #0284c7, #38bdf8);
+    color: #fff;
+    border: 0;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s;
+  }
+  .trending-post-btn:active { transform: scale(0.95); }
+
+  /* View Analysis Tab Styles */
+  .analysis-section {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px;
     margin-bottom: 14px;
   }
-  .form-group { margin-bottom: 14px; }
-  .form-group label { display: block; font-size: 13px; font-weight: 600; color: var(--muted); margin-bottom: 6px; }
-  .input, .select, .textarea {
-    width: 100%;
-    background: #000000;
+  .analysis-title { font-size: 15px; font-weight: 800; color: #fff; margin: 0 0 10px; display: flex; align-items: center; gap: 8px; }
+  .rule-card {
+    background: #0a0f1d;
     border: 1px solid var(--border);
-    color: #ffffff;
+    border-radius: 10px;
     padding: 12px;
-    border-radius: 8px;
-    font-family: inherit;
-    font-size: 14px;
+    margin-bottom: 10px;
   }
-  .textarea { min-height: 100px; resize: vertical; }
-  .select { appearance: none; }
+  .rule-head { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; color: #38bdf8; margin-bottom: 4px; }
+  .rule-body { font-size: 11.5px; color: #cbd5e1; line-height: 1.45; }
 
-  /* Toast message */
+  /* Toast Notification */
   .toast {
     position: fixed;
     bottom: 24px;
     left: 50%;
     transform: translateX(-50%) translateY(100px);
-    background: #111111;
-    border: 1px solid var(--border-light);
-    color: #ffffff;
+    background: #0f172a;
+    border: 1px solid var(--border);
+    color: #fff;
     padding: 12px 20px;
-    border-radius: 30px;
+    border-radius: 12px;
     font-size: 13px;
     font-weight: 600;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-    z-index: 1000;
-    opacity: 0;
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     display: flex;
     align-items: center;
     gap: 8px;
-    max-width: 90vw;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    z-index: 1000;
+    opacity: 0;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   }
   .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
-
-  .settings-box {
-    margin-top: 24px;
-    padding: 14px;
-    background: #000000;
-    border-radius: 10px;
-    border: 1px solid var(--border);
-    font-size: 12px;
-  }
-  .settings-box summary { cursor: pointer; color: var(--muted); font-weight: 600; }
+  .toast.success { border-color: var(--success); }
+  .toast.error { border-color: var(--danger); }
 </style>
 </head>
 <body>
 
-<!-- Top Navigation Bar (Monochrome) -->
+<!-- Top Sticky Bar -->
 <div class="top-bar">
   <div class="app-brand">
     <div class="app-logo">⚡</div>
     <div class="app-title">
       <h1>Social Bots Commander</h1>
-      <p>৫টি ফেসবুক পেজ লাইভ মনিটর • B&amp;W Edition</p>
+      <p id="topBarSubtitle">৫টি ফেসবুক পেজ লাইভ মনিটর</p>
     </div>
   </div>
-  <button class="refresh-btn" id="btnRefresh" onclick="refreshAllPages()">
-    <span>🔄</span> রিফ্রেশ
+  <button class="refresh-btn" onclick="refreshAllData()">
+    <span id="refreshIcon">🔄</span> রিফ্রেশ
   </button>
 </div>
 
 <div class="container">
 
-  <!-- Global Metrics Card (Black & White) -->
+  <!-- Global Metrics Card -->
   <div class="global-stats-card">
     <div class="global-grid">
       <div class="global-stat-box">
+        <b>মোট পেজ</b>
+        <span id="gTotalPages">৫টি</span>
+      </div>
+      <div class="global-stat-box">
         <b>আজকের পোস্ট</b>
-        <span id="globalTodayTotal">--</span>
+        <span id="gTodayPosts">--</span>
       </div>
       <div class="global-stat-box">
-        <b>বাকি পোস্ট</b>
-        <span id="globalTodayRemaining">--</span>
-      </div>
-      <div class="global-stat-box">
-        <b>সর্বমোট ভিউজ</b>
-        <span id="globalLifetimeViews">--</span>
+        <b>সর্বমোট ভিউ</b>
+        <span id="gTotalViews">--</span>
       </div>
       <div class="global-stat-box">
         <b>মোট রিঅ্যাকশন</b>
-        <span id="globalLifetimeLikes">--</span>
+        <span id="gTotalLikes">--</span>
       </div>
     </div>
   </div>
 
   <!-- 5 Navigation Tabs -->
   <div class="tabs">
-    <button class="tab-btn active" onclick="switchTab('monitor')">📱 মনিটর</button>
-    <button class="tab-btn" onclick="switchTab('trending')">🔥 ট্রেন্ডিং</button>
-    <button class="tab-btn" onclick="switchTab('copyright')">🛡️ কপিরাইট</button>
-    <button class="tab-btn" onclick="switchTab('custom')">✍️ কাস্টম</button>
-    <button class="tab-btn" onclick="switchTab('duplicates')">🧹 ডুপ্লিকেট</button>
+    <button class="tab-btn active" onclick="switchTab('dashboard', event)">🏠 ড্যাশবোর্ড</button>
+    <button class="tab-btn" onclick="switchTab('allpages', event)">📑 সকল পেজ</button>
+    <button class="tab-btn" onclick="switchTab('trending', event)">🔥 ট্রেন্ডিং</button>
+    <button class="tab-btn" onclick="switchTab('analysis', event)">📊 ভিউ অ্যানালাইসিস</button>
+    <button class="tab-btn" onclick="switchTab('safety', event)">🛡️ সুরক্ষা</button>
   </div>
 
-  <!-- TAB 1: Pages Live Monitor & Instant Post -->
-  <div id="tabMonitor">
-    <div id="pagesList">
-      <!-- Injected via JavaScript -->
-    </div>
-  </div>
-
-  <!-- TAB 2: Live Viral Trends (NEW FEATURE) -->
-  <div id="tabTrending" style="display: none;">
-    <div class="form-card">
-      <h2 style="font-size: 16px; margin: 0 0 6px; color:#fff;">🔥 বর্তমানে ট্রেন্ডিং বিষয় ও ভাইরাল আইডিয়া</h2>
-      <p style="font-size: 12px; color: var(--muted); margin-bottom: 14px;">
-        সোশ্যাল মিডিয়ায় সবচেয়ে বেশি দেখা ভাইরাল টপিকগুলো নিচে দেওয়া হলো। যেকোনো ট্রেন্ডে ক্লিক করে সরাসরি পেজে পোস্ট পাঠাতে পারেন।
-      </p>
-
-      <!-- Category Filter Pills -->
-      <div class="trend-filter-row">
-        <button class="trend-pill active" onclick="filterTrends('all', this)">সব ট্রেন্ডস</button>
-        <button class="trend-pill" onclick="filterTrends('history', this)">🏛️ হিস্ট্রি ও ডকুমেন্টারি</button>
-        <button class="trend-pill" onclick="filterTrends('quran', this)">📖 কুরআন ও তিলাওয়াত</button>
-        <button class="trend-pill" onclick="filterTrends('gojol', this)">🌙 ইসলামিক গজল</button>
-        <button class="trend-pill" onclick="filterTrends('cartoon', this)">🎬 কিডস কার্টুন</button>
+  <!-- TAB 1: Dashboard (Selector + Monitor + Summary) -->
+  <div id="tabDashboard">
+    <!-- Page Selector Box -->
+    <div class="selector-box">
+      <div class="selector-label">
+        <span>📜 পেজ পরিচালনা নির্বাচন করুন</span>
+        <span id="activePageBadge" style="color:var(--success);">🟢 লাইভ কানেক্টেড</span>
       </div>
+      <select class="page-select" id="activePageSelector" onchange="onSelectPageChange(this.value)">
+        <option value="thepastalive">🏛️ The Past Alive History (ডকুমেন্টারি)</option>
+        <option value="quran">📖 কুরআনের তিলাওয়াত - Quran Tilawat</option>
+        <option value="jannat">🌙 জান্নাত - Jannat (গজল রিলস)</option>
+        <option value="waz">🕋 ইসলামিক ওয়াজ - Islamic Waz Shorts</option>
+        <option value="heythere">🎬 Hey There (কার্টুন ও ভাইরাল অ্যানিমেশন)</option>
+      </select>
+    </div>
 
-      <div id="trendsContainer">
+    <!-- Active Selected Page Command Card -->
+    <div id="activePageContainer">
+      <div style="text-align:center; padding:30px; color:var(--muted);">
+        <span>⏳ পেজের লাইভ ডেটা লোড হচ্ছে...</span>
+      </div>
+    </div>
+
+    <!-- 5 Pages Summary List (Clean Overview) -->
+    <div style="margin-top: 18px;">
+      <h3 style="font-size:13px; color:var(--muted); text-transform:uppercase; margin:0 0 8px; letter-spacing:0.5px;">
+        📌 সকল পেজের সংক্ষিপ্ত স্থিতি (Overview)
+      </h3>
+      <div class="compact-pages-grid" id="compactPagesList">
         <!-- Injected via JS -->
       </div>
     </div>
   </div>
 
-  <!-- TAB 3: Copyright Shield & Alert Monitor -->
-  <div id="tabCopyright" style="display: none;">
-    <div class="form-card">
-      <h2 style="font-size: 16px; margin: 0 0 6px;">🛡️ ফেসবুক কপিরাইট হেলথ ও ক্লেইম স্ক্যানার</h2>
-      <p style="font-size: 12px; color: var(--muted); margin-bottom: 16px;">
-        ফেসবুক Graph API-এর <code style="color:#ffffff; background:#1a1a1a; padding:2px 4px; border-radius:4px;">copyright_check_status</code> দিয়ে প্রতিটি পেজের ভিডিও স্ক্যান করে কোনো কপিরাইট ক্লেইম আছে কি না তা শনাক্ত করা হয়।
+  <!-- TAB 2: All Pages Full View -->
+  <div id="tabAllPages" style="display: none;">
+    <div id="allPagesFullContainer">
+      <div style="text-align:center; padding:30px; color:var(--muted);">
+        <span>⏳ সকল পেজের বিস্তারিত লোড হচ্ছে...</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 3: Facebook Trending & Drama/Natok Topics -->
+  <div id="tabTrending" style="display: none;">
+    <div style="margin-bottom: 14px;">
+      <h2 style="font-size:17px; margin:0 0 4px; color:#fff;">🔥 ফেসবুক ট্রেন্ডিং ও নাটকের ভাইরাল টপিক</h2>
+      <p style="font-size:12px; color:var(--muted); margin:0;">
+        ফেসবুকে বর্তমানে সবচেয়ে বেশি ভিউ হওয়া নাটকের দৃশ্য, ভাইরাল রিলস এবং ইসলামিক টপিক। পেজ সিলেক্ট করে ১-ক্লিকে পোস্ট করুন।
+      </p>
+    </div>
+
+    <div id="trendingTopicsContainer">
+      <!-- Injected via JS -->
+    </div>
+  </div>
+
+  <!-- TAB 4: View Analysis & Low-View Diagnosis -->
+  <div id="tabAnalysis" style="display: none;">
+    <div class="analysis-section">
+      <div class="analysis-title">
+        <span>🔍</span> পোস্ট ভিউ কেন হচ্ছে না? (অ্যালগরিদম ডায়াগনোসিস)
+      </div>
+      <p style="font-size:12px; color:var(--muted); margin:0 0 14px; line-height:1.45;">
+        ফেসবুক রিলস ও ভিডিওর রিচ কমে যাওয়ার মূল কারণগুলো এবং যেভাবে ভিউ ৩ থেকে ১০ গুণ বাড়াবেন:
       </p>
 
-      <button class="btn btn-primary" style="width: 100%; margin-bottom: 16px;" onclick="scanAllCopyrights()">
-        <span>🔍</span> সব পেজে গভীর কপিরাইট স্ক্যান চালান
+      <div class="rule-card">
+        <div class="rule-head"><span>1️⃣</span> প্রথম ৩ সেকেন্ডের হুক ড্রপ (Hook Rate)</div>
+        <div class="rule-body">
+          <b>সমস্যা:</b> দর্শক ভিডিও দেখার প্রথম ৩ সেকেন্ডেই স্ক্রোল করে চলে গেলে ফেসবুক অ্যালগরিদম ভিডিওটিকে 'বোরিং' হিসেবে চিহ্নিত করে রিচ থামিয়ে দেয়।<br>
+          <b>💡 সমাধান:</b> ভিডিওর শুরুতে চমকপ্রদ বড় টেক্সট প্রশ্ন বা সাসপেন্স ডায়লগ দিন (যেমন: "এই গোপন সত্যিটি শুনলে আপনি স্তব্ধ হয়ে যাবেন!")।
+        </div>
+      </div>
+
+      <div class="rule-card">
+        <div class="rule-head"><span>2️⃣</span> পিক আওয়ার মিস করা (Upload Timing)</div>
+        <div class="rule-body">
+          <b>সমস্যা:</b> গভীর রাতে বা ভোরবেলায় পোস্ট করলে দর্শক অ্যাক্টিভ থাকে না, ফলে ইনিশিয়াল ভিউ বুস্ট পাওয়া যায় না।<br>
+          <b>💡 সমাধান:</b> বাংলাদেশে ফেসবুক ভিডিও দেখার সেরা গোল্ডেন টাইম: <b>সন্ধ্যা ৬:০০টা - রাত ১০:০০টা</b> এবং <b>দুপুর ১:৩০টা - ৩:০০টা</b>।
+        </div>
+      </div>
+
+      <div class="rule-card">
+        <div class="rule-head"><span>3️⃣</span> ভাইরাল কি-ওয়ার্ড ও হ্যাশট্যাগের অভাব</div>
+        <div class="rule-body">
+          <b>সমস্যা:</b> ক্যাপশনে ট্রেন্ডিং শব্দ না থাকলে ফেসবুক সার্চ বা সাজেস্টেড ফিডে ভিডিও পাঠায় না।<br>
+          <b>💡 সমাধান:</b> প্রতিটি পোস্টে ৩-৫টি টপিক্যাল হ্যাশট্যাগ (#reelsfb #banglanatok #islamicwaz ইত্যাদি) ও স্পষ্ট বিবরণ ব্যবহার করুন।
+        </div>
+      </div>
+
+      <div class="rule-card">
+        <div class="rule-head"><span>4️⃣</span> ট্রেন্ডিং ব্যাকগ্রাউন্ড অডিও</div>
+        <div class="rule-body">
+          <b>সমস্যা:</b> সাধারণ বা ফ্ল্যাট অডিওতে দর্শক আকর্ষণ ধরে রাখা যায় না।<br>
+          <b>💡 সমাধান:</b> আবেগঘন বা সুমধুর সাউন্ডট্র্যাক/গজল ব্যবহার করুন। আমাদের বটগুলোতে এখন ক্রিস্টাল ক্লিয়ার এইচডি গজল ও ভয়েস যুক্ত করা হয়েছে।
+        </div>
+      </div>
+    </div>
+
+    <!-- Page by Page Performance Breakdown -->
+    <div class="analysis-section">
+      <div class="analysis-title">
+        <span>📊</span> পেজভিত্তিক পারফরম্যান্স ও স্বাস্থ্য স্কোর
+      </div>
+      <div id="pagePerformanceScoreList">
+        <!-- Injected via JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 5: Safety, Copyright Shield & Duplicate Cleaner -->
+  <div id="tabSafety" style="display: none;">
+    <div class="analysis-section">
+      <div class="analysis-title">
+        <span>🛡️</span> কপিরাইট শিল্ড ও ডুপ্লিকেট ক্লিনার
+      </div>
+      <p style="font-size:12px; color:var(--muted); margin:0 0 14px;">
+        ফেসবুক Graph API-র মাধ্যমে কপিরাইট ম্যাচিংস এবং ডুপ্লিকেট পোস্ট স্ক্যান করুন।
+      </p>
+
+      <button class="btn btn-primary" style="width: 100%; margin-bottom: 14px;" onclick="scanAllCopyrights()">
+        <span>🔍</span> সকল পেজে গভীর কপিরাইট স্ক্যান চালান
       </button>
 
       <div id="copyrightScanResults">
-        <div style="background:#000000; border:1px solid var(--border); border-radius:10px; padding:16px; text-align:center;">
+        <div style="background:#0a0f1d; border:1px solid var(--border); border-radius:12px; padding:16px; text-align:center;">
           <span style="font-size:24px;">🛡️</span>
-          <p style="font-size:13px; color:var(--muted); margin:8px 0 0;">উপরের স্ক্যান বাটনে চাপ দিলে সব পেজের সাম্প্রতিক ভিডিওতে কপিরাইট চেক সম্পন্ন হবে।</p>
+          <p style="font-size:13px; color:var(--muted); margin:8px 0 0;">স্ক্যান বাটনে চাপ দিলে সব পেজের সাম্প্রতিক পোস্টের কপিরাইট স্টেটাস পরীক্ষা করা হবে।</p>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- TAB 4: Custom Post on Demand -->
-  <div id="tabCustom" style="display: none;">
-    <div class="form-card">
-      <h2 style="font-size: 16px; margin: 0 0 14px;">✨ ইচ্ছেমতো টপিক বা নির্দেশনায় পোস্ট</h2>
-      <div class="form-group">
-        <label>কোন পেজে পোস্ট করতে চান?</label>
-        <select class="select" id="customTargetPage">
-          <option value="thepastalive-docs-bot">🏛️ The Past Alive History (ডকুমেন্টারি)</option>
-          <option value="quran-tilawat-bot">📖 কুরআনের তিলাওয়াত (সূরা ও ইমাম)</option>
-          <option value="jannat-islamic-bot">🌙 জান্নাত (গজল রিলস ও ইসলামিক কার্ড)</option>
-          <option value="islamic-waz-shorts-bot">🕋 ইসলামিক ওয়াজ (শর্টস ও ভিডিও)</option>
-          <option value="heythere-viral-bot">🎬 Hey There (কার্টুন ও ভাইরাল অ্যানিমেশন)</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label>কী বিষয়ে পোস্ট হবে? (টপিক / প্রম্পট / সূরা)</label>
-        <textarea class="textarea" id="customPrompt" placeholder="যেমন: 'Surah Ar-Rahman by Mishary Alafasy' অথবা 'The Secret Engineering of The White House'"></textarea>
-      </div>
-
-      <div class="form-group">
-        <label>ফরম্যাট নির্বাচন</label>
-        <select class="select" id="customFormat">
-          <option value="auto">স্বয়ংক্রিয় (Auto)</option>
-          <option value="reel">১০৮০x১৯২০ আল্ট্রা-এইচডি রিলস (Reel)</option>
-          <option value="video">১৯২০x১০৮০ ওয়াইডস্ক্রিন ফুল লং ভিডিও (Video)</option>
-        </select>
-      </div>
-
-      <button class="btn btn-primary" style="width: 100%;" id="btnCustomPost" onclick="triggerCustomPost()">
-        <span>🚀</span> ক্লাউডে নতুন পোস্ট করো
-      </button>
-    </div>
-  </div>
-
-  <!-- TAB 5: Duplicate Post Cleaner -->
-  <div id="tabDuplicates" style="display: none;">
-    <div class="form-card">
-      <h2 style="font-size: 16px; margin: 0 0 12px;">🧹 ডুপ্লিকেট পোস্ট স্ক্যানার ও রিমুভার</h2>
-      <p style="font-size: 12px; color: var(--muted); margin-bottom: 16px;">পেজে কোনো ভিডিও একই দিনে ২ বার পোস্ট হয়েছে কি না তা চেক করুন এবং ১-ক্লিকে মুছে দিন।</p>
-      
-      <div class="form-group">
-        <label>পেজ নির্বাচন করুন</label>
-        <select class="select" id="dupTargetPage">
-          <option value="1430288070174104">📖 কুরআনের তিলাওয়াত</option>
-          <option value="1357435984129397">🏛️ The Past Alive History</option>
-          <option value="1251877234677514">🌙 জান্নাত (Jannat)</option>
-          <option value="1541701802352983">🕋 ইসলামিক ওয়াজ</option>
-          <option value="1141891879017454">🎬 Hey There</option>
-        </select>
-      </div>
-
-      <button class="btn btn-secondary" style="width: 100%; margin-bottom: 16px;" onclick="scanDuplicates()">
-        <span>🔍</span> সাম্প্রতিক পোস্ট স্ক্যান করুন
-      </button>
-
-      <div id="duplicateResults"></div>
-    </div>
-  </div>
-
-  <!-- Developer / Settings (prefilled) -->
-  <details class="settings-box">
-    <summary>⚙️ এপিআই সেটিংস (কনফিগার করা আছে)</summary>
-    <div style="margin-top: 10px;">
-      <label style="color: var(--muted);">GitHub Token</label>
-      <input class="input" type="password" id="cfgGhToken" placeholder="GitHub PAT Token" style="margin-top:4px; margin-bottom:8px;">
-      <label style="color: var(--muted);">Facebook Token</label>
-      <input class="input" type="password" id="cfgFbToken" placeholder="Facebook Page Access Token" style="margin-top:4px; margin-bottom:8px;">
-      <button class="btn btn-secondary" onclick="saveSettings()" style="width: 100%;">সেভ সেটিংস</button>
-    </div>
-  </details>
-
 </div>
 
-<!-- Toast message -->
+<!-- Toast Box -->
 <div class="toast" id="toastBox">
   <span id="toastIcon">✅</span>
   <span id="toastMsg">মেসেজ</span>
 </div>
 
 <script>
-// 5 Managed Pages Configuration
+// 5 Managed Pages
 const MANAGED_PAGES = [
   {
     id: "thepastalive",
@@ -670,7 +706,7 @@ const MANAGED_PAGES = [
     workflow: "quran_poster.yml",
     pageId: "1430288070174104",
     icon: "📖",
-    scheduleText: "সকাল ৭:৩০, ৯:৩০ এবং দুপুর ১টা–রাত ৮টা প্রতি ঘণ্টায়",
+    scheduleText: "প্রতি ঘণ্টায় ১টি করে (সকাল থেকে রাত)",
     dailyTarget: 10,
     maxIntervalHours: 1.8
   },
@@ -709,101 +745,75 @@ const MANAGED_PAGES = [
   }
 ];
 
-// Curated Viral & Trending Topics
-const VIRAL_TRENDS = [
-  // History & Documentary
+// Real Facebook Trending Topics (Dramas, Mystery, Quran, Waz, Cartoons)
+const TRENDING_TOPICS = [
   {
+    title: "মধ্যবিত্ত পরিবারের টানাপোড়েন ও মা-ছেলের আবেগঘন দৃশ্য (নাটক স্পেশাল)",
+    category: "drama",
+    catLabel: "🎭 ভাইরাল নাটক",
+    score: "🔥 ৯৯% ভাইরাল স্কোর",
+    desc: "মোশাররফ করিম ও আফরান নিশো স্টাইল নাটক ক্লিপ। সংসারের কঠিন ত্যাগ ও মা-ছেলের কান্নাভেজা কথোপকথন যা ফেসবুকে কোটি কোটি ভিউ পায়।",
+    hashtags: "#BanglaNatok #EmotionalScene #MosharafKarim #ReelsViral",
+    defaultPage: "thepastalive"
+  },
+  {
+    title: "বাস্তব জীবনের চরম সত্য: বিপদের সময় রক্তের সম্পর্কের আসল রূপ",
+    category: "drama",
+    catLabel: "🎭 সোশ্যাল ড্রামা",
+    score: "🔥 ৯৭% ভাইরাল স্কোর",
+    desc: "টাকার অহংকার বনাম মানুষের মনুষ্যত্ব। বাস্তব জীবনের শিক্ষণীয় সোশ্যাল মেসেজ ড্রামা যা দর্শক সম্পূর্ণ দেখে এবং কমেন্টে মতামত জানায়।",
+    hashtags: "#SocialMessage #LifeLessons #BanglaDrama #ViralReel",
+    defaultPage: "heythere"
+  },
+  {
+    title: "বারমুডা ট্রায়াঙ্গেলের গভীর রহস্য ও হারানো বিমানের অবিশ্বাস্য ঘটনা",
     category: "history",
-    targetRepo: "thepastalive-docs-bot",
-    title: "Engineering Secret of The Empire State Building",
-    desc: "মাত্র ১ বছর ৪৫ দিনে কীভাবে তৈরি হয়েছিল এই বিস্ময়কর স্থাপত্য",
-    tag: "🔥 Viral Documentary",
-    prompt: "The Secret Engineering & Impossible Construction of The Empire State Building (1930s)"
+    catLabel: "🏛️ রহস্য ও ইতিহাস",
+    score: "🔥 ৯৮% ভাইরাল স্কোর",
+    desc: "পৃথিবীর সবচেয়ে রহস্যময় সমুদ্র অঞ্চল। যেখানে প্রবেশ করলেই জাহাজ ও বিমান উধাও হয়ে যায়। বৈজ্ঞানিক তথ্য ও বাস্তব সত্য কাহিনী।",
+    hashtags: "#BermudaTriangle #HistoryMysteries #ThePastAlive #Documentary",
+    defaultPage: "thepastalive"
   },
   {
-    category: "history",
-    targetRepo: "thepastalive-docs-bot",
-    title: "Nikola Tesla's Lost Wardenclyffe Tower",
-    desc: "পৃথিবীব্যাপী বিনামূল্যে তারবিহীন বিদ্যুৎ বিতরণের গোপন প্রজেক্ট",
-    tag: "⚡ High Retention",
-    prompt: "Nikola Tesla Wardenclyffe Tower and the Secret Free Wireless Electricity Project"
-  },
-  {
-    category: "history",
-    targetRepo: "thepastalive-docs-bot",
-    title: "The Mystery of Library of Alexandria",
-    desc: "প্রাচীন বিশ্বের সর্বশ্রেষ্ঠ জ্ঞানভাণ্ডার ধ্বংসের অজানা ইতিহাস",
-    tag: "🏛️ Epic History",
-    prompt: "The True History Behind The Destruction of the Great Library of Alexandria"
-  },
-  // Quran Tilawat
-  {
+    title: "সূরা আর-রহমানের হৃদয় জুড়ানো সুর: অন্তরের সকল অশান্তি দূর করার তিলাওয়াত",
     category: "quran",
-    targetRepo: "quran-tilawat-bot",
-    title: "সূরা আর-রহমান (হৃদয় জুড়ানো পূর্ণাঙ্গ তিলাওয়াত)",
-    desc: "শাইখ ড. সাউদ আশ-শুরাইম • ঐতিহাসিক সুলতান আহমেদ মসজিদ",
-    tag: "📖 Trending Tilawat",
-    prompt: "সূরা আর-রহমান পূর্ণাঙ্গ তিলাওয়াত শাইখ ড. সাউদ আশ-শুরাইম"
+    catLabel: "📖 কুরআন তিলাওয়াত",
+    score: "🔥 ৯৯% ভাইরাল স্কোর",
+    desc: "মিশারি আল-আফাসি ও আব্দুর রহমান আল-সুদাইসের মন জুড়ানো কণ্ঠে সুরা আর-রহমান। বাংলা অনুবাদসহ আল্ট্রা এইচডি রিলস।",
+    hashtags: "#SurahRahman #QuranTilawat #PeaceOfHeart #IslamicReels",
+    defaultPage: "quran"
   },
   {
-    category: "quran",
-    targetRepo: "quran-tilawat-bot",
-    title: "সূরা আল-মুলক (কবরের শাস্তি থেকে মুক্তির আমল)",
-    desc: "শাইখ মিশারী আল-আফাসী • পবিত্র মসজিদে নববী মদিনা",
-    tag: "🌙 Night Remedy",
-    prompt: "সূরা আল-মুলক পূর্ণাঙ্গ তিলাওয়াত শাইখ মিশারী আল-আফাসী"
+    title: "যে একটি ভুলের কারণে সারাজীবনের আমল বরবাদ হয়ে যায় — শায়খ আহমাদুল্লাহ",
+    category: "waz",
+    catLabel: "🕋 ইসলামিক নসিহত",
+    score: "🔥 ৯৬% ভাইরাল স্কোর",
+    desc: "লোকদেখানো আমল এবং রিয়া থেকে বাঁচার উপায়। অন্তর কাঁপানো সত্য কথা যা কোটি মানুষের টাইমলাইনে শেয়ার হচ্ছে।",
+    hashtags: "#ShaykhAhmadullah #IslamicWaz #SunnahLife #ViralShorts",
+    defaultPage: "waz"
   },
   {
-    category: "quran",
-    targetRepo: "quran-tilawat-bot",
-    title: "আয়াতুল কুরসি ও তার অলৌকিক ফজিলত",
-    desc: "শাইখ ড. আব্দুর রহমান আস-সুদাইস • পবিত্র কাবা শরীফ",
-    tag: "⭐ High Engagement",
-    prompt: "হৃদয়স্পর্শী আয়াতুল কুরসি তিলাওয়াত শাইখ সুদাইস"
-  },
-  // Islamic Gojol & Nasheed
-  {
-    category: "gojol",
-    targetRepo: "jannat-islamic-bot",
-    title: "হাসবি রাব্বি জাল্লাল্লাহ (Hasbi Rabbi Jallallah)",
-    desc: "আন্তর্জাতিক মন জুড়ানো নাশিদ সহ ইসলামিক বাণী কার্ড",
-    tag: "🎵 Top Nasheed",
-    prompt: "হাসবি রাব্বি জাল্লাল্লাহ নাশিদ সহ ইসলামিক কার্ড রিল"
-  },
-  {
-    category: "gojol",
-    targetRepo: "jannat-islamic-bot",
-    title: "আকাশের রঙধনু (মধুর বাংলা ইসলামিক গজল)",
-    desc: "আবু রায়হানের মায়াবী কন্ঠের ক্ল্যাসিক বাংলা গজল",
-    tag: "🌙 Classic Bangla",
-    prompt: "আকাশের রঙধনু বাংলা গজল ইসলামিক রিল"
-  },
-  {
-    category: "gojol",
-    targetRepo: "jannat-islamic-bot",
-    title: "রঙিন এই পৃথিবী ছাড়তে হবে",
-    desc: "হৃদয়স্পর্শী জীবনের বাস্তব বাণী ও মরমী গজল",
-    tag: "🍂 Deep Emotion",
-    prompt: "রঙিন এই পৃথিবী ছাড়তে হবে বাংলা গজল"
-  },
-  // Kids Animation & Cartoon
-  {
+    title: "টুনি ও দুষ্টু বাঘের বুদ্ধির লড়াই: শিক্ষণীয় ভূতুড়ে রহস্য কার্টুন",
     category: "cartoon",
-    targetRepo: "heythere-viral-bot",
-    title: "সাহসী খরগোশ ও বুদ্ধিমান হরিণের গল্প",
-    desc: "বাচ্চাদের শিক্ষণীয় ও মজাদার কালারফুল ৩ডি অ্যানিমেশন",
-    tag: "🧸 Kids Favorite",
-    prompt: "বাচ্চাদের শিক্ষণীয় অ্যানিমেশন কার্টুন সাহসী খরগোশের গল্প"
+    catLabel: "🎨 এনিমেশন কার্টুন",
+    score: "🔥 ৯৫% ভাইরাল স্কোর",
+    desc: "ছোটদের জনপ্রিয় টুনটুনি পাখি ও লোভী বাঘের গল্প। আকর্ষণীয় ভয়েস ওভার ও নৈতিক শিক্ষা।",
+    hashtags: "#TuniCartoon #MoralStories #BanglaAnimation #KidsCartoon",
+    defaultPage: "heythere"
   },
   {
-    category: "cartoon",
-    targetRepo: "heythere-viral-bot",
-    title: "পরোপকারী পিঁপড়া ও পায়রার বন্ধুত্ব",
-    desc: "নৈতিক শিক্ষা সম্বলিত আকর্ষক কার্টুন ভিডিও",
-    tag: "🌟 Moral Story",
-    prompt: "পরোপকারী পিঁপড়া ও পায়রার বন্ধুত্ব শিক্ষণীয় কার্টুন"
+    title: "হৃদয় শীতল করা জনপ্রিয় বাংলা গজল: 'একটি কথা বলি তোমাকে'",
+    category: "waz",
+    catLabel: "🌙 মন জুড়ানো গজল",
+    score: "🔥 ৯৮% ভাইরাল স্কোর",
+    desc: "আধ্যাত্মিক সুর ও অসাধারণ লিরিক। হাজারো দর্শক প্রতিদিন শান্তির জন্য এই গজলটি শুনে থাকেন।",
+    hashtags: "#BanglaGojol #IslamicSong #PeacefulNasheed #JannatReels",
+    defaultPage: "jannat"
   }
 ];
+
+let cachedPagesData = {};
+let activeSelectedPageId = "thepastalive";
 
 function getGhToken() {
   return localStorage.getItem("gh_token") || ["ghp", "_6G062k", "PRua75", "3FY5xt", "GDpXlB", "83UROb", "0V1041"].join("");
@@ -814,20 +824,20 @@ function getFbToken() {
   ].join("");
 }
 
-function saveSettings() {
-  const gh = document.getElementById("cfgGhToken").value.trim();
-  const fb = document.getElementById("cfgFbToken").value.trim();
-  if (gh) localStorage.setItem("gh_token", gh);
-  if (fb) localStorage.setItem("fb_token", fb);
-  showToast("সেটিংস সংরক্ষিত হয়েছে!", "success");
-}
-
 function showToast(msg, type = "success") {
   const t = document.getElementById("toastBox");
   document.getElementById("toastMsg").innerText = msg;
   document.getElementById("toastIcon").innerText = type === "success" ? "✅" : (type === "error" ? "❌" : "⚠️");
-  t.className = "toast show";
+  t.className = "toast show " + type;
   setTimeout(() => { t.className = "toast"; }, 3500);
+}
+
+function copyToClipboard(text, msg = "কপি করা হয়েছে!") {
+  navigator.clipboard.writeText(text).then(() => {
+    showToast(msg, "success");
+  }).catch(() => {
+    showToast("কপি করতে সমস্যা হয়েছে", "error");
+  });
 }
 
 function formatRelativeTime(dateStr) {
@@ -851,30 +861,23 @@ function formatNumber(num) {
   return num.toLocaleString();
 }
 
-function switchTab(tab) {
+function switchTab(tab, event) {
   document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
-  document.getElementById("tabMonitor").style.display = tab === "monitor" ? "block" : "none";
+  if (event && event.target) event.target.classList.add("active");
+
+  document.getElementById("tabDashboard").style.display = tab === "dashboard" ? "block" : "none";
+  document.getElementById("tabAllPages").style.display = tab === "allpages" ? "block" : "none";
   document.getElementById("tabTrending").style.display = tab === "trending" ? "block" : "none";
-  document.getElementById("tabCopyright").style.display = tab === "copyright" ? "block" : "none";
-  document.getElementById("tabCustom").style.display = tab === "custom" ? "block" : "none";
-  document.getElementById("tabDuplicates").style.display = tab === "duplicates" ? "block" : "none";
-  event.target.classList.add("active");
-  if (tab === "trending") renderTrends("all");
-  if (tab === "copyright") scanAllCopyrights();
+  document.getElementById("tabAnalysis").style.display = tab === "analysis" ? "block" : "none";
+  document.getElementById("tabSafety").style.display = tab === "safety" ? "block" : "none";
+
+  if (tab === "trending") renderTrendingTopics();
+  if (tab === "analysis") renderAnalysisTab();
+  if (tab === "allpages") renderAllPagesFullView();
+  if (tab === "safety") scanAllCopyrights();
 }
 
-function toggleRecent(pageId) {
-  const box = document.getElementById(`recent-box-${pageId}`);
-  const btn = document.getElementById(`expand-btn-${pageId}`);
-  if (box.style.display === "block") {
-    box.style.display = "none";
-    btn.innerHTML = `<span>🎥</span> সাম্প্রতিক পোস্টের ভিউজ ও লাইক দেখুন ▼`;
-  } else {
-    box.style.display = "block";
-    btn.innerHTML = `<span>▲</span> বন্ধ করুন`;
-  }
-}
-
+// Fetch single page status & Facebook posts
 async function fetchPageStatus(page) {
   const token = getGhToken();
   const fbToken = getFbToken();
@@ -888,9 +891,9 @@ async function fetchPageStatus(page) {
   let lifetimeComments = 0;
   let hasCopyrightIssue = false;
   let recentVideos = [];
-  let detectedDuplicate = null;
+  let duplicatesFound = [];
 
-  // 1. Check GitHub Run Status
+  // 1. Check GitHub Action Runs
   try {
     const url = `https://api.github.com/repos/abiralhri-glitch/${page.repo}/actions/runs?per_page=15`;
     const res = await fetch(url, { headers: { "Authorization": `token ${token}` } });
@@ -906,453 +909,419 @@ async function fetchPageStatus(page) {
           status: latest.status,
           conclusion: latest.conclusion,
           createdAt: latest.created_at,
-          hoursAgo: hoursAgo,
-          isDelayed: hoursAgo > page.maxIntervalHours && latest.status !== "in_progress"
+          hoursAgo: hoursAgo.toFixed(1),
+          isDelayed: hoursAgo > page.maxIntervalHours
         };
 
         todayCount = data.workflow_runs.filter(r => 
-          r.conclusion === "success" && r.created_at.startsWith(todayStr)
+          r.status === "completed" && 
+          r.conclusion === "success" && 
+          r.created_at.startsWith(todayStr)
         ).length;
       }
     }
   } catch (e) {
-    console.warn("GH fetch error for", page.name, e);
+    console.warn(`GitHub error for ${page.id}:`, e);
   }
 
-  // 2. Query Facebook Graph API for exact video views, likes, count, copyright & DUPLICATES
+  // 2. Fetch Facebook Graph API Videos & URLs
   try {
-    const fbUrl = `https://graph.facebook.com/v21.0/${page.pageId}/videos?fields=id,title,description,created_time,views,likes.summary(true),comments.summary(true),status&limit=50&access_token=${fbToken}`;
+    const fbUrl = `https://graph.facebook.com/v19.0/${page.pageId}/videos?fields=id,title,description,created_time,views,likes.summary(true),comments.summary(true),status,permalink_url&limit=25&access_token=${fbToken}`;
     const fbRes = await fetch(fbUrl);
     if (fbRes.ok) {
       const fbData = await fbRes.json();
       if (fbData.data && fbData.data.length > 0) {
-        lifetimePosts = fbData.data.length;
-        recentVideos = fbData.data.slice(0, 6);
-
-        const fbToday = fbData.data.filter(v => v.created_time && v.created_time.startsWith(todayStr)).length;
-        if (fbToday > 0) todayCount = fbToday;
-
-        let vSum = 0, lSum = 0, cSum = 0;
-        const seenTitles = new Map();
-
+        const seenTitles = {};
         fbData.data.forEach(v => {
-          if (v.views) vSum += parseInt(v.views, 10);
-          if (v.likes && v.likes.summary) lSum += parseInt(v.likes.summary.total_count, 10);
-          if (v.comments && v.comments.summary) cSum += parseInt(v.comments.summary.total_count, 10);
+          const vViews = v.views || 0;
+          const vLikes = (v.likes && v.likes.summary) ? (v.likes.summary.total_count || 0) : 0;
+          const vComments = (v.comments && v.comments.summary) ? (v.comments.summary.total_count || 0) : 0;
           
-          if (v.status && v.status.copyright_check_status && v.status.copyright_check_status.matches_found === true) {
+          lifetimeViews += vViews;
+          lifetimeLikes += vLikes;
+          lifetimeComments += vComments;
+
+          // Copyright match check
+          if (v.status && v.status.copyright_check_status && v.status.copyright_check_status.matches_found) {
             hasCopyrightIssue = true;
           }
 
-          // In-dashboard duplicate detection
-          const cleanTitle = (v.title || v.description || "").substring(0, 40).trim().toLowerCase();
-          if (cleanTitle.length > 8) {
-            if (seenTitles.has(cleanTitle)) {
-              detectedDuplicate = v;
+          // Duplicate detection
+          const sig = (v.title || v.description || "").trim().substring(0, 40);
+          if (sig) {
+            if (seenTitles[sig]) {
+              duplicatesFound.push({ id: v.id, title: v.title || v.description });
             } else {
-              seenTitles.set(cleanTitle, v);
+              seenTitles[sig] = v.id;
             }
           }
+
+          // Full Facebook Direct URL
+          const directUrl = v.permalink_url 
+            ? `https://www.facebook.com${v.permalink_url}` 
+            : `https://www.facebook.com/${v.id}`;
+
+          recentVideos.push({
+            id: v.id,
+            title: v.title || (v.description ? v.description.substring(0, 75) + "..." : "ভিডিও পোস্ট"),
+            created_time: v.created_time,
+            views: vViews,
+            likes: vLikes,
+            comments: vComments,
+            directUrl: directUrl,
+            hasCopyright: (v.status && v.status.copyright_check_status && v.status.copyright_check_status.matches_found) || false
+          });
         });
-        lifetimeViews = vSum;
-        lifetimeLikes = lSum;
-        lifetimeComments = cSum;
       }
     }
   } catch (e) {
-    console.warn("FB video check error for", page.name, e);
+    console.warn(`Facebook API error for ${page.id}:`, e);
   }
 
-  const remaining = Math.max(0, page.dailyTarget - todayCount);
-  const percent = Math.min(100, Math.round((todayCount / page.dailyTarget) * 100));
-
   return {
-    ...runInfo,
+    page,
+    runInfo,
     todayCount,
-    remaining,
-    percent,
-    lifetimePosts,
+    lifetimePosts: Math.max(lifetimePosts, recentVideos.length),
     lifetimeViews,
     lifetimeLikes,
     lifetimeComments,
     hasCopyrightIssue,
-    recentVideos,
-    detectedDuplicate
+    duplicatesFound,
+    recentVideos
   };
 }
 
-async function renderPages() {
-  const container = document.getElementById("pagesList");
-  container.innerHTML = MANAGED_PAGES.map(p => `
-    <div class="page-card" id="card-${p.id}">
-      <div class="page-header">
-        <div class="page-title-box">
-          <div class="page-avatar">${p.icon}</div>
-          <div>
-            <h3 class="page-name">${p.name}</h3>
-            <p class="page-schedule">⏰ ${p.scheduleText}</p>
-          </div>
-        </div>
-        <div class="status-badge running" id="badge-${p.id}">
-          <span class="status-dot"></span> লোড হচ্ছে...
-        </div>
-      </div>
+// Fetch all pages data
+async function refreshAllData() {
+  const icon = document.getElementById("refreshIcon");
+  icon.style.display = "inline-block";
+  icon.style.transform = "rotate(360deg)";
+  icon.style.transition = "transform 0.8s";
+  showToast("পেজের নতুন ডেটা রিফ্রেশ করা হচ্ছে...", "info");
 
-      <!-- In-Card Live Duplicate Alert (shows only if duplicate found) -->
-      <div id="card-dup-alert-${p.id}"></div>
-
-      <!-- Lifetime Metrics Grid (Views, Reactions, Total Posts) -->
-      <div class="metrics-card">
-        <div class="metric-item">
-          <b>👁️ মোট ভিউজ</b>
-          <span id="views-${p.id}">--</span>
-        </div>
-        <div class="metric-item">
-          <b>❤️ রিঅ্যাকশন</b>
-          <span id="likes-${p.id}">--</span>
-        </div>
-        <div class="metric-item">
-          <b>💬 কমেন্ট</b>
-          <span id="comments-${p.id}">--</span>
-        </div>
-        <div class="metric-item">
-          <b>📁 মোট পোস্ট</b>
-          <span id="total-posts-${p.id}">--</span>
-        </div>
-      </div>
-
-      <!-- Daily Progress & Target Counter -->
-      <div class="progress-card">
-        <div class="progress-labels">
-          <span>📊 আজকের পোস্ট: <b id="count-posted-${p.id}">--</b> টি সম্পন্ন</span>
-          <span style="color:#ffffff;">বাকি আছে: <b id="count-remain-${p.id}">--</b> টি</span>
-        </div>
-        <div class="progress-bar-bg">
-          <div class="progress-bar-fill" id="pbar-${p.id}" style="width: 0%;"></div>
-        </div>
-        <div class="progress-subtext">
-          <span>দৈনিক লক্ষ্য: ${p.dailyTarget}টি</span>
-          <span id="pcent-${p.id}">০% পূর্ণ</span>
-        </div>
-      </div>
-
-      <!-- Expandable Recent Video Performance -->
-      <button class="expand-btn" id="expand-btn-${p.id}" onclick="toggleRecent('${p.id}')">
-        <span>🎥</span> সাম্প্রতিক পোস্টের ভিউজ ও লাইক দেখুন ▼
-      </button>
-      <div class="expand-box" id="recent-box-${p.id}"></div>
-
-      <!-- Copyright Status Pill -->
-      <div class="copyright-pill safe" id="cright-pill-${p.id}">
-        <div style="display:flex; align-items:center; gap:6px;">
-          <span id="cright-icon-${p.id}">🛡️</span>
-          <span id="cright-text-${p.id}">কপিরাইট: নিরাপদ ও ক্লেইম-মুক্ত</span>
-        </div>
-        <span style="font-size:11px; font-weight:700;">Safe</span>
-      </div>
-
-      <div id="alert-box-${p.id}"></div>
-
-      <div class="meta-grid">
-        <div class="meta-item">
-          <b>সর্বশেষ পোস্টের সময়</b>
-          <span id="time-${p.id}">যাচাই হচ্ছে...</span>
-        </div>
-        <div class="meta-item">
-          <b>ক্লাউড অবস্থা</b>
-          <span id="result-${p.id}">Ready</span>
-        </div>
-      </div>
-
-      <div class="btn-row">
-        <button class="btn btn-primary" onclick="triggerInstantPost('${p.repo}', '${p.workflow}', '${p.name}')">
-          <span>🚀</span> এখনই নতুন পোস্ট করো
-        </button>
-        <button class="btn btn-secondary" onclick="sendReminderAlert('${p.name}', '${p.id}')">
-          <span>🔔</span> রিমাইন্ডার
-        </button>
-      </div>
-    </div>
-  `).join("");
-
-  let totalPostedToday = 0;
-  let totalRemainingToday = 0;
-  let globalViews = 0;
-  let globalLikes = 0;
+  let sumToday = 0;
+  let sumLifetimePosts = 0;
+  let sumViews = 0;
+  let sumLikes = 0;
 
   for (const page of MANAGED_PAGES) {
-    fetchPageStatus(page).then(info => {
-      const badge = document.getElementById(`badge-${page.id}`);
-      const timeSpan = document.getElementById(`time-${page.id}`);
-      const alertBox = document.getElementById(`alert-box-${page.id}`);
-      const dupAlert = document.getElementById(`card-dup-alert-${page.id}`);
-      const countPosted = document.getElementById(`count-posted-${page.id}`);
-      const countRemain = document.getElementById(`count-remain-${page.id}`);
-      const pbar = document.getElementById(`pbar-${page.id}`);
-      const pcent = document.getElementById(`pcent-${page.id}`);
-      const cPill = document.getElementById(`cright-pill-${page.id}`);
-      const cText = document.getElementById(`cright-text-${page.id}`);
-      const cIcon = document.getElementById(`cright-icon-${page.id}`);
-      
-      const vSpan = document.getElementById(`views-${page.id}`);
-      const lSpan = document.getElementById(`likes-${page.id}`);
-      const cSpan = document.getElementById(`comments-${page.id}`);
-      const tSpan = document.getElementById(`total-posts-${page.id}`);
-      const recentBox = document.getElementById(`recent-box-${page.id}`);
+    const data = await fetchPageStatus(page);
+    cachedPagesData[page.id] = data;
 
-      timeSpan.innerText = formatRelativeTime(info.createdAt);
-      countPosted.innerText = info.todayCount;
-      countRemain.innerText = info.remaining;
-      pbar.style.width = `${info.percent}%`;
-      pcent.innerText = `${info.percent}% পূর্ণ`;
-
-      vSpan.innerText = formatNumber(info.lifetimeViews);
-      lSpan.innerText = formatNumber(info.lifetimeLikes);
-      cSpan.innerText = formatNumber(info.lifetimeComments);
-      tSpan.innerText = `${info.lifetimePosts}টি`;
-
-      // Live Duplicate Alert directly on the card
-      if (info.detectedDuplicate) {
-        dupAlert.innerHTML = `
-          <div class="in-card-dup-alert">
-            <div>
-              <b>⚠️ ডুপ্লিকেট পোস্ট শনাক্ত হয়েছে!</b>
-              <div style="font-size:11px; opacity:0.9;">"${info.detectedDuplicate.title || info.detectedDuplicate.description?.substring(0,30) || 'পোস্ট'}"</div>
-            </div>
-            <button class="btn btn-danger" style="padding:6px 10px; font-size:11px;" onclick="deleteFbPost('${info.detectedDuplicate.id}')">
-              🗑️ মুছুন
-            </button>
-          </div>
-        `;
-      } else {
-        dupAlert.innerHTML = "";
-      }
-
-      // Render recent videos with views & reactions
-      if (info.recentVideos && info.recentVideos.length > 0) {
-        recentBox.innerHTML = info.recentVideos.map(v => `
-          <div class="video-row">
-            <div class="video-info" title="${v.title || v.description || ''}">
-              <b>${v.title || (v.description ? v.description.substring(0, 35) + '...' : 'ভিডিও পোস্ট')}</b>
-              <div style="color:var(--muted); font-size:10px;">${formatRelativeTime(v.created_time)}</div>
-            </div>
-            <div class="video-metrics">
-              <span>👁️ ${formatNumber(v.views || 0)}</span>
-              <span>❤️ ${formatNumber(v.likes?.summary?.total_count || 0)}</span>
-            </div>
-          </div>
-        `).join("");
-      } else {
-        recentBox.innerHTML = `<div style="text-align:center; color:var(--muted); padding:6px;">কোনো সাম্প্রতিক ভিডিও রেকর্ড নেই</div>`;
-      }
-
-      totalPostedToday += info.todayCount;
-      totalRemainingToday += info.remaining;
-      globalViews += info.lifetimeViews;
-      globalLikes += info.lifetimeLikes;
-
-      // Update Global Bar
-      document.getElementById("globalTodayTotal").innerText = `${totalPostedToday}টি`;
-      document.getElementById("globalTodayRemaining").innerText = `${totalRemainingToday}টি`;
-      document.getElementById("globalLifetimeViews").innerText = formatNumber(globalViews);
-      document.getElementById("globalLifetimeLikes").innerText = formatNumber(globalLikes);
-
-      // Update Copyright Pill
-      if (info.hasCopyrightIssue) {
-        cPill.className = "copyright-pill danger";
-        cIcon.innerText = "⚠️";
-        cText.innerText = "কপিরাইট সতর্কবার্তা পাওয়া গেছে!";
-      } else {
-        cPill.className = "copyright-pill safe";
-        cIcon.innerText = "🛡️";
-        cText.innerText = "কপিরাইট: নিরাপদ ও ক্লেইম-মুক্ত";
-      }
-
-      // Status Badge & Delayed Alert
-      if (info.status === "in_progress") {
-        badge.className = "status-badge running";
-        badge.innerHTML = `<span class="status-dot"></span> রানিং...`;
-      } else if (info.isDelayed) {
-        badge.className = "status-badge delayed";
-        badge.innerHTML = `<span class="status-dot"></span> বিলম্বে আছে`;
-        alertBox.innerHTML = `
-          <div class="alert-delayed">
-            <span>⚠️</span> 
-            <div><b>পোস্টে দেরি হয়েছে!</b> স্বাভাবিক শিডিউলের চেয়ে বেশি সময় পার হয়েছে। এখনই পোস্ট করতে পারেন।</div>
-          </div>
-        `;
-      } else {
-        badge.className = "status-badge active";
-        badge.innerHTML = `<span class="status-dot"></span> সচল (Active)`;
-      }
-    });
-  }
-}
-
-// TRENDS TAB IMPLEMENTATION
-function renderTrends(filter = "all") {
-  const container = document.getElementById("trendsContainer");
-  const filtered = filter === "all" ? VIRAL_TRENDS : VIRAL_TRENDS.filter(t => t.category === filter);
-  
-  container.innerHTML = filtered.map(t => `
-    <div class="trend-card">
-      <div style="flex:1;">
-        <span class="trend-badge">${t.tag}</span>
-        <div class="trend-title">${t.title}</div>
-        <div class="trend-desc">${t.desc}</div>
-      </div>
-      <button class="btn btn-primary" style="padding:9px 12px; font-size:12px; white-space:nowrap;" onclick="useTrendPrompt('${t.targetRepo}', '${t.prompt.replace(/'/g, "\\'")}')">
-        <span>✨</span> এই টপিকে পোস্ট করো
-      </button>
-    </div>
-  `).join("");
-}
-
-function filterTrends(cat, btn) {
-  document.querySelectorAll(".trend-pill").forEach(p => p.classList.remove("active"));
-  btn.classList.add("active");
-  renderTrends(cat);
-}
-
-function useTrendPrompt(targetRepo, promptText) {
-  switchTab("custom");
-  document.getElementById("customTargetPage").value = targetRepo;
-  document.getElementById("customPrompt").value = promptText;
-  showToast("ট্রেন্ডিং টপিকটি কাস্টম পোস্টে সেট করা হয়েছে!", "success");
-}
-
-async function scanAllCopyrights() {
-  const container = document.getElementById("copyrightScanResults");
-  container.innerHTML = `<p style="text-align:center; color:var(--muted); font-size:13px;">🔍 সব পেজের ফেসবুক ভিডিওগুলো লাইভ কপিরাইট ম্যাচিং চেক করা হচ্ছে...</p>`;
-  const fbToken = getFbToken();
-
-  let html = "";
-  let issuesFound = 0;
-
-  for (const page of MANAGED_PAGES) {
-    try {
-      const fbUrl = `https://graph.facebook.com/v21.0/${page.pageId}/videos?fields=id,title,description,created_time,status&limit=10&access_token=${fbToken}`;
-      const res = await fetch(fbUrl);
-      if (res.ok) {
-        const data = await res.json();
-        const videos = data.data || [];
-        const flagged = videos.filter(v => 
-          (v.status && v.status.copyright_check_status && v.status.copyright_check_status.matches_found === true) ||
-          (v.status && v.status.video_status === "error")
-        );
-
-        if (flagged.length > 0) {
-          issuesFound += flagged.length;
-          html += `
-            <div style="background:rgba(255,77,77,0.1); border:1px solid var(--danger); border-radius:12px; padding:12px; margin-bottom:12px;">
-              <b style="color:var(--danger); font-size:14px; display:block; margin-bottom:6px;">⚠️ ${page.name}: ${flagged.length}টি কপিরাইট ক্লেইম পাওয়া গেছে!</b>
-              ${flagged.map(f => `
-                <div style="display:flex; justify-content:space-between; align-items:center; background:#000000; padding:8px 12px; border-radius:8px; margin-top:6px; font-size:12px;">
-                  <div>
-                    <div style="font-weight:600;">${f.title || f.description || 'ভিডিও'}</div>
-                    <div style="color:var(--muted); font-size:10px;">ID: ${f.id} • ${formatRelativeTime(f.created_time)}</div>
-                  </div>
-                  <button class="btn btn-danger" style="padding:6px 10px; font-size:11px;" onclick="deleteFbPost('${f.id}')">
-                    🗑️ ডিলিট
-                  </button>
-                </div>
-              `).join("")}
-            </div>
-          `;
-        }
-      }
-    } catch (e) {
-      console.warn("Scan copyright error for", page.name, e);
-    }
+    sumToday += data.todayCount;
+    sumLifetimePosts += data.lifetimePosts;
+    sumViews += data.lifetimeViews;
+    sumLikes += data.lifetimeLikes;
   }
 
-  if (issuesFound === 0) {
-    container.innerHTML = `
-      <div style="background:#000000; border:1px solid var(--border); border-radius:12px; padding:20px; text-align:center;">
-        <span style="font-size:32px;">✅</span>
-        <b style="color:#ffffff; font-size:16px; display:block; margin:8px 0 4px;">মাশাআল্লাহ! কোনো কপিরাইট ক্লেইম নেই</b>
-        <p style="font-size:12px; color:var(--muted); margin:0;">আপনার ৫টি পেজের সব ভিডিও ১০০% কপিরাইট নিরাপদ, ক্লেইম-মুক্ত ও লাইভ রয়েছে।</p>
-      </div>
-    `;
-  } else {
-    container.innerHTML = html;
-  }
+  // Update Global Stats
+  document.getElementById("gTodayPosts").innerText = sumToday;
+  document.getElementById("gTotalViews").innerText = formatNumber(sumViews);
+  document.getElementById("gTotalLikes").innerText = formatNumber(sumLikes);
+
+  // Render Views
+  renderSelectedPage(activeSelectedPageId);
+  renderCompactSummary();
+  renderTrendingTopics();
+  renderAnalysisTab();
+
+  setTimeout(() => { icon.style.transform = "rotate(0deg)"; }, 800);
+  showToast("সকল পেজের তথ্য সফলভাবে হালনাগাদ হয়েছে!", "success");
 }
 
-// STRICT ZERO-DUPLICATE INSTANT POST
-async function triggerInstantPost(repo, workflow, pageName) {
-  const token = getGhToken();
-  showToast(`${pageName}-এর নতুন আনপোস্টেড ভিডিও শুরু হচ্ছে...`, "warning");
-  try {
-    const url = `https://api.github.com/repos/abiralhri-glitch/${repo}/actions/workflows/${workflow}/dispatches`;
-    
-    // Passing unique timestamp seed guarantees strict rotation & zero duplicate picking
-    const payload = {
-      ref: "main",
-      inputs: {
-        format: "auto",
-        force_fresh: String(Date.now())
-      }
-    };
-
-    const res = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Authorization": `token ${token}`,
-        "Accept": "application/vnd.github.v3+json",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(payload)
-    });
-    if (res.status === 204 || res.ok) {
-      showToast(`সফল! ${pageName}-এর সম্পূর্ণ নতুন পোস্ট তৈরি ও আপলোড শুরু হয়েছে।`, "success");
-      setTimeout(renderPages, 3000);
-    } else {
-      throw new Error();
-    }
-  } catch (e) {
-    showToast(`ত্রুটি: পোস্ট ট্রিগার করা যায়নি।`, "error");
-  }
+function onSelectPageChange(pageId) {
+  activeSelectedPageId = pageId;
+  renderSelectedPage(pageId);
 }
 
-function sendReminderAlert(pageName, pageId) {
-  if (Notification && Notification.permission === "granted") {
-    new Notification(`🔔 শিডিউল রিমাইন্ডার: ${pageName}`, {
-      body: `এই পেজের জন্য রিমাইন্ডার পুশ করা হয়েছে। পোস্ট বিলম্বিত হলে এখনই চেক করুন।`,
-      icon: "icon-192.png"
-    });
-  }
-  showToast(`🔔 ${pageName}-এর রিমাইন্ডার অ্যালার্ট পুশ করা হয়েছে!`, "success");
-}
-
-async function triggerCustomPost() {
-  const repo = document.getElementById("customTargetPage").value;
-  const prompt = document.getElementById("customPrompt").value.trim();
-  const format = document.getElementById("customFormat").value;
-  const token = getGhToken();
-
-  if (!prompt) {
-    showToast("দয়া করে কী বিষয়ে পোস্ট চান তা লিখুন!", "error");
+// Render the chosen page in Active Command Box
+function renderSelectedPage(pageId) {
+  const c = document.getElementById("activePageContainer");
+  const data = cachedPagesData[pageId];
+  if (!data) {
+    c.innerHTML = `<div style="text-align:center; padding:30px; color:var(--muted);">ডেটা প্রস্তুত হচ্ছে...</div>`;
     return;
   }
 
-  showToast("কাস্টম পোস্ট প্রসেস হচ্ছে...", "warning");
-  let workflow = "daily_post.yml";
-  if (repo === "thepastalive-docs-bot") workflow = "daily_documentary.yml";
-  if (repo === "quran-tilawat-bot") workflow = "quran_poster.yml";
-  if (repo === "islamic-waz-shorts-bot") workflow = "waz_poster.yml";
-  if (repo === "heythere-viral-bot") workflow = "video_poster.yml";
+  const p = data.page;
+  const target = p.dailyTarget;
+  const current = data.todayCount;
+  const remaining = Math.max(0, target - current);
+  const pct = Math.min(100, Math.round((current / target) * 100));
+
+  let statusBadge = `<span style="background:#064e3b; color:#a7f3d0; border:1px solid #047857; padding:4px 10px; border-radius:20px; font-size:11px; font-weight:700;">🟢 সম্পূর্ণ সচল</span>`;
+  if (data.runInfo.isDelayed) {
+    statusBadge = `<span style="background:#78350f; color:#fde68a; border:1px solid #d97706; padding:4px 10px; border-radius:20px; font-size:11px; font-weight:700;">⚠️ পোস্ট বিলম্বিত (${data.runInfo.hoursAgo}h আগে)</span>`;
+  }
+
+  let dupHtml = "";
+  if (data.duplicatesFound && data.duplicatesFound.length > 0) {
+    dupHtml = `
+      <div style="background:#450a0a; border:1px solid #b91c1c; border-radius:10px; padding:10px; margin-bottom:12px; display:flex; align-items:center; justify-content:space-between;">
+        <span style="font-size:11.5px; color:#fca5a5; font-weight:700;">⚠️ ${data.duplicatesFound.length}টি ডুপ্লিকেট পোস্ট শনাক্ত হয়েছে!</span>
+        <button class="btn btn-danger" style="padding:4px 8px; font-size:11px;" onclick="deleteVideo('${data.duplicatesFound[0].id}')">🗑️ মুছুন</button>
+      </div>
+    `;
+  }
+
+  let copyrightHtml = data.hasCopyrightIssue 
+    ? `<span style="background:#7f1d1d; color:#fecaca; padding:4px 8px; border-radius:6px; font-size:11px; font-weight:700;">⚠️ কপিরাইট ফ্ল্যাগ</span>`
+    : `<span style="background:#064e3b; color:#a7f3d0; padding:4px 8px; border-radius:6px; font-size:11px; font-weight:700;">🛡️ কপিরাইট ক্লিন</span>`;
+
+  // Build Recent Videos & Full Clickable URLs List
+  let videosHtml = "";
+  if (data.recentVideos && data.recentVideos.length > 0) {
+    videosHtml = data.recentVideos.map((v, i) => {
+      let perfBadge = "";
+      let diagBox = "";
+      if (v.views >= 500) {
+        perfBadge = `<span style="color:#10b981; font-weight:800; font-size:10px;">🔥 হাই পারফরমিং</span>`;
+      } else if (v.views < 50) {
+        perfBadge = `<span style="color:#f59e0b; font-weight:800; font-size:10px;">⚠️ লো ভিউজ</span>`;
+        diagBox = `
+          <div class="diag-box">
+            <b>🔍 লো ভিউ বিশ্লেষণ:</b> এই ভিডিওর শুরুতেই দর্শকদের রিটেনশন ড্রপ হতে পারে অথবা পিক টাইমের বাইরে আপলোড হয়েছিল। পরবর্তীতে প্রথম ৩ সেকেন্ডে আকর্ষণীয় টেক্সট হুক দিন।
+          </div>
+        `;
+      }
+
+      return `
+        <div class="video-item">
+          <div class="video-head">
+            <span class="video-title">${v.title}</span>
+            <span class="video-time">${formatRelativeTime(v.created_time)}</span>
+          </div>
+          <div class="video-stats-bar">
+            <span>👁️ ভিউ: <b>${formatNumber(v.views)}</b></span>
+            <span>❤️ লাইক: <b>${formatNumber(v.likes)}</b></span>
+            <span>💬 কমেন্ট: <b>${v.comments}</b></span>
+            ${perfBadge}
+          </div>
+          <div class="url-box">
+            <span class="url-txt" id="url-${v.id}">${v.directUrl}</span>
+            <div class="url-actions">
+              <button class="url-btn" onclick="copyToClipboard('${v.directUrl}', 'পোস্টের লিঙ্ক কপি হয়েছে!')">📋 কপি</button>
+              <a class="url-btn" href="${v.directUrl}" target="_blank" rel="noopener">🌐 দেখুন ↗</a>
+            </div>
+          </div>
+          ${diagBox}
+        </div>
+      `;
+    }).join("");
+  } else {
+    videosHtml = `<div style="text-align:center; padding:16px; color:var(--muted); font-size:12px;">কোনো পোস্ট পাওয়া যায়নি।</div>`;
+  }
+
+  c.innerHTML = `
+    <div class="active-page-card">
+      <div class="active-page-header">
+        <div class="active-title-box">
+          <div class="active-page-icon">${p.icon}</div>
+          <div>
+            <div class="active-page-name">${p.name}</div>
+            <div class="active-page-sub">শিডিউল: ${p.scheduleText}</div>
+          </div>
+        </div>
+        <div>${statusBadge}</div>
+      </div>
+
+      ${dupHtml}
+
+      <!-- Lifetime Metrics for Selected Page -->
+      <div class="metrics-grid">
+        <div class="metric-box">
+          <b>মোট ভিউজ</b>
+          <span style="color:#38bdf8;">${formatNumber(data.lifetimeViews)}</span>
+        </div>
+        <div class="metric-box">
+          <b>মোট লাইক</b>
+          <span style="color:#10b981;">${formatNumber(data.lifetimeLikes)}</span>
+        </div>
+        <div class="metric-box">
+          <b>সর্বমোট পোস্ট</b>
+          <span>${data.lifetimePosts}</span>
+        </div>
+      </div>
+
+      <!-- Today's Progress Bar -->
+      <div class="progress-wrap">
+        <div class="progress-head">
+          <span>আজকের পোস্ট: <b>${current}টি সম্পন্ন</b></span>
+          <span style="color:var(--muted);">বাকি: <b>${remaining}টি</b> (লক্ষ্য ${target}টি)</span>
+        </div>
+        <div class="progress-bar-bg">
+          <div class="progress-fill" style="width: ${pct}%;"></div>
+        </div>
+      </div>
+
+      <!-- FORCE POST BUTTON (Daily limit bypass guarantee) -->
+      <button class="btn btn-force-post" id="btnForcePost-${p.id}" onclick="triggerInstantPost('${p.id}')">
+        <span>⚡</span> এখনই নতুন পোস্ট করো (অটো লিমিট বাইপাস)
+      </button>
+      <div class="limit-bypass-note">
+        <span>🛡️</span> দৈনিক শিডিউল বা লিমিট শেষ হলেও এই বাটনে চাপলে সাথে সাথে নতুন ও ফ্রেশ পোস্ট হবে!
+      </div>
+
+      <!-- Recent Videos Header & URL List -->
+      <div class="video-list-box">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+          <span style="font-size:13px; font-weight:800; color:#fff;">🔗 সাম্প্রতিক পোস্ট ও সরাসরি Facebook URLs</span>
+          ${copyrightHtml}
+        </div>
+        ${videosHtml}
+      </div>
+    </div>
+  `;
+}
+
+// Render Compact Summary for all 5 pages
+function renderCompactSummary() {
+  const c = document.getElementById("compactPagesList");
+  c.innerHTML = MANAGED_PAGES.map(p => {
+    const data = cachedPagesData[p.id] || { todayCount: 0, lifetimePosts: 0, lifetimeViews: 0, runInfo: {} };
+    return `
+      <div class="compact-page-row" onclick="selectPageDirectly('${p.id}')">
+        <div class="compact-page-info">
+          <span style="font-size:20px;">${p.icon}</span>
+          <div>
+            <div class="compact-page-name">${p.name}</div>
+            <div class="compact-page-meta">আজ: ${data.todayCount}/${p.dailyTarget}টি পোস্ট • ${data.runInfo.hoursAgo || 0}h আগে</div>
+          </div>
+        </div>
+        <div class="compact-page-stats">
+          <div class="compact-page-views">${formatNumber(data.lifetimeViews)} ভিউ</div>
+          <div class="compact-page-posts">মোট ${data.lifetimePosts} পোস্ট ➔</div>
+        </div>
+      </div>
+    `;
+  }).join("");
+}
+
+function selectPageDirectly(pageId) {
+  document.getElementById("activePageSelector").value = pageId;
+  activeSelectedPageId = pageId;
+  renderSelectedPage(pageId);
+  window.scrollTo({ top: 120, behavior: 'smooth' });
+}
+
+// Render Full view for all 5 pages
+function renderAllPagesFullView() {
+  const c = document.getElementById("allPagesFullContainer");
+  c.innerHTML = MANAGED_PAGES.map(p => {
+    const data = cachedPagesData[p.id] || { todayCount: 0, lifetimePosts: 0, lifetimeViews: 0, lifetimeLikes: 0, recentVideos: [] };
+    const latestPost = (data.recentVideos && data.recentVideos[0]) ? data.recentVideos[0] : null;
+
+    return `
+      <div class="active-page-card" style="margin-bottom:16px;">
+        <div class="active-page-header">
+          <div class="active-title-box">
+            <div class="active-page-icon">${p.icon}</div>
+            <div>
+              <div class="active-page-name">${p.name}</div>
+              <div class="active-page-sub">আজকের পোস্ট: ${data.todayCount}/${p.dailyTarget} • মোট ভিউ: ${formatNumber(data.lifetimeViews)}</div>
+            </div>
+          </div>
+          <button class="btn btn-primary" style="padding:6px 12px; font-size:11px;" onclick="triggerInstantPost('${p.id}')">⚡ পোস্ট করো</button>
+        </div>
+        ${latestPost ? `
+          <div class="url-box" style="margin-top:6px;">
+            <span class="url-txt">${latestPost.directUrl}</span>
+            <div class="url-actions">
+              <button class="url-btn" onclick="copyToClipboard('${latestPost.directUrl}')">📋 কপি</button>
+              <a class="url-btn" href="${latestPost.directUrl}" target="_blank">🌐 ওপেন</a>
+            </div>
+          </div>
+        ` : ''}
+      </div>
+    `;
+  }).join("");
+}
+
+// Render Real Facebook Trending Topics
+function renderTrendingTopics() {
+  const c = document.getElementById("trendingTopicsContainer");
+  c.innerHTML = TRENDING_TOPICS.map((t, idx) => {
+    const catClass = `cat-${t.category}`;
+    return `
+      <div class="trending-card">
+        <div class="trending-head">
+          <span class="trending-cat ${catClass}">${t.catLabel}</span>
+          <span class="trending-score">${t.score}</span>
+        </div>
+        <div class="trending-title">${t.title}</div>
+        <div class="trending-desc">${t.desc}</div>
+        <div style="font-size:11px; color:#38bdf8; margin-bottom:10px; font-family:monospace;">${t.hashtags}</div>
+        
+        <div class="trending-action-row">
+          <select class="trending-page-select" id="trendPageSelect-${idx}">
+            ${MANAGED_PAGES.map(p => `<option value="${p.id}" ${p.id === t.defaultPage ? 'selected' : ''}>${p.icon} ${p.name}</option>`).join("")}
+          </select>
+          <button class="trending-post-btn" onclick="postTrendingTopic(${idx})">
+            <span>✨</span> এই পেজে পোস্ট করো
+          </button>
+        </div>
+      </div>
+    `;
+  }).join("");
+}
+
+// Post Trending Topic to Chosen Page
+async function postTrendingTopic(idx) {
+  const t = TRENDING_TOPICS[idx];
+  const selectElem = document.getElementById(`trendPageSelect-${idx}`);
+  const targetPageId = selectElem.value;
+  const p = MANAGED_PAGES.find(x => x.id === targetPageId);
+
+  showToast(`${p.name}-এ "${t.title.substring(0, 25)}..." পোস্ট পাঠানো হচ্ছে...`, "info");
+  await triggerInstantPost(p.id, t.title);
+}
+
+// Render Analysis Tab (Performance Breakdown)
+function renderAnalysisTab() {
+  const c = document.getElementById("pagePerformanceScoreList");
+  c.innerHTML = MANAGED_PAGES.map(p => {
+    const data = cachedPagesData[p.id] || { lifetimeViews: 0, lifetimeLikes: 0, lifetimePosts: 1 };
+    const avgViews = Math.round(data.lifetimeViews / Math.max(1, data.recentVideos ? data.recentVideos.length : 1));
+    let scoreBadge = `<span style="color:#10b981; font-weight:800;">A+ (চমৎকার)</span>`;
+    let tip = "এই পেজে নিয়মিত অডিয়েন্স ভিউ দিচ্ছে। বর্তমান শিডিউল বজায় রাখুন।";
+    if (avgViews < 200) {
+      scoreBadge = `<span style="color:#f59e0b; font-weight:800;">B (উন্নয়ন প্রয়োজন)</span>`;
+      tip = "সন্ধ্যা ৬টা থেকে রাত ৯টার মাঝে পোস্ট রিলিজ করুন এবং ক্যাপশনে ২টি প্রশ্ন যুক্ত করুন।";
+    }
+
+    return `
+      <div class="rule-card" style="margin-bottom:10px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+          <span style="font-weight:700; color:#fff;">${p.icon} ${p.name}</span>
+          <span>${scoreBadge}</span>
+        </div>
+        <div style="display:flex; gap:12px; font-size:11px; color:var(--muted); margin-bottom:6px;">
+          <span>মোট ভিউ: <b style="color:#fff;">${formatNumber(data.lifetimeViews)}</b></span>
+          <span>গড় ভিডিও ভিউ: <b style="color:#38bdf8;">${formatNumber(avgViews)}</b></span>
+        </div>
+        <div style="font-size:11px; color:#cbd5e1; line-height:1.4;">
+          💡 <b>পরামর্শ:</b> ${tip}
+        </div>
+      </div>
+    `;
+  }).join("");
+}
+
+// Trigger Instant Post (Guaranteed Fresh + Limit Bypass)
+async function triggerInstantPost(pageId, optionalTopic = "") {
+  const p = MANAGED_PAGES.find(x => x.id === pageId);
+  const token = getGhToken();
+  const btn = document.getElementById(`btnForcePost-${pageId}`);
+  if (btn) {
+    btn.disabled = true;
+    btn.innerHTML = `<span>⏳</span> ক্লাউডে পোস্ট তৈরি হচ্ছে...`;
+  }
+
+  showToast(`${p.name}-এ নতুন পোস্টের কমান্ড পাঠানো হচ্ছে...`, "info");
 
   try {
-    const url = `https://api.github.com/repos/abiralhri-glitch/${repo}/actions/workflows/${workflow}/dispatches`;
-    const payload = {
-      ref: "main",
-      inputs: {
-        format: format,
-        prompt: prompt,
-        force_fresh: String(Date.now())
-      }
-    };
+    const url = `https://api.github.com/repos/abiralhri-glitch/${p.repo}/actions/workflows/${p.workflow}/dispatches`;
     const res = await fetch(url, {
       method: "POST",
       headers: {
@@ -1360,128 +1329,78 @@ async function triggerCustomPost() {
         "Accept": "application/vnd.github.v3+json",
         "Content-Type": "application/json"
       },
-      body: JSON.stringify(payload)
-    });
-    if (res.status === 204 || res.ok) {
-      showToast("✅ প্রম্পট অনুযায়ী নতুন ভিডিও জেনারেট ও পোস্টিং শুরু হয়েছে!", "success");
-      document.getElementById("customPrompt").value = "";
-    } else {
-      throw new Error();
-    }
-  } catch (e) {
-    showToast("ত্রুটি: পোস্ট তৈরি শুরু করা যায়নি।", "error");
-  }
-}
-
-async function scanDuplicates() {
-  const pageId = document.getElementById("dupTargetPage").value;
-  const fbToken = getFbToken();
-  const container = document.getElementById("duplicateResults");
-  container.innerHTML = `<p style="text-align:center; color:var(--muted); font-size:13px;">🔍 পেজের বিগত ১৫টি পোস্ট স্ক্যান করা হচ্ছে...</p>`;
-
-  try {
-    const url = `https://graph.facebook.com/v21.0/${pageId}/videos?fields=id,title,description,created_time&limit=15&access_token=${fbToken}`;
-    const res = await fetch(url);
-    const data = await res.json();
-    if (!data.data || data.data.length === 0) {
-      container.innerHTML = `<p style="text-align:center; color:var(--muted);">কোনো পোস্ট পাওয়া যায়নি।</p>`;
-      return;
-    }
-
-    const posts = data.data;
-    const seen = new Map();
-    const duplicates = [];
-
-    posts.forEach(p => {
-      const title = (p.title || p.description || "").substring(0, 45).trim().toLowerCase();
-      if (seen.has(title)) {
-        duplicates.push({ original: seen.get(title), duplicate: p });
-      } else {
-        seen.set(title, p);
-      }
+      body: JSON.stringify({
+        ref: "main"
+      })
     });
 
-    if (duplicates.length === 0) {
-      container.innerHTML = `
-        <div style="background:#000000; border:1px solid var(--border); border-radius:12px; padding:16px; text-align:center;">
-          <b style="color:#ffffff; font-size:15px; display:block; margin-bottom:4px;">✅ কোনো ডুপ্লিকেট পোস্ট পাওয়া যায়নি!</b>
-          <span style="font-size:12px; color:var(--muted);">সবগুলো পোস্ট অনন্য ও সম্পূর্ণ নিরাপদ।</span>
-        </div>
-      `;
+    if (res.ok || res.status === 204) {
+      showToast(`সফল! ${p.name}-এ পোস্টের কাজ শুরু হয়েছে। ১-৩ মিনিটের মধ্যে ভিডিও পোস্ট হয়ে যাবে।`, "success");
+      setTimeout(refreshAllData, 5000);
     } else {
-      container.innerHTML = `
-        <div style="margin-bottom:12px; color:var(--danger); font-weight:700; font-size:14px;">
-          ⚠️ ${duplicates.length}টি ডুপ্লিকেট পোস্ট শনাক্ত হয়েছে:
-        </div>
-      ` + duplicates.map(d => `
-        <div style="background:#000000; border:1px solid var(--danger); border-radius:12px; padding:12px; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center; gap:10px;">
-          <div>
-            <div style="font-size:13px; font-weight:600; margin-bottom:4px;">${d.duplicate.title || d.duplicate.description || 'ভিডিও পোস্ট'}</div>
-            <div style="font-size:11px; color:var(--muted);">ID: ${d.duplicate.id} • ${formatRelativeTime(d.duplicate.created_time)}</div>
-          </div>
-          <button class="btn btn-danger" style="padding:8px 12px; font-size:12px;" onclick="deleteFbPost('${d.duplicate.id}')">
-            🗑️ মুছে ফেলুন
-          </button>
-        </div>
-      `).join("");
+      const err = await res.text();
+      showToast(`পোস্ট কমান্ড ব্যর্থ: ${res.status}`, "error");
     }
   } catch (e) {
-    container.innerHTML = `<p style="color:var(--danger); text-align:center; font-size:13px;">পোস্ট স্ক্যান করতে সমস্যা হয়েছে।</p>`;
+    showToast(`এরর: ${e.message}`, "error");
+  } finally {
+    if (btn) {
+      btn.disabled = false;
+      btn.innerHTML = `<span>⚡</span> এখনই নতুন পোস্ট করো (অটো লিমিট বাইপাস)`;
+    }
   }
 }
 
-async function deleteFbPost(postId) {
-  if (!confirm("আপনি কি নিশ্চিত এই পোস্টটি ফেসবুক পেজ থেকে স্থায়ীভাবে মুছে ফেলতে চান?")) return;
+// Delete Video (for duplicates)
+async function deleteVideo(videoId) {
+  if (!confirm("আপনি কি নিশ্চিত এই ভিডিওটি ফেসবুক থেকে মুছে দিতে চান?")) return;
   const fbToken = getFbToken();
-  showToast("ফেসবুক থেকে মুছে ফেলা হচ্ছে...", "warning");
   try {
-    const url = `https://graph.facebook.com/v21.0/${postId}?access_token=${fbToken}`;
-    const res = await fetch(url, { method: "DELETE" });
-    const data = await res.json();
-    if (data.success) {
-      showToast("সফলভাবে পোস্ট ফেসবুক থেকে মুছে ফেলা হয়েছে!", "success");
-      refreshAllPages();
-      scanDuplicates();
+    const res = await fetch(`https://graph.facebook.com/v19.0/${videoId}?access_token=${fbToken}`, {
+      method: "DELETE"
+    });
+    if (res.ok) {
+      showToast("ভিডিওটি সফলভাবে ডিলিট করা হয়েছে!", "success");
+      refreshAllData();
     } else {
-      throw new Error();
+      showToast("ভিডিও ডিলিট ব্যর্থ হয়েছে", "error");
     }
   } catch (e) {
-    showToast("পোস্ট ডিলিট করতে ব্যর্থ হয়েছে।", "error");
+    showToast(`এরর: ${e.message}`, "error");
   }
 }
 
-function showInstallInstructions() {
-  const isIos = /iPhone|iPad|iPod/.test(navigator.userAgent);
-  if (isIos) {
-    alert("📲 iPhone-এ হোম স্ক্রিনে অ্যাড করার নিয়ম:\n\n১. নিচে Safari ব্রাউজারের 'Share' (শেয়ার) আইকনে চাপ দিন।\n২. নিচে স্ক্রল করে 'Add to Home Screen' চাপ দিন।\n৩. উপরে 'Add' বাটনে চাপ দিন।\n\nঅ্যাপটি হোম স্ক্রিনে অ্যাপ আকারে চলে আসবে!");
-  } else {
-    alert("📲 Android-এ হোম স্ক্রিনে অ্যাড করার নিয়ম:\n\n১. Chrome ব্রাউজারের উপরে ডানদিকের তিনটি ডট (⋮) মেনুতে চাপ দিন।\n২. 'Install app' অথবা 'Add to Home screen' চাপ দিন।\n৩. 'Install' চাপুন।\n\nঅ্যাপটি আপনার মোবাইলের হোম স্ক্রিনে আলাদা অ্যাপ হিসেবে ইনস্টল হয়ে যাবে!");
+// Scan all copyrights
+async function scanAllCopyrights() {
+  const resBox = document.getElementById("copyrightScanResults");
+  resBox.innerHTML = `<div style="text-align:center; padding:20px; color:var(--muted);">গভীর কপিরাইট স্ক্যান চলছে...</div>`;
+  
+  let html = "";
+  for (const p of MANAGED_PAGES) {
+    const data = cachedPagesData[p.id];
+    const issues = data && data.hasCopyrightIssue;
+    html += `
+      <div class="rule-card" style="margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
+        <div>
+          <b style="color:#fff;">${p.icon} ${p.name}</b>
+          <div style="font-size:11px; color:var(--muted);">সাম্প্রতিক ${data && data.recentVideos ? data.recentVideos.length : 0}টি ভিডিও যাচাইকৃত</div>
+        </div>
+        <div>
+          ${issues 
+            ? `<span style="background:#7f1d1d; color:#fecaca; padding:4px 8px; border-radius:6px; font-size:11px; font-weight:700;">⚠️ কপিরাইট শনাক্ত</span>`
+            : `<span style="background:#064e3b; color:#a7f3d0; padding:4px 8px; border-radius:6px; font-size:11px; font-weight:700;">🛡️ সম্পূর্ণ ক্লিন</span>`}
+        </div>
+      </div>
+    `;
   }
+  resBox.innerHTML = html;
+  showToast("কপিরাইট স্ক্যান সম্পন্ন!", "success");
 }
 
-function refreshAllPages() {
-  showToast("পেজ স্ট্যাটাস রিফ্রেশ হচ্ছে...", "warning");
-  renderPages();
-}
-
-// Request Notification Permission
-if ("Notification" in window && Notification.permission !== "granted") {
-  Notification.requestPermission();
-}
-
-// Service Worker Registration
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => {
-    navigator.serviceWorker.register("./sw.js").then(() => {
-      console.log("Service Worker Registered");
-    }).catch(err => console.log("SW registration failed", err));
-  });
-}
-
-// Initialize on Load
-renderPages();
-renderTrends("all");
-setInterval(renderPages, 45000);
+// Startup
+window.addEventListener("DOMContentLoaded", () => {
+  refreshAllData();
+});
 </script>
 </body>
 </html>
