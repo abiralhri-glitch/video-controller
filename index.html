@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0f1115">
+<title>Video Studio</title>
+<link rel="manifest" href="manifest.json">
+<style>
+  :root { --bg:#0f1115; --card:#1a1d24; --line:#2a2f3a; --txt:#eef0f4; --mut:#9aa3b2; --acc:#4f8cff; --ok:#3ecf8e; --bad:#ff6b6b; --warn:#f5b942; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--txt); font:16px/1.5 system-ui,-apple-system,"Noto Sans Bengali",sans-serif; padding:16px; padding-bottom:40px; }
+  h1 { font-size:22px; margin:4px 0 16px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:14px; margin-bottom:14px; }
+  label { display:block; font-size:13px; color:var(--mut); margin:12px 0 4px; }
+  label:first-child { margin-top:0; }
+  input, textarea, select { width:100%; background:#10131a; color:var(--txt); border:1px solid var(--line); border-radius:10px; padding:12px; font:inherit; }
+  textarea { min-height:96px; resize:vertical; }
+  .row { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  button { width:100%; background:var(--acc); color:#fff; border:0; border-radius:12px; padding:14px; font:inherit; font-weight:600; margin-top:14px; }
+  button.ghost { background:transparent; border:1px solid var(--line); color:var(--txt); margin-top:8px; }
+  button:disabled { opacity:.5; }
+  .msg { margin-top:10px; font-size:14px; min-height:20px; }
+  .msg.ok { color:var(--ok); } .msg.bad { color:var(--bad); }
+  .run { display:flex; justify-content:space-between; gap:10px; padding:10px 0; border-top:1px solid var(--line); font-size:14px; }
+  .run:first-of-type { border-top:0; }
+  .run a { color:var(--acc); text-decoration:none; }
+  .tag { font-size:12px; padding:2px 8px; border-radius:99px; border:1px solid var(--line); white-space:nowrap; align-self:flex-start; }
+  .tag.success { color:var(--ok); } .tag.failure { color:var(--bad); } .tag.in_progress,.tag.queued { color:var(--warn); }
+  small { color:var(--mut); }
+  details summary { cursor:pointer; color:var(--mut); }
+</style>
+</head>
+<body>
+<h1>🎬 Video Studio</h1>
+
+<div class="card">
+  <label for="prompt">কমান্ড (কী ভিডিও চান)</label>
+  <textarea id="prompt" placeholder="যেমন: ঘুমের আগের অভ্যাস যা মস্তিষ্কের জন্য ভালো, মোটিভেশনাল স্টাইলে"></textarea>
+  <div class="row">
+    <div><label for="minutes">কত মিনিট</label><input id="minutes" type="number" inputmode="decimal" min="0.25" max="15" step="0.25" value="1"></div>
+    <div><label for="language">ভাষা</label><select id="language"><option value="bn">বাংলা</option><option value="en">English</option></select></div>
+  </div>
+  <div class="row">
+    <div><label for="voice">ভয়েস</label><select id="voice"><option value="female">মেয়ে</option><option value="male">ছেলে</option></select></div>
+    <div><label for="format">ফরম্যাট</label><select id="format"><option value="landscape">ইউটিউব (আড়াআড়ি)</option><option value="portrait">শর্টস/রিলস (লম্বালম্বি)</option></select></div>
+  </div>
+  <label for="notes">স্টাইল নোট (ঐচ্ছিক)</label>
+  <input id="notes" placeholder="যেমন: দ্রুত গতির, হুক দিয়ে শুরু">
+  <button id="go">ভিডিও বানাও</button>
+  <div id="msg" class="msg"></div>
+</div>
+
+<div class="card">
+  <b>সাম্প্রতিক কাজ</b>
+  <div id="runs"><small>লোড হচ্ছে…</small></div>
+  <button class="ghost" id="refresh">রিফ্রেশ</button>
+</div>
+
+<details class="card">
+  <summary>সেটিংস (একবারই দিতে হবে)</summary>
+  <label for="repo">প্রাইভেট রিপো (owner/নাম)</label>
+  <input id="repo" placeholder="myname/video-studio" autocapitalize="off" autocorrect="off">
+  <label for="token">GitHub টোকেন (fine-grained, শুধু ঐ রিপো)</label>
+  <input id="token" type="password" placeholder="github_pat_..." autocapitalize="off" autocorrect="off">
+  <small>টোকেন শুধু এই ফোনের ব্রাউজারে সংরক্ষিত থাকে।</small>
+  <button class="ghost" id="save">সংরক্ষণ</button>
+</details>
+
+<script>
+const $ = id => document.getElementById(id);
+const store = {
+  get(k){ try { return localStorage.getItem(k) || ""; } catch(e){ return ""; } },
+  set(k,v){ try { localStorage.setItem(k,v); } catch(e){} }
+};
+$("repo").value = store.get("repo") || "abiralhri-glitch/video-studio";
+$("token").value = store.get("token");
+
+function api(path, opts = {}) {
+  const repo = store.get("repo") || $("repo").value.trim(), token = store.get("token");
+  if (!repo || !token) throw new Error("আগে সেটিংসে রিপো আর টোকেন দিন");
+  return fetch(`https://api.github.com/repos/${repo}${path}`, {
+    ...opts,
+    headers: { "Accept":"application/vnd.github+json", "Authorization":`Bearer ${token}`, "X-GitHub-Api-Version":"2022-11-28", ...(opts.headers||{}) }
+  });
+}
+function say(text, cls="") { $("msg").textContent = text; $("msg").className = "msg " + cls; }
+
+$("save").onclick = () => {
+  store.set("repo", $("repo").value.trim());
+  store.set("token", $("token").value.trim());
+  say("সংরক্ষিত হয়েছে", "ok"); loadRuns();
+};
+
+$("go").onclick = async () => {
+  const prompt = $("prompt").value.trim();
+  if (!prompt) return say("কমান্ড লিখুন", "bad");
+  const minutes = parseFloat($("minutes").value);
+  if (!(minutes >= 0.25 && minutes <= 15)) return say("মিনিট ০.২৫ থেকে ১৫ এর মধ্যে দিন", "bad");
+  $("go").disabled = true; say("পাঠানো হচ্ছে…");
+  try {
+    const r = await api("/actions/workflows/make-video.yml/dispatches", {
+      method: "POST",
+      body: JSON.stringify({ ref: "main", inputs: {
+        prompt, minutes: String(minutes), language: $("language").value,
+        voice: $("voice").value, format: $("format").value, notes: $("notes").value.trim()
+      }})
+    });
+    if (r.status === 204) { say("কাজ শুরু হয়েছে। নিচে অগ্রগতি দেখুন।", "ok"); setTimeout(loadRuns, 4000); }
+    else { const j = await r.json().catch(()=>({})); say(`ব্যর্থ (${r.status}): ${j.message || ""}`, "bad"); }
+  } catch (e) { say(e.message, "bad"); }
+  $("go").disabled = false;
+};
+
+const STATUS = { success:"তৈরি", failure:"ব্যর্থ", in_progress:"চলছে", queued:"অপেক্ষায়", cancelled:"বাতিল" };
+async function loadRuns() {
+  const box = $("runs");
+  try {
+    const r = await api("/actions/runs?per_page=6");
+    if (!r.ok) { box.innerHTML = `<small>লোড হয়নি (${r.status})</small>`; return; }
+    const j = await r.json();
+    if (!j.workflow_runs.length) { box.innerHTML = "<small>এখনো কোনো কাজ নেই</small>"; return; }
+    const repo = store.get("repo") || $("repo").value.trim();
+    box.innerHTML = j.workflow_runs.map(w => {
+      const st = w.status === "completed" ? w.conclusion : w.status;
+      const link = st === "success" ? `https://github.com/${repo}/releases` : w.html_url;
+      const label = st === "success" ? "ডাউনলোড" : "বিস্তারিত";
+      return `<div class="run"><div>#${w.run_number} · ${new Date(w.created_at).toLocaleString("bn-BD")}<br><a href="${link}" target="_blank" rel="noopener">${label}</a></div><span class="tag ${st}">${STATUS[st] || st}</span></div>`;
+    }).join("");
+  } catch (e) { box.innerHTML = `<small>${e.message}</small>`; }
+}
+$("refresh").onclick = loadRuns;
+loadRuns();
+setInterval(() => { if (!document.hidden && store.get("token")) loadRuns(); }, 20000);
+</script>
+</body>
+</html>
