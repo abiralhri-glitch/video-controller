@@ -81,19 +81,23 @@
   /* Container */
   .container { max-width: 600px; margin: 0 auto; padding: 14px; }
 
-  /* Daily Global Banner */
+  /* Global Metrics Card */
   .global-stats-card {
-    background: linear-gradient(135deg, #0f172a, #1e293b);
+    background: linear-gradient(135deg, #0f172a, #131b2e);
     border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 12px 16px;
+    border-radius: 16px;
+    padding: 14px 16px;
     margin-bottom: 14px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
   }
-  .global-stat-box b { display: block; font-size: 11px; color: var(--muted); text-transform: uppercase; }
-  .global-stat-box span { font-size: 18px; font-weight: 800; color: #38bdf8; }
+  .global-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    text-align: center;
+  }
+  .global-stat-box b { display: block; font-size: 10px; color: var(--muted); text-transform: uppercase; margin-bottom: 2px; }
+  .global-stat-box span { font-size: 17px; font-weight: 800; }
 
   /* PWA Install Banner */
   .install-banner {
@@ -158,7 +162,7 @@
     border: 1px solid var(--border);
     border-radius: 16px;
     padding: 16px;
-    margin-bottom: 14px;
+    margin-bottom: 16px;
     transition: all 0.2s;
   }
   .page-header {
@@ -197,6 +201,21 @@
   .status-badge.delayed { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
   .status-badge.running { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
   .status-dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+
+  /* Lifetime Performance Grid */
+  .metrics-card {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+    background: #0d1424;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 10px 8px;
+    margin-bottom: 12px;
+    text-align: center;
+  }
+  .metric-item b { display: block; font-size: 10px; color: var(--muted); text-transform: uppercase; margin-bottom: 2px; }
+  .metric-item span { font-size: 14px; font-weight: 700; color: #fff; }
 
   /* Progress & Count Box */
   .progress-card {
@@ -248,6 +267,42 @@
   }
   .copyright-pill.safe { border-color: rgba(16, 185, 129, 0.35); background: rgba(16, 185, 129, 0.08); }
   .copyright-pill.danger { border-color: rgba(239, 68, 68, 0.5); background: rgba(239, 68, 68, 0.12); color: #fca5a5; }
+
+  /* Expandable Recent Videos */
+  .expand-btn {
+    width: 100%;
+    background: transparent;
+    border: 1px dashed var(--border);
+    color: var(--muted);
+    border-radius: 8px;
+    padding: 7px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+  .expand-box {
+    display: none;
+    background: #0d1424;
+    border-radius: 10px;
+    padding: 8px;
+    margin-bottom: 12px;
+    font-size: 12px;
+  }
+  .video-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 4px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .video-row:last-child { border-bottom: 0; }
+  .video-info { max-width: 65%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .video-metrics { display: flex; gap: 8px; font-weight: 700; font-size: 11px; }
 
   /* Info rows */
   .meta-grid {
@@ -387,19 +442,25 @@
 
 <div class="container">
 
-  <!-- Global Stats Card -->
+  <!-- Global Metrics Card -->
   <div class="global-stats-card">
-    <div class="global-stat-box">
-      <b>আজকের মোট পোস্ট</b>
-      <span id="globalTodayTotal">--</span>
-    </div>
-    <div class="global-stat-box">
-      <b>বাকি পোস্ট</b>
-      <span id="globalTodayRemaining" style="color: #fbbf24;">--</span>
-    </div>
-    <div class="global-stat-box">
-      <b>কপিরাইট স্ট্যাটাস</b>
-      <span id="globalCopyrightStatus" style="color: #34d399; font-size: 14px;">১০০% নিরাপদ</span>
+    <div class="global-grid">
+      <div class="global-stat-box">
+        <b>আজকের পোস্ট</b>
+        <span id="globalTodayTotal" style="color: #38bdf8;">--</span>
+      </div>
+      <div class="global-stat-box">
+        <b>বাকি পোস্ট</b>
+        <span id="globalTodayRemaining" style="color: #fbbf24;">--</span>
+      </div>
+      <div class="global-stat-box">
+        <b>সর্বমোট ভিউজ</b>
+        <span id="globalLifetimeViews" style="color: #34d399;">--</span>
+      </div>
+      <div class="global-stat-box">
+        <b>মোট রিঅ্যাকশন</b>
+        <span id="globalLifetimeLikes" style="color: #f472b6;">--</span>
+      </div>
     </div>
   </div>
 
@@ -630,6 +691,13 @@ function formatRelativeTime(dateStr) {
   return `${diffDay} দিন আগে`;
 }
 
+function formatNumber(num) {
+  if (num === null || num === undefined || isNaN(num)) return "--";
+  if (num >= 1000000) return (num / 1000000).toFixed(1) + "M";
+  if (num >= 1000) return (num / 1000).toFixed(1) + "k";
+  return num.toLocaleString();
+}
+
 function switchTab(tab) {
   document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
   document.getElementById("tabMonitor").style.display = tab === "monitor" ? "block" : "none";
@@ -640,6 +708,18 @@ function switchTab(tab) {
   if (tab === "copyright") scanAllCopyrights();
 }
 
+function toggleRecent(pageId) {
+  const box = document.getElementById(`recent-box-${pageId}`);
+  const btn = document.getElementById(`expand-btn-${pageId}`);
+  if (box.style.display === "block") {
+    box.style.display = "none";
+    btn.innerHTML = `<span>🎥</span> সাম্প্রতিক পোস্টের ভিউজ ও লাইক দেখুন ▼`;
+  } else {
+    box.style.display = "block";
+    btn.innerHTML = `<span>▲</span> বন্ধ করুন`;
+  }
+}
+
 async function fetchPageStatus(page) {
   const token = getGhToken();
   const fbToken = getFbToken();
@@ -647,14 +727,21 @@ async function fetchPageStatus(page) {
 
   let runInfo = { status: "unknown", createdAt: null, hoursAgo: 0, isDelayed: false };
   let todayCount = 0;
+  let lifetimePosts = 0;
+  let lifetimeViews = 0;
+  let lifetimeLikes = 0;
+  let lifetimeComments = 0;
   let hasCopyrightIssue = false;
+  let recentVideos = [];
 
-  // 1. Check GitHub Run Status
+  // 1. Check GitHub Run Status & Total runs
   try {
-    const url = `https://api.github.com/repos/abiralhri-glitch/${page.repo}/actions/runs?per_page=10`;
+    const url = `https://api.github.com/repos/abiralhri-glitch/${page.repo}/actions/runs?per_page=15`;
     const res = await fetch(url, { headers: { "Authorization": `token ${token}` } });
     if (res.ok) {
       const data = await res.json();
+      if (data.total_count) lifetimePosts = data.total_count;
+
       if (data.workflow_runs && data.workflow_runs.length > 0) {
         const latest = data.workflow_runs[0];
         const runDate = new Date(latest.created_at);
@@ -667,7 +754,6 @@ async function fetchPageStatus(page) {
           isDelayed: hoursAgo > page.maxIntervalHours && latest.status !== "in_progress"
         };
 
-        // Count successful runs today from GitHub
         todayCount = data.workflow_runs.filter(r => 
           r.conclusion === "success" && r.created_at.startsWith(todayStr)
         ).length;
@@ -677,24 +763,34 @@ async function fetchPageStatus(page) {
     console.warn("GH fetch error for", page.name, e);
   }
 
-  // 2. Query Facebook Graph API for exact video count & copyright check
+  // 2. Query Facebook Graph API for exact video views, likes, count & copyright check
   try {
-    const fbUrl = `https://graph.facebook.com/v21.0/${page.pageId}/videos?fields=id,created_time,status&limit=15&access_token=${fbToken}`;
+    const fbUrl = `https://graph.facebook.com/v21.0/${page.pageId}/videos?fields=id,title,description,created_time,views,likes.summary(true),comments.summary(true),status&limit=50&access_token=${fbToken}`;
     const fbRes = await fetch(fbUrl);
     if (fbRes.ok) {
       const fbData = await fbRes.json();
-      if (fbData.data) {
-        // Facebook count for today
+      if (fbData.data && fbData.data.length > 0) {
+        lifetimePosts = fbData.data.length;
+        recentVideos = fbData.data.slice(0, 6);
+
+        // Calculate today's posts
         const fbToday = fbData.data.filter(v => v.created_time && v.created_time.startsWith(todayStr)).length;
         if (fbToday > 0) todayCount = fbToday;
 
-        // Check copyright matches
-        for (const v of fbData.data) {
+        // Sum lifetime views & likes
+        let vSum = 0, lSum = 0, cSum = 0;
+        fbData.data.forEach(v => {
+          if (v.views) vSum += parseInt(v.views, 10);
+          if (v.likes && v.likes.summary) lSum += parseInt(v.likes.summary.total_count, 10);
+          if (v.comments && v.comments.summary) cSum += parseInt(v.comments.summary.total_count, 10);
+          
           if (v.status && v.status.copyright_check_status && v.status.copyright_check_status.matches_found === true) {
             hasCopyrightIssue = true;
-            break;
           }
-        }
+        });
+        lifetimeViews = vSum;
+        lifetimeLikes = lSum;
+        lifetimeComments = cSum;
       }
     }
   } catch (e) {
@@ -709,7 +805,12 @@ async function fetchPageStatus(page) {
     todayCount,
     remaining,
     percent,
-    hasCopyrightIssue
+    lifetimePosts,
+    lifetimeViews,
+    lifetimeLikes,
+    lifetimeComments,
+    hasCopyrightIssue,
+    recentVideos
   };
 }
 
@@ -730,6 +831,26 @@ async function renderPages() {
         </div>
       </div>
 
+      <!-- Lifetime Metrics Grid (Views, Reactions, Total Posts) -->
+      <div class="metrics-card">
+        <div class="metric-item">
+          <b>👁️ মোট ভিউজ</b>
+          <span id="views-${p.id}" style="color:#38bdf8;">--</span>
+        </div>
+        <div class="metric-item">
+          <b>❤️ রিঅ্যাকশন</b>
+          <span id="likes-${p.id}" style="color:#f472b6;">--</span>
+        </div>
+        <div class="metric-item">
+          <b>💬 কমেন্ট</b>
+          <span id="comments-${p.id}" style="color:#a78bfa;">--</span>
+        </div>
+        <div class="metric-item">
+          <b>📁 মোট পোস্ট</b>
+          <span id="total-posts-${p.id}" style="color:#34d399;">--</span>
+        </div>
+      </div>
+
       <!-- Daily Progress & Target Counter -->
       <div class="progress-card">
         <div class="progress-labels">
@@ -743,6 +864,14 @@ async function renderPages() {
           <span>দৈনিক লক্ষ্য: ${p.dailyTarget}টি</span>
           <span id="pcent-${p.id}">০% পূর্ণ</span>
         </div>
+      </div>
+
+      <!-- Expandable Recent Video Performance -->
+      <button class="expand-btn" id="expand-btn-${p.id}" onclick="toggleRecent('${p.id}')">
+        <span>🎥</span> সাম্প্রতিক পোস্টের ভিউজ ও লাইক দেখুন ▼
+      </button>
+      <div class="expand-box" id="recent-box-${p.id}">
+        <!-- Injected via JS -->
       </div>
 
       <!-- Copyright Status Pill -->
@@ -780,7 +909,8 @@ async function renderPages() {
 
   let totalPostedToday = 0;
   let totalRemainingToday = 0;
-  let totalCopyrightIssues = 0;
+  let globalViews = 0;
+  let globalLikes = 0;
 
   for (const page of MANAGED_PAGES) {
     fetchPageStatus(page).then(info => {
@@ -794,6 +924,12 @@ async function renderPages() {
       const cPill = document.getElementById(`cright-pill-${page.id}`);
       const cText = document.getElementById(`cright-text-${page.id}`);
       const cIcon = document.getElementById(`cright-icon-${page.id}`);
+      
+      const vSpan = document.getElementById(`views-${page.id}`);
+      const lSpan = document.getElementById(`likes-${page.id}`);
+      const cSpan = document.getElementById(`comments-${page.id}`);
+      const tSpan = document.getElementById(`total-posts-${page.id}`);
+      const recentBox = document.getElementById(`recent-box-${page.id}`);
 
       timeSpan.innerText = formatRelativeTime(info.createdAt);
       countPosted.innerText = info.todayCount;
@@ -801,12 +937,42 @@ async function renderPages() {
       pbar.style.width = `${info.percent}%`;
       pcent.innerText = `${info.percent}% পূর্ণ`;
 
+      vSpan.innerText = formatNumber(info.lifetimeViews);
+      lSpan.innerText = formatNumber(info.lifetimeLikes);
+      cSpan.innerText = formatNumber(info.lifetimeComments);
+      tSpan.innerText = `${info.lifetimePosts}টি`;
+
+      // Render recent videos with views & reactions
+      if (info.recentVideos && info.recentVideos.length > 0) {
+        recentBox.innerHTML = info.recentVideos.map(v => `
+          <div class="video-row">
+            <div class="video-info" title="${v.title || v.description || ''}">
+              <b>${v.title || (v.description ? v.description.substring(0, 35) + '...' : 'ভিডিও পোস্ট')}</b>
+              <div style="color:var(--muted); font-size:10px;">${formatRelativeTime(v.created_time)}</div>
+            </div>
+            <div class="video-metrics">
+              <span style="color:#38bdf8;">👁️ ${formatNumber(v.views || 0)}</span>
+              <span style="color:#f472b6;">❤️ ${formatNumber(v.likes?.summary?.total_count || 0)}</span>
+            </div>
+          </div>
+        `).join("");
+      } else {
+        recentBox.innerHTML = `<div style="text-align:center; color:var(--muted); padding:6px;">কোনো সাম্প্রতিক ভিডিও রেকর্ড নেই</div>`;
+      }
+
       totalPostedToday += info.todayCount;
       totalRemainingToday += info.remaining;
+      globalViews += info.lifetimeViews;
+      globalLikes += info.lifetimeLikes;
+
+      // Update Global Bar
+      document.getElementById("globalTodayTotal").innerText = `${totalPostedToday}টি`;
+      document.getElementById("globalTodayRemaining").innerText = `${totalRemainingToday}টি`;
+      document.getElementById("globalLifetimeViews").innerText = formatNumber(globalViews);
+      document.getElementById("globalLifetimeLikes").innerText = formatNumber(globalLikes);
 
       // Update Copyright Pill
       if (info.hasCopyrightIssue) {
-        totalCopyrightIssues++;
         cPill.className = "copyright-pill danger";
         cIcon.innerText = "⚠️";
         cText.innerText = "কপিরাইট সতর্কবার্তা পাওয়া গেছে!";
@@ -814,15 +980,6 @@ async function renderPages() {
         cPill.className = "copyright-pill safe";
         cIcon.innerText = "🛡️";
         cText.innerText = "কপিরাইট: নিরাপদ ও ক্লেইম-মুক্ত";
-      }
-
-      // Update Global Bar
-      document.getElementById("globalTodayTotal").innerText = `${totalPostedToday}টি`;
-      document.getElementById("globalTodayRemaining").innerText = `${totalRemainingToday}টি`;
-      if (totalCopyrightIssues > 0) {
-        const gc = document.getElementById("globalCopyrightStatus");
-        gc.innerText = `⚠️ ${totalCopyrightIssues}টি পেজে ক্লেইম`;
-        gc.style.color = "#ef4444";
       }
 
       // Status Badge & Delayed Alert
@@ -994,7 +1151,7 @@ async function scanDuplicates() {
 
   try {
     const url = `https://graph.facebook.com/v21.0/${pageId}/videos?fields=id,title,description,created_time&limit=15&access_token=${fbToken}`;
-    const res = await fetch(url);
+    const res = await fetch(fbUrl);
     const data = await res.json();
     if (!data.data || data.data.length === 0) {
       container.innerHTML = `<p style="text-align:center; color:var(--muted);">কোনো পোস্ট পাওয়া যায়নি।</p>`;
