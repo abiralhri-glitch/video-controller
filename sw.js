@@ -1,5 +1,5 @@
-// Video Studio - PWA Service Worker (v2.0)
-const CACHE_NAME = 'video-studio-v2.0';
+// Video Studio - PWA Service Worker (v3.0)
+const CACHE_NAME = 'video-studio-v3.0';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
@@ -33,7 +33,6 @@ self.addEventListener('activate', (event) => {
 
 // Network-First with Cache Fallback strategy
 self.addEventListener('fetch', (event) => {
-  // Only handle GET requests for same origin or GitHub Pages assets
   if (event.request.method !== 'GET') return;
   
   event.respondWith(
