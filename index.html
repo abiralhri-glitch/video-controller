@@ -1,333 +1,139 @@
 <!doctype html>
 <html lang="bn">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script>
+// Wipe any conflicting caches from Islamic Studio / older versions
+if ('caches' in window) {
+  caches.keys().then(function(names) {
+    for (var name of names) {
+      if (name !== 'video-studio-v3.0') {
+        caches.delete(name);
+      }
+    }
+  });
+}
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.getRegistrations().then(function(regs) {
+    for (var r of regs) {
+      r.update();
+    }
+  });
+}
+</script>
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Islamic Studio Controller">
-<meta name="theme-color" content="#0d1117">
-<title>Islamic Studio Controller | Jannat & Quran Tilawat</title>
+<meta name="apple-mobile-web-app-title" content="Video Studio">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0f1115">
+<title>Video Studio</title>
+<link rel="manifest" href="manifest.json">
 <link rel="icon" type="image/png" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
 <style>
-  :root {
-    --bg: #090d16;
-    --card: #131b26;
-    --line: #222f3e;
-    --txt: #f1f5f9;
-    --mut: #94a3b8;
-    --primary: #10b981;
-    --primary-glow: rgba(16, 185, 129, 0.25);
-    --secondary: #0ea5e9;
-    --secondary-glow: rgba(14, 165, 233, 0.25);
-    --danger: #ef4444;
-    --warn: #f59e0b;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    background: var(--bg);
-    color: var(--txt);
-    font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans Bengali", sans-serif;
-    padding: 16px;
-    padding-bottom: 50px;
-    max-width: 680px;
-    margin: 0 auto;
-  }
-  header {
-    text-align: center;
-    padding: 18px 0 22px;
-    border-bottom: 1px solid var(--line);
-    margin-bottom: 20px;
-  }
-  h1 { font-size: 24px; font-weight: 700; color: #fff; display: flex; align-items: center; justify-content: center; gap: 8px; }
-  header p { font-size: 14px; color: var(--mut); margin-top: 4px; }
-  
-  .page-nav {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-bottom: 20px;
-  }
-  .nav-btn {
-    background: var(--card);
-    border: 2px solid var(--line);
-    color: var(--txt);
-    padding: 14px 10px;
-    border-radius: 14px;
-    font-size: 15px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
-  }
-  .nav-btn span.badge {
-    font-size: 11px;
-    padding: 2px 8px;
-    border-radius: 99px;
-    background: rgba(148, 163, 184, 0.15);
-    color: var(--mut);
-  }
-  .nav-btn.active-quran {
-    border-color: var(--primary);
-    background: linear-gradient(180deg, rgba(16, 185, 129, 0.15) 0%, var(--card) 100%);
-    box-shadow: 0 4px 18px var(--primary-glow);
-  }
-  .nav-btn.active-quran span.badge {
-    background: var(--primary);
-    color: #042416;
-    font-weight: 700;
-  }
-  .nav-btn.active-jannat {
-    border-color: var(--secondary);
-    background: linear-gradient(180deg, rgba(14, 165, 233, 0.15) 0%, var(--card) 100%);
-    box-shadow: 0 4px 18px var(--secondary-glow);
-  }
-  .nav-btn.active-jannat span.badge {
-    background: var(--secondary);
-    color: #032030;
-    font-weight: 700;
-  }
-
-  .card {
-    background: var(--card);
-    border: 1px solid var(--line);
-    border-radius: 16px;
-    padding: 18px;
-    margin-bottom: 16px;
-  }
-  .card-title {
-    font-size: 17px;
-    font-weight: 700;
-    margin-bottom: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .status-tag {
-    font-size: 12px;
-    font-weight: 600;
-    padding: 3px 10px;
-    border-radius: 99px;
-    background: rgba(16, 185, 129, 0.15);
-    color: var(--primary);
-    border: 1px solid rgba(16, 185, 129, 0.3);
-  }
-  label {
-    display: block;
-    font-size: 13px;
-    color: var(--mut);
-    margin: 12px 0 6px;
-  }
-  label:first-child { margin-top: 0; }
-  input, select, textarea {
-    width: 100%;
-    background: #090d16;
-    color: var(--txt);
-    border: 1px solid var(--line);
-    border-radius: 10px;
-    padding: 12px 14px;
-    font: inherit;
-    font-size: 14px;
-    transition: border-color 0.2s;
-  }
-  input:focus, select:focus, textarea:focus {
-    outline: none;
-    border-color: var(--primary);
-  }
-  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-
-  button.action-btn {
-    width: 100%;
-    padding: 15px;
-    border: 0;
-    border-radius: 12px;
-    font: inherit;
-    font-weight: 700;
-    font-size: 15px;
-    cursor: pointer;
-    margin-top: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    transition: all 0.2s;
-  }
-  .btn-quran {
-    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-    color: #fff;
-    box-shadow: 0 4px 16px var(--primary-glow);
-  }
-  .btn-quran:hover { opacity: 0.95; transform: translateY(-1px); }
-  .btn-jannat {
-    background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
-    color: #fff;
-    box-shadow: 0 4px 16px var(--secondary-glow);
-  }
-  .btn-jannat:hover { opacity: 0.95; transform: translateY(-1px); }
-  button:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; }
-
-  .btn-ghost {
-    background: transparent;
-    border: 1px solid var(--line);
-    color: var(--txt);
-    padding: 10px 14px;
-    border-radius: 8px;
-    font-size: 13px;
-    cursor: pointer;
-    margin-top: 8px;
-  }
-  .btn-ghost:hover { border-color: var(--mut); }
-
-  .msg {
-    margin-top: 12px;
-    font-size: 14px;
-    min-height: 20px;
-    padding: 10px 14px;
-    border-radius: 8px;
-    display: none;
-  }
-  .msg.ok { display: block; background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
-  .msg.bad { display: block; background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
-
-  .runs-list { margin-top: 12px; }
-  .run-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 0;
-    border-top: 1px solid var(--line);
-    font-size: 13px;
-  }
-  .run-item:first-child { border-top: 0; }
-  .run-badge {
-    padding: 2px 8px;
-    border-radius: 99px;
-    font-size: 11px;
-    font-weight: 600;
-  }
-  .run-badge.success { background: rgba(16, 185, 129, 0.15); color: var(--primary); }
-  .run-badge.in_progress { background: rgba(245, 158, 11, 0.15); color: var(--warn); }
-  .run-badge.failure { background: rgba(239, 68, 68, 0.15); color: var(--danger); }
-
-  .notice-box {
-    background: rgba(14, 165, 233, 0.08);
-    border: 1px solid rgba(14, 165, 233, 0.2);
-    border-radius: 12px;
-    padding: 12px 14px;
-    font-size: 13px;
-    color: #bae6fd;
-    line-height: 1.5;
-    margin-top: 14px;
-  }
-  .notice-box strong { color: #fff; }
-
-  details summary { cursor: pointer; color: var(--mut); font-size: 14px; }
+  :root { --bg:#0f1115; --card:#1a1d24; --line:#2a2f3a; --txt:#eef0f4; --mut:#9aa3b2; --acc:#4f8cff; --ok:#3ecf8e; --bad:#ff6b6b; --warn:#f5b942; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--txt); font:16px/1.5 system-ui,-apple-system,"Noto Sans Bengali",sans-serif; padding:16px; padding-bottom:40px; }
+  h1 { font-size:22px; margin:4px 0 16px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:14px; margin-bottom:14px; }
+  label { display:block; font-size:13px; color:var(--mut); margin:12px 0 4px; }
+  label:first-child { margin-top:0; }
+  input, textarea, select { width:100%; background:#10131a; color:var(--txt); border:1px solid var(--line); border-radius:10px; padding:12px; font:inherit; }
+  textarea { min-height:96px; resize:vertical; }
+  .row { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  button { width:100%; background:var(--acc); color:#fff; border:0; border-radius:12px; padding:14px; font:inherit; font-weight:600; margin-top:14px; }
+  button.ghost { background:transparent; border:1px solid var(--line); color:var(--txt); margin-top:8px; }
+  button:disabled { opacity:.5; }
+  .msg { margin-top:10px; font-size:14px; min-height:20px; }
+  .msg.ok { color:var(--ok); } .msg.bad { color:var(--bad); }
+  .run { display:flex; justify-content:space-between; gap:10px; padding:10px 0; border-top:1px solid var(--line); font-size:14px; }
+  .run:first-of-type { border-top:0; }
+  .run a { color:var(--acc); text-decoration:none; }
+  .tag { font-size:12px; padding:2px 8px; border-radius:99px; border:1px solid var(--line); white-space:nowrap; align-self:flex-start; }
+  .tag.success { color:var(--ok); } .tag.failure { color:var(--bad); } .tag.in_progress,.tag.queued { color:var(--warn); }
+  small { color:var(--mut); }
+  details summary { cursor:pointer; color:var(--mut); }
+  .modes { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:14px; }
+  .modes button { margin:0; padding:12px 8px; background:var(--card); border:1px solid var(--line); color:var(--txt); font-size:14px; line-height:1.3; }
+  .modes button.on { background:var(--acc); border-color:var(--acc); color:#fff; }
+  .modes button:disabled { opacity:.45; }
+  .hint { font-size:13px; color:var(--mut); margin:8px 0 0; }
+  .hide { display:none; }
+  .chk { display:flex; gap:10px; align-items:flex-start; color:var(--txt); font-size:14px; margin-top:12px; }
+  input[type=checkbox] { width:22px; height:22px; margin:0; flex:none; }
 </style>
 </head>
 <body>
+<h1>🎬 Video Studio</h1>
+<button id="pwaInstallBtn" class="ghost" style="display:none;margin-top:0;margin-bottom:12px;border-color:var(--acc);color:var(--acc);font-weight:600;">📲 অ্যাপ ইনস্টল করুন (Install App)</button>
 
-<header>
-  <h1>🕌 Islamic Studio Controller</h1>
-  <p>দ্বীনী পেইজ কন্ট্রোল ড্যাশবোর্ড (শুধুমাত্র ২টি সক্রিয় পেজ)</p>
-</header>
+<div class="modes" id="modes">
+  <button type="button" data-mode="script" class="on">✍️ স্ক্রিপ্ট দিয়ে ভিডিও</button>
+  <button type="button" data-mode="youtube">▶️ ইউটিউব ভিডিও থেকে ভিডিও</button>
+  <button type="button" data-mode="cartoon">🧸 কার্টুন (বাচ্চাদের)</button>
+  <button type="button" data-mode="documentary">🎥 ডকুমেন্টারি (১০–১৫ মিনিট)</button>
+  <button type="button" data-mode="clips">✂️ আসল ভিডিও কেটে ছোট (অনুমতি থাকলে)</button>
+  <button type="button" data-mode="other">🎞 অন্যান্য ফরম্যাট</button>
+</div>
+<p class="hint" id="modeHint"></p>
 
-<!-- পেজ নেভিগেশন ট্যাব -->
-<div class="page-nav">
-  <button type="button" class="nav-btn active-quran" id="tabQuran">
-    <span>📖 কুরআনের তিলাওয়াত</span>
-    <span class="badge">১০টি দৈনিক পোস্ট (সক্রিয়)</span>
-  </button>
-  <button type="button" class="nav-btn" id="tabJannat">
-    <span>🌸 Jannat</span>
-    <span class="badge">ইসলামিক বাণী ও জুম্মা (সক্রিয়)</span>
-  </button>
+<div class="card">
+  <label for="prompt">কমান্ড (কী ভিডিও চান)</label>
+  <textarea id="prompt" placeholder="যেমন: ঘুমের আগের অভ্যাস যা মস্তিষ্কের জন্য ভালো, মোটিভেশনাল স্টাইলে"></textarea>
+  <div class="row">
+    <div><label for="minutes">কত মিনিট</label><input id="minutes" type="number" inputmode="decimal" min="0.25" max="15" step="0.25" value="1"></div>
+    <div><label for="language">ভাষা</label><select id="language"><option value="bn">বাংলা</option><option value="en">English</option></select></div>
+  </div>
+  <div class="row">
+    <div><label for="voice">ভয়েস</label><select id="voice"><option value="female">মেয়ে</option><option value="male">ছেলে</option></select></div>
+    <div><label for="format">আকার</label><select id="format"><option value="landscape">ইউটিউব (আড়াআড়ি)</option><option value="portrait">শর্টস/রিলস (লম্বালম্বি)</option></select></div>
+  </div>
+  <div id="styleBox">
+  <label for="style">ফরম্যাট / স্টাইল</label>
+  <select id="style">
+    <option value="custom">সাধারণ (আমার কমান্ড অনুযায়ী)</option>
+    <option value="natok_recap">নাটকের সারসংক্ষেপ (৫–১০ মিনিট, আড়াআড়ি)</option>
+    <option value="book_explainer">বই/জ্ঞান ব্যাখ্যা (লম্বালম্বি রিলস)</option>
+  </select>
+  </div>
+  <div id="sourceBox">
+  <label for="source">সোর্স ভিডিও লিংক (নাটকের ইউটিউব লিংক, ঐচ্ছিক)</label>
+  <input id="source" type="url" placeholder="https://www.youtube.com/watch?v=..." autocapitalize="off" autocorrect="off">
+  </div>
+  <div id="clipsBox">
+    <label for="videoUrl">ভিডিও লিংক (Google Drive / Dropbox / সরাসরি লিংক, অথবা release:ট্যাগ/ফাইলের-নাম)</label>
+    <input id="videoUrl" type="url" placeholder="https://drive.google.com/file/d/..." autocapitalize="off" autocorrect="off">
+    <div class="row">
+      <div><label for="speechLang">ভিডিওর কথার ভাষা</label><select id="speechLang"><option value="bn">বাংলা</option><option value="en">English</option><option value="hi">হিন্দি</option><option value="auto">অটো</option></select></div>
+      <div><label for="overlays">পর্দায় লেখা</label><select id="overlays"><option value="captions">শুধু ক্যাপশন</option><option value="captions_titles">ক্যাপশন + ঘটনার শিরোনাম</option><option value="none">কিছু না (একদম আসল)</option></select></div>
+    </div>
+    <label class="chk"><input type="checkbox" id="rights"> আমি এই ভিডিওর মালিক, অথবা এটা কেটে প্রকাশ করার অনুমতি আমার আছে</label>
+  </div>
+  <div id="scriptBox">
+    <label for="fullScript">পুরো স্ক্রিপ্ট (ঐচ্ছিক): দিলে AI নিজে লিখবে না, এটাই পড়া হবে</label>
+    <textarea id="fullScript" placeholder="এখানে নিজের স্ক্রিপ্ট পেস্ট করুন। খালি রাখলে উপরের বিষয় থেকে AI নিজে স্ক্রিপ্ট লিখবে।" style="min-height:120px"></textarea>
+  </div>
+  <label for="notes" id="notesLabel">স্টাইল নোট (ঐচ্ছিক)</label>
+  <input id="notes" placeholder="যেমন: দ্রুত গতির, হুক দিয়ে শুরু">
+  <button id="go">ভিডিও বানাও</button>
+  <div id="msg" class="msg"></div>
 </div>
 
-<!-- ১. কুরআনের তিলাওয়াত প্যানেল -->
-<div id="quranPanel">
-  <div class="card">
-    <div class="card-title">
-      <span>📖 কুরআনুল কারীম অটো পোস্টার</span>
-      <span class="status-tag">সরাসরি অ্যাক্টিভ</span>
-    </div>
-    
-    <label for="quranFormat">ভিডিও ফরম্যাট নির্বাচন করুন</label>
-    <select id="quranFormat">
-      <option value="auto">🔄 স্বয়ংক্রিয় রোটেশন (রিলস + লং ভিডিও)</option>
-      <option value="reel">📱 আল্ট্রা-এইচডি রিলস (৬০ সেকেন্ড | পবিত্র কাবা তাওয়াফ)</option>
-      <option value="video">🎥 ফুল এইচডি বড় সূরা ভিডিও (পূর্ণাঙ্গ তিলাওয়াত)</option>
-    </select>
-
-    <div class="notice-box">
-      <strong>✨ লাইভ জিরো-ডুপ্লিকেট রোটেশন:</strong> পেজের লাইভ ফিড স্বয়ংক্রিয়ভাবে স্ক্যান করে সম্পূর্ণ নতুন দৃশ্য ও পবিত্র কাবা শরীফের তাওয়াফ ভিড় সিন ব্যবহৃত হবে।
-    </div>
-
-    <button id="btnTriggerQuran" class="action-btn btn-quran">
-      ▶️ এখনই কুরআন তিলাওয়াত পোস্ট তৈরি ও আপলোড করো
-    </button>
-    <div id="quranMsg" class="msg"></div>
-  </div>
-
-  <div class="card">
-    <div class="card-title">
-      <span>📊 সাম্প্রতিক পোস্ট কার্যক্রম (Quran Tilawat)</span>
-      <button class="btn-ghost" id="refreshQuran">🔄 রিফ্রেশ</button>
-    </div>
-    <div id="quranRuns" class="runs-list"><small style="color:var(--mut);">লোড হচ্ছে…</small></div>
-  </div>
+<div class="card">
+  <b>সাম্প্রতিক কাজ</b>
+  <div id="runs"><small>লোড হচ্ছে…</small></div>
+  <button class="ghost" id="refresh">রিফ্রেশ</button>
 </div>
 
-<!-- ২. Jannat প্যানেল -->
-<div id="jannatPanel" style="display:none;">
-  <div class="card">
-    <div class="card-title">
-      <span>🌸 Jannat ইসলামিক বাণী ও রিলস পোস্টার</span>
-      <span class="status-tag">সরাসরি অ্যাক্টিভ</span>
-    </div>
-
-    <label for="jannatType">পোস্টের ক্যাটাগরি</label>
-    <select id="jannatType">
-      <option value="durood_aesthetic">🤍 শুক্রবার দুরুদ ও জুম্মা মোবারক এস্থেটিক রিলস</option>
-      <option value="islamic_quote">✨ অন্তরের প্রশান্তির ইসলামিক বাণী ও হাদিস</option>
-      <option value="bangla_nasheed">🎵 মধুর বাংলা গজল ও হামদ-নাত রিলস</option>
-      <option value="auto">🔄 স্বয়ংক্রিয় রোটেশন</option>
-    </select>
-
-    <label for="jannatTopic">কাস্টম বিষয় / ক্যাপশন (ঐচ্ছিক)</label>
-    <input type="text" id="jannatTopic" placeholder="যেমন: জুম্মা মোবারক ও দুরুদের মহিমা, ক্ষমা ও রহমত">
-
-    <div class="notice-box">
-      <strong>🌿 স্নিগ্ধ এস্থেটিক ডিজাইন:</strong> আপনার শেয়ার করা রিলসের মতো নরম প্রকৃতির দৃশ্য, ব্যাকগ্রাউন্ড কুরআন/গজল ও সুন্দর বাংলা টাইপোগ্রাফি যুক্ত হবে।
-    </div>
-
-    <button id="btnTriggerJannat" class="action-btn btn-jannat">
-      ▶️ Jannat পেজে এখনই রিলস পোস্ট করো
-    </button>
-    <div id="jannatMsg" class="msg"></div>
-  </div>
-
-  <div class="card">
-    <div class="card-title">
-      <span>📊 সাম্প্রতিক পোস্ট কার্যক্রম (Jannat)</span>
-      <button class="btn-ghost" id="refreshJannat">🔄 রিফ্রেশ</button>
-    </div>
-    <div id="jannatRuns" class="runs-list"><small style="color:var(--mut);">লোড হচ্ছে…</small></div>
-  </div>
-</div>
-
-<!-- সেটিংস (গিটহাব টোকেন) -->
 <details class="card">
-  <summary>⚙️ কানেকশন সেটিংস (স্বয়ংক্রিয় সেভ)</summary>
-  <div style="margin-top:14px;">
-    <label for="ghToken">GitHub Personal Access Token (ঐচ্ছিক)</label>
-    <input id="ghToken" type="password" placeholder="github_pat_..." autocomplete="off">
-    <small style="color:var(--mut); display:block; margin-top:4px;">টোকেন শুধুমাত্র আপনার ব্রাউজারে লোকাল স্টোরেজে নিরাপদে সেভ থাকে।</small>
-    <button class="btn-ghost" id="saveSettings" style="margin-top:10px;">সংরক্ষণ করুন</button>
-  </div>
+  <summary>সেটিংস (একবারই দিতে হবে)</summary>
+  <label for="repo">প্রাইভেট রিপো (owner/নাম)</label>
+  <input id="repo" placeholder="myname/video-studio" autocapitalize="off" autocorrect="off">
+  <label for="token">GitHub টোকেন (fine-grained, শুধু ঐ রিপো)</label>
+  <input id="token" type="password" placeholder="github_pat_..." autocapitalize="off" autocorrect="off">
+  <small>টোকেন শুধু এই ফোনের ব্রাউজারে সংরক্ষিত থাকে।</small>
+  <button class="ghost" id="save">সংরক্ষণ</button>
 </details>
 
 <script>
@@ -336,139 +142,162 @@ const store = {
   get(k){ try { return localStorage.getItem(k) || ""; } catch(e){ return ""; } },
   set(k,v){ try { localStorage.setItem(k,v); } catch(e){} }
 };
+$("repo").value = store.get("repo") || "abiralhri-glitch/video-studio";
+$("token").value = store.get("token");
 
-// ট্যাব সুইচিং
-const tabQuran = $("tabQuran");
-const tabJannat = $("tabJannat");
-const quranPanel = $("quranPanel");
-const jannatPanel = $("jannatPanel");
+function api(path, opts = {}) {
+  const repo = store.get("repo") || $("repo").value.trim(), token = store.get("token");
+  if (!repo || !token) throw new Error("আগে সেটিংসে রিপো আর টোকেন দিন");
+  return fetch(`https://api.github.com/repos/${repo}${path}`, {
+    ...opts,
+    headers: { "Accept":"application/vnd.github+json", "Authorization":`Bearer ${token}`, "X-GitHub-Api-Version":"2022-11-28", ...(opts.headers||{}) }
+  });
+}
+function say(text, cls="") { $("msg").textContent = text; $("msg").className = "msg " + cls; }
 
-tabQuran.onclick = () => {
-  tabQuran.className = "nav-btn active-quran";
-  tabJannat.className = "nav-btn";
-  quranPanel.style.display = "block";
-  jannatPanel.style.display = "none";
+$("save").onclick = () => {
+  store.set("repo", $("repo").value.trim());
+  store.set("token", $("token").value.trim());
+  say("সংরক্ষিত হয়েছে", "ok"); loadRuns();
 };
 
-tabJannat.onclick = () => {
-  tabJannat.className = "nav-btn active-jannat";
-  tabQuran.className = "nav-btn";
-  jannatPanel.style.display = "block";
-  quranPanel.style.display = "none";
-};
-
-// টোকেন ইনিশিয়ালাইজেশন
-if ($("ghToken")) $("ghToken").value = store.get("ghToken");
-$("saveSettings").onclick = () => {
-  store.set("ghToken", $("ghToken").value.trim());
-  showMsg("quranMsg", "সেটিংস সংরক্ষিত হয়েছে", true);
-};
-
-function showMsg(boxId, text, isOk) {
-  const el = $(boxId);
-  el.textContent = text;
-  el.className = "msg " + (isOk ? "ok" : "bad");
-  setTimeout(() => { el.style.display = "none"; }, 8000);
+async function clipsRun() {
+  const url = $("videoUrl").value.trim();
+  if (!url) return say("ভিডিও লিংক দিন", "bad");
+  if (!$("rights").checked) return say("অধিকার/অনুমতির ঘরে টিক দিন", "bad");
+  const minutes = parseFloat($("minutes").value);
+  if (!(minutes >= 1 && minutes <= 30)) return say("মিনিট ১ থেকে ৩০ এর মধ্যে দিন", "bad");
+  $("go").disabled = true; say("পাঠানো হচ্ছে…");
+  try {
+    const r = await api("/actions/workflows/highlights.yml/dispatches", {
+      method: "POST",
+      body: JSON.stringify({ ref: "main", inputs: {
+        video_url: url, minutes: String(minutes), speech_language: $("speechLang").value,
+        overlays: $("overlays").value, rights_confirmed: "true", notes: $("notes").value.trim()
+      }})
+    });
+    if (r.status === 204) { say("কাজ শুরু হয়েছে। নিচে অগ্রগতি দেখুন।", "ok"); setTimeout(loadRuns, 4000); }
+    else { const j = await r.json().catch(()=>({})); say(`ব্যর্থ (${r.status}): ${j.message || ""}`, "bad"); }
+  } catch (e) { say(e.message, "bad"); }
+  $("go").disabled = false;
 }
 
-// গিটহাব এপিআই ডিসপ্যাচ
-async function triggerWorkflow(repo, workflowFile, inputs = {}) {
-  const token = store.get("ghToken") || $("ghToken").value.trim();
-  const url = `https://api.github.com/repos/abiralhri-glitch/${repo}/actions/workflows/${workflowFile}/dispatches`;
-  const headers = {
-    "Accept": "application/vnd.github+json",
-    "X-GitHub-Api-Version": "2022-11-28"
-  };
-  if (token) headers["Authorization"] = `Bearer ${token}`;
+$("go").onclick = async () => {
+  if (store.get("mode") === "clips") return clipsRun();
+  const prompt = $("prompt").value.trim();
+  if (!prompt && !$("fullScript").value.trim()) return say("কমান্ড বা পুরো স্ক্রিপ্ট লিখুন", "bad");
+  const minutes = parseFloat($("minutes").value);
+  if (!(minutes >= 0.25 && minutes <= 30)) return say("মিনিট ০.২৫ থেকে ৩০ এর মধ্যে দিন", "bad");
+  $("go").disabled = true; say("পাঠানো হচ্ছে…");
+  try {
+    const r = await api("/actions/workflows/make-video.yml/dispatches", {
+      method: "POST",
+      body: JSON.stringify({ ref: "main", inputs: {
+        prompt: prompt || "Full script video", minutes: String(minutes), language: $("language").value,
+        voice: $("voice").value, format: $("format").value, notes: $("notes").value.trim(),
+        style: $("style").value, source_url: $("source").value.trim(), full_script: $("fullScript").value.trim()
+      }})
+    });
+    if (r.status === 204) { say("কাজ শুরু হয়েছে। নিচে অগ্রগতি দেখুন।", "ok"); setTimeout(loadRuns, 4000); }
+    else { const j = await r.json().catch(()=>({})); say(`ব্যর্থ (${r.status}): ${j.message || ""}`, "bad"); }
+  } catch (e) { say(e.message, "bad"); }
+  $("go").disabled = false;
+};
 
-  return fetch(url, {
-    method: "POST",
-    headers,
-    body: JSON.stringify({ ref: "main", inputs })
+const STATUS = { success:"তৈরি", failure:"ব্যর্থ", in_progress:"চলছে", queued:"অপেক্ষায়", cancelled:"বাতিল" };
+async function loadRuns() {
+  const box = $("runs");
+  try {
+    const r = await api("/actions/runs?per_page=6");
+    if (!r.ok) { box.innerHTML = `<small>লোড হয়নি (${r.status})</small>`; return; }
+    const j = await r.json();
+    if (!j.workflow_runs.length) { box.innerHTML = "<small>এখনো কোনো কাজ নেই</small>"; return; }
+    const repo = store.get("repo") || $("repo").value.trim();
+    box.innerHTML = j.workflow_runs.map(w => {
+      const st = w.status === "completed" ? w.conclusion : w.status;
+      const link = st === "success" ? `https://github.com/${repo}/releases` : w.html_url;
+      const label = st === "success" ? "ডাউনলোড" : "বিস্তারিত";
+      return `<div class="run"><div>#${w.run_number} · ${new Date(w.created_at).toLocaleString("bn-BD")}<br><a href="${link}" target="_blank" rel="noopener">${label}</a></div><span class="tag ${st}">${STATUS[st] || st}</span></div>`;
+    }).join("");
+  } catch (e) { box.innerHTML = `<small>${e.message}</small>`; }
+}
+const MODES = {
+  script:  { style:"custom",         styleBox:false, sourceBox:false, hint:"নিজের কমান্ড বা বিষয় লিখে ভিডিও বানান।", notes:"স্টাইল নোট (ঐচ্ছিক)" },
+  youtube: { style:"natok_recap",    styleBox:false, sourceBox:true,  hint:"নাটক/ফিল্মের ইউটিউব লিংক দিন, সেটাকে ৫–২৫ মিনিটের নতুন ভিডিওতে রূপান্তর করবে। লিংক না পড়া গেলে সারসংক্ষেপ নিচের নোটে পেস্ট করুন।", notes:"নাটকের সারসংক্ষেপ (লিংক না পড়া গেলে এখানে পেস্ট করুন)", minutes:8 },
+  cartoon: { style:"custom",         styleBox:false, sourceBox:false, hint:"বাচ্চাদের কার্টুন ভিডিও সিস্টেম তৈরি হচ্ছে।", notes:"স্টাইল নোট (ঐচ্ছিক)" },
+  other:   { style:"book_explainer", styleBox:true,  sourceBox:false, hint:"অন্যান্য তৈরি ফরম্যাট থেকে বেছে নিন।", notes:"স্টাইল নোট (ঐচ্ছিক)" }
+};
+MODES.clips = { style:"custom", styleBox:false, sourceBox:false, clipsBox:true, hint:"আসল ভিডিও থেকে মূল ঘটনার দৃশ্যগুলো কেটে ছোট ভিডিও বানাবে। আসল ছবি ও আসল ভয়েসই থাকবে। শুধু যে ভিডিওর অধিকার বা অনুমতি আপনার আছে, সেটাতেই ব্যবহার করুন।", notes:"নোট (ঐচ্ছিক)" };
+MODES.cartoon = { style:"cartoon_kids", styleBox:false, sourceBox:false, hint:"বাচ্চাদের কার্টুন গল্পের ভিডিও: কার্টুন ছবি, মজার ভয়েস, শেষে শিক্ষা। বিষয় লিখুন (যেমন: খরগোশ আর কচ্ছপের গল্প)।", notes:"স্টাইল নোট (ঐচ্ছিক)" };
+MODES.documentary = { style:"documentary", styleBox:false, sourceBox:false, hint:"নতুন ডকুমেন্টারি: বিষয় বললে ১০–১৫ মিনিটের ভিডিও, ইংরেজি বা বাংলা। AI-র বলা তথ্য আপলোডের আগে নিজে যাচাই করে নিন।", notes:"স্টাইল নোট (ঐচ্ছিক)" };
+function setMode(m) {
+  const c = MODES[m] || MODES.script;
+  const clips = m === "clips";
+  $("scriptBox").classList.toggle("hide", !["script","cartoon","documentary"].includes(m));
+  const mins = parseFloat($("minutes").value);
+  if (m === "documentary" && !(mins >= 10 && mins <= 15)) $("minutes").value = 12;
+  if (m === "cartoon" && !(mins >= 2 && mins <= 10)) $("minutes").value = 5;
+  $("clipsBox").classList.toggle("hide", !clips);
+  ["language","voice","format"].forEach(id => $(id).parentElement.classList.toggle("hide", clips));
+  document.querySelector('label[for="prompt"]').classList.toggle("hide", clips);
+  $("prompt").classList.toggle("hide", clips);
+  if (clips && !(parseFloat($("minutes").value) >= 3)) $("minutes").value = 7;
+  document.querySelectorAll("#modes button").forEach(b => b.classList.toggle("on", b.dataset.mode === m));
+  $("styleBox").classList.toggle("hide", !c.styleBox);
+  $("sourceBox").classList.toggle("hide", !c.sourceBox);
+  $("modeHint").textContent = c.hint;
+  $("notesLabel").textContent = c.notes;
+  if (m !== "script" || $("style").value !== "custom") $("style").value = c.style;
+  if (m === "script") $("style").value = "custom";
+  if (c.minutes && !(parseFloat($("minutes").value) >= 5)) $("minutes").value = c.minutes;
+  if (m !== "youtube") $("source").value = "";
+  store.set("mode", m);
+}
+document.querySelectorAll("#modes button").forEach(b => b.onclick = () => { if (!b.disabled) setMode(b.dataset.mode); });
+setMode(store.get("mode") && MODES[store.get("mode")] ? store.get("mode") : "script");
+$("refresh").onclick = loadRuns;
+
+// PWA Service Worker Registration & Install Prompt Handler
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').then((reg) => {
+      console.log('Video Studio SW registered:', reg.scope);
+    }).catch((err) => {
+      console.warn('Video Studio SW error:', err);
+    });
   });
 }
 
-// কুরআন ট্রিগার
-$("btnTriggerQuran").onclick = async () => {
-  const format = $("quranFormat").value;
-  $("btnTriggerQuran").disabled = true;
-  $("btnTriggerQuran").textContent = "⏳ পোস্ট তৈরি ও আপলোড শুরু হচ্ছে...";
-  try {
-    const res = await triggerWorkflow("quran-tilawat-bot", "quran_poster.yml", { format });
-    if (res.status === 204) {
-      showMsg("quranMsg", "✅ সফলভাবে টাস্ক শুরু হয়েছে! ২-৩ মিনিটে পেজে পোস্ট হবে।", true);
-      setTimeout(loadQuranRuns, 4000);
-    } else {
-      const err = await res.json().catch(() => ({}));
-      showMsg("quranMsg", `ত্রুটি (${res.status}): ${err.message || "টোকেন চেক করুন"}`, false);
-    }
-  } catch(e) {
-    showMsg("quranMsg", "সংযোগ ত্রুটি: " + e.message, false);
-  }
-  $("btnTriggerQuran").disabled = false;
-  $("btnTriggerQuran").textContent = "▶️ এখনই কুরআন তিলাওয়াত পোস্ট তৈরি ও আপলোড করো";
-};
+let deferredPrompt;
+const installBtn = document.getElementById('pwaInstallBtn');
 
-// Jannat ট্রিগার
-$("btnTriggerJannat").onclick = async () => {
-  const postType = $("jannatType").value;
-  const topic = $("jannatTopic").value.trim();
-  $("btnTriggerJannat").disabled = true;
-  $("btnTriggerJannat").textContent = "⏳ Jannat পোস্ট তৈরি শুরু হচ্ছে...";
-  try {
-    const res = await triggerWorkflow("jannat-islamic-bot", "jannat_poster.yml", { type: postType, topic });
-    if (res.status === 204) {
-      showMsg("jannatMsg", "✅ সফলভাবে Jannat টাস্ক শুরু হয়েছে! পেজে পোস্ট হবে।", true);
-      setTimeout(loadJannatRuns, 4000);
-    } else {
-      const err = await res.json().catch(() => ({}));
-      showMsg("jannatMsg", `ত্রুটি (${res.status}): ${err.message || "টোকেন চেক করুন"}`, false);
-    }
-  } catch(e) {
-    showMsg("jannatMsg", "সংযোগ ত্রুটি: " + e.message, false);
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  if (installBtn) {
+    installBtn.style.display = 'block';
   }
-  $("btnTriggerJannat").disabled = false;
-  $("btnTriggerJannat").textContent = "▶️ Jannat পেজে এখনই রিলস পোস্ট করো";
-};
+});
 
-// অ্যাকশন রান লোড
-async function loadRunsFor(repo, containerId) {
-  const el = $(containerId);
-  try {
-    const res = await fetch(`https://api.github.com/repos/abiralhri-glitch/${repo}/actions/runs?per_page=5`);
-    if (!res.ok) throw new Error("Status " + res.status);
-    const data = await res.json();
-    const runs = data.workflow_runs || [];
-    if (runs.length === 0) { el.innerHTML = "<small style='color:var(--mut);'>কোনো রান পাওয়া যায়নি</small>"; return; }
-    
-    let html = "";
-    for (const r of runs) {
-      const statusCls = r.conclusion === "success" ? "success" : (r.status === "in_progress" ? "in_progress" : "failure");
-      const statusText = r.conclusion === "success" ? "সফল" : (r.status === "in_progress" ? "চলমান" : "ব্যর্থ");
-      const timeStr = new Date(r.created_at).toLocaleTimeString("bn-BD", { hour: '2-digit', minute: '2-digit' });
-      html += `
-        <div class="run-item">
-          <div>
-            <b>${r.name || "Workflow"}</b> <small style="color:var(--mut);">(${timeStr})</small>
-          </div>
-          <span class="run-badge ${statusCls}">${statusText}</span>
-        </div>
-      `;
+if (installBtn) {
+  installBtn.addEventListener('click', async () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      const choiceResult = await deferredPrompt.userChoice;
+      console.log('User choice:', choiceResult.outcome);
+      deferredPrompt = null;
+      installBtn.style.display = 'none';
     }
-    el.innerHTML = html;
-  } catch(e) {
-    el.innerHTML = `<small style="color:var(--mut);">হিস্ট্রি দেখতে GitHub টোকেন প্রয়োজন হতে পারে।</small>`;
-  }
+  });
 }
 
-function loadQuranRuns() { loadRunsFor("quran-tilawat-bot", "quranRuns"); }
-function loadJannatRuns() { loadRunsFor("jannat-islamic-bot", "jannatRuns"); }
+window.addEventListener('appinstalled', () => {
+  console.log('Video Studio successfully installed!');
+  if (installBtn) installBtn.style.display = 'none';
+});
 
-$("refreshQuran").onclick = loadQuranRuns;
-$("refreshJannat").onclick = loadJannatRuns;
-
-loadQuranRuns();
-loadJannatRuns();
+loadRuns();
+setInterval(() => { if (!document.hidden && store.get("token")) loadRuns(); }, 20000);
 </script>
 </body>
 </html>
